@@ -1,0 +1,11 @@
+- Powershell
+Need to enable permission https://stackoverflow.com/questions/4037939/powershell-says-execution-of-scripts-is-disabled-on-this-system
+sehat-in-venv\Scripts\Activate.ps1
+
+- CMD
+.\sehat-in-venv\Scripts\activate.bat
+
+- Bash
+source sehat-in-venv/scripts/activate
+
+After that do cd sehat_in_web

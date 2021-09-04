@@ -1,0 +1,8 @@
+# Steps
+1. Activate venv
+2. Change directory of your terminal to sehat_in
+3. Run the following command: python manage.py runserver
+4. Check browser at http://127.0.0.1:8000/
+5. Done
+
+# Root directory should be sehat_in
