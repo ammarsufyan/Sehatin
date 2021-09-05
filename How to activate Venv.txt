@@ -8,4 +8,4 @@ sehat-in-venv\Scripts\Activate.ps1
 - Bash
 source sehat-in-venv/scripts/activate
 
-After that do cd sehat_in_web
+After that do cd sehat_in
