@@ -1,0 +1,9 @@
+/* The css 
+to load/import:
+{% load static %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
+*/
+h1 {
+    color:red;
+}

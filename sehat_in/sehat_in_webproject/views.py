@@ -5,3 +5,9 @@ from django.http import HttpResponse
 # Assigning the function to each url
 def index(request):
     return render(request, 'index.html')
+
+def test(request):
+    return render(request, 'test.html')
+
+def a(request):
+    return render(request, 'a.html')
