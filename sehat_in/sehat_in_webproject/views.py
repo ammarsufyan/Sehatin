@@ -75,6 +75,7 @@ def logout(request):
     return redirect('/')
 
 def post_Url(request, id, title):
+    # Title in the link is just for vanity url
     if id is not None and title is not None:
         post = Post.objects.get(id=id)
         if post is not None:
@@ -91,11 +92,8 @@ def post_Content(request, id):
     if id is not None:
         post = Post.objects.get(id=id)
         if post is not None:
-            # comment = Comment.objects.filter(post=post)
-            # likes = Like.objects.filter(post=post)
+            # Redirect to vanity url
             return redirect('/post/' + str(post.id) + '/' + post.title.replace(' ', '_'))
-            # return post_Url(request, id, post.title)
-            # return render(request, 'post.html' , {'post': post, 'comment': comment, 'likes': likes})
         else:
             print("you are inside id")
             return HttpResponse('404')
