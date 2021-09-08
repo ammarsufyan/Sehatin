@@ -1,12 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
+
 <body>
+    <ul>
+    {% if user.is_authenticated %}
+        <li><a class="li-header" href="#">Profile</a></li>
+        <li><a class="li-header button logout" href="logout">Logout</a></li>
+    {% else %}
+        <li><a class="li-header button login-register" href="/auth/login">Login or Register</a></li>
+    {% endif %}
+    </ul>
+
     <h1>Hello worldo, こんいちわ</h1>
+    {% if user.is_authenticated %}
+    <p>Welcome {{ user.first_name }}!</p>
+    <p>Currently logged in as {{ user.username }}</p>
+    <p>Your email address is {{ user.email }}</p>
+    <p>Your full name is {{ user.first_name }} {{ user.last_name }}</p>
+    <p>Your user id is {{ user.id }}</p>
+    <p>Your staff status is {{ user.is_staff }}</p>
+    <p>Your perrmission is {{ user.get_user_permissions }}</p>
+    <p>Your date joined is {{ user.date_joined }}</p>
+    <p>Your last login is {{ user.last_login }}</p>
+    {% endif %}
 </body>
+
 </html>

@@ -7,7 +7,20 @@
     <title>Login</title>
 </head>
 <body>
-    <h1>Login</h1>
+    {% for message in messages %}
+    <div class="alert fail">
+        {{ message.message }}
+    </div>
+    {% endfor %}
 
+    <h1>Login</h1>
+    <form action="login" method="POST">
+        {% csrf_token %}
+        <p>Username: </p>
+        <input type="text" name="username" placeholder="Username">
+        <p>Password: </p>
+        <input type="password" name="password" placeholder="Password"><br>
+        <input type="submit" id="submit">
+    </form>
 </body>
 </html>
