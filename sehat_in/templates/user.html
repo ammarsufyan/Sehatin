@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% if user_ID %}
+    <title>{{ user_ID }}</title>
+    {% endif %}
+</head>
+<body>
+    {% if user_ID %}
+    The value in the url is {{ user_ID }}
+    {% else %}
+    How can you get here? - Should be 404
+    {% endif %}
+</body>
+</html>

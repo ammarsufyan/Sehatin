@@ -73,3 +73,74 @@ def login(request):
 def logout(request):
     auth.logout(request)
     return redirect('/')
+
+def post_Url(request, id, title):
+    if id is not None and title is not None:
+        post = Post.objects.get(id=id)
+        if post is not None:
+            comment = Comment.objects.filter(post=post)
+            likes = Like.objects.filter(post=post)
+            return render(request, 'post.html', {'post': post, 'comment': comment, 'likes': likes})
+        else:
+            return HttpResponse('404')
+    else:
+        # return 404
+        return HttpResponse('404')
+
+def post_Content(request, id):
+    if id is not None:
+        post = Post.objects.get(id=id)
+        if post is not None:
+            # comment = Comment.objects.filter(post=post)
+            # likes = Like.objects.filter(post=post)
+            return redirect('/post/' + str(post.id) + '/' + post.title.replace(' ', '_'))
+            # return post_Url(request, id, post.title)
+            # return render(request, 'post.html' , {'post': post, 'comment': comment, 'likes': likes})
+        else:
+            print("you are inside id")
+            return HttpResponse('404')
+    else:
+        # return 404
+        print("you are inside else")
+        return HttpResponse('404')
+
+def post(request):
+    posts = Post.objects.all()
+    print(posts)
+
+    return render(request, 'post.html', {'posts': posts})
+
+def post_Create(request):
+    if request.method == 'POST':
+        title = request.POST.get('title')
+        content = request.POST.get('content')
+        user = request.user
+        post = Post(title=title, content=content, user=user)
+        post.save()
+        return redirect('/post')
+    else:
+        return render(request, 'post/post_create.html')
+
+def post_Edit(request):
+    if request.method == 'POST':
+        # Can't change title
+        content = request.POST.get('content')
+        content = request.POST.get('id')
+        post = Post.objects.get(id=id)
+        post.content = content
+        post.save()
+        return redirect('/post')
+    else:
+        return render(request, 'post/post_edit.html')
+
+def post_Report(request):
+    if request.method == 'POST':
+        # Report
+        user = request.user
+        post = Post.objects.get(id=id)
+        reason = request.POST.get('reason')
+        report = Report(user=user, post=post, reason=reason)
+        report.save()
+        return redirect('/post')
+    else:
+        return render(request, 'post/post_report.html')

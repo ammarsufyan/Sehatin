@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% if post %}
+    The value in the url is {{ post }}
+    <h1>{{ post.title }}</h1>
+    <p>{{ post.content }}</p>
+    <p> Author: {{ post.user }} - Created at {{ post.date_created }}</p>
+    {% else %}
+    List of posts...
+    {% for post in posts %}
+    <h1>{{ post.title }}</h1>
+    <p>{{ post.content }}</p>
+    <p> Author: {{ post.user }} - Created at {{ post.date_created }}</p>
+    {% endfor %}
+    {% endif %}
+</body>
+</html>
