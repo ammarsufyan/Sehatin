@@ -10,12 +10,6 @@ from .models import *
 def index(request):
     return render(request, 'index.html')
 
-def test(request):
-    return render(request, 'test.html')
-
-def a(request):
-    return render(request, 'a.html')
-
 def register(request):
     # Check if there is a post request / If a user registered
     if request.method == 'POST':
@@ -47,7 +41,7 @@ def register(request):
             else:
                 user = User.objects.create_user(first_name=first_name, last_name=last_name, username=username, email=email, password=password)
                 user.save()
-                messages.info(request, 'You have been registered successfully')
+                messages.info(request, 'You have been registered successfully, you can now log in to your account')
                 return redirect('/auth/login')
         else:
             messages.info(request, 'Password and Confirmation do not match!')
@@ -79,9 +73,9 @@ def post_Url(request, id, title):
     if id is not None and title is not None:
         post = Post.objects.get(id=id)
         if post is not None:
-            comment = Comment.objects.filter(post=post)
+            comments = Comment.objects.filter(post=post)
             likes = Like.objects.filter(post=post)
-            return render(request, 'post.html', {'post': post, 'comment': comment, 'likes': likes})
+            return render(request, 'post.html', {'post': post, 'comments': comments, 'likes': likes})
         else:
             return HttpResponse('404')
     else:
@@ -93,9 +87,8 @@ def post_Content(request, id):
         post = Post.objects.get(id=id)
         if post is not None:
             # Redirect to vanity url
-            return redirect('/post/' + str(post.id) + '/' + post.title.replace(' ', '_'))
+            return redirect('/post/' + str(post.id) + '/' + post.title.replace(' ', '-'))
         else:
-            print("you are inside id")
             return HttpResponse('404')
     else:
         # return 404
@@ -104,9 +97,7 @@ def post_Content(request, id):
 
 def post(request):
     posts = Post.objects.all()
-    print(posts)
-
-    return render(request, 'post.html', {'posts': posts})
+    return render(request, 'post/index.html', {'posts': posts})
 
 def post_Create(request):
     if request.method == 'POST':
@@ -117,9 +108,9 @@ def post_Create(request):
         post.save()
         return redirect('/post')
     else:
-        return render(request, 'post/post_create.html')
+        return render(request, 'post/create.html')
 
-def post_Edit(request):
+def post_Edit(request, id, title):
     if request.method == 'POST':
         # Can't change title
         content = request.POST.get('content')
@@ -129,7 +120,8 @@ def post_Edit(request):
         post.save()
         return redirect('/post')
     else:
-        return render(request, 'post/post_edit.html')
+        post = Post.objects.get(id=id)
+        return render(request, 'post/edit.html', {'post': post})
 
 def post_Report(request):
     if request.method == 'POST':
@@ -141,4 +133,4 @@ def post_Report(request):
         report.save()
         return redirect('/post')
     else:
-        return render(request, 'post/post_report.html')
+        return render(request, 'post/report.html')

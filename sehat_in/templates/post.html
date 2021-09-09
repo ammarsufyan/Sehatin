@@ -5,20 +5,72 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <script>
+        function editPost(id, title) {
+            window.location.href = '/post/' + id + '/' + title.replace(' ', '-')+ '/edit';
+        }
+
+
+        // var submit = document.getElementById('submit');
+        // submit.addEventListener('click', function(e) { 
+        //     e.preventDefault();
+        //     var form = document.getElementById('comment-form');
+        //     var formData = new FormData(form);
+        //     var xhr = new XMLHttpRequest();
+        //     xhr.open('POST', '/post/{{ post.id }}/comment');
+        //     xhr.send(formData);
+        //     xhr.onload = function() {
+        //         if (xhr.status == 200) {
+        //             var comment = JSON.parse(xhr.responseText);
+        //             var commentList = document.getElementById('comment-list');
+        //             var li = document.createElement('li');
+        //             li.className = 'comment';
+        //             li.id = comment.id;
+        //             li.innerHTML = '<p>' + comment.content + '</p><p>Author: ' + comment.user.username + ' / ' + comment.user.first_name + ' ' + comment.user.last_name + ' - Created at ' + comment.created_at + ' - last updated at ' + comment.updated_at + '</p>';
+        //             commentList.appendChild(li);
+        //         }
+        //     }
+        // });
+    </script>
 </head>
 <body>
-    {% if post %}
     The value in the url is {{ post }}
-    <h1>{{ post.title }}</h1>
-    <p>{{ post.content }}</p>
-    <p> Author: {{ post.user }} - Created at {{ post.date_created }}</p>
-    {% else %}
-    List of posts...
-    {% for post in posts %}
-    <h1>{{ post.title }}</h1>
-    <p>{{ post.content }}</p>
-    <p> Author: {{ post.user }} - Created at {{ post.date_created }}</p>
-    {% endfor %}
-    {% endif %}
+    <button onclick="editPost('{{ post.id }}', '{{ post.title }}')"">Edit</button>
+    <div class="post">
+        <h1>{{ post.title }}</a></h1>
+        <p>Tag: {{ post.tag.name }}</p>
+        <p>{{ post.content|slice:":50" }}</p>
+        <p> Author: {{ post.user }} - Created at {{ post.created_at }} - last updated at {{ post.updated_at }}</p>
+        <p>Likes {{ likes|length }}</p>
+        <p> Liked by: 
+        {% for user in likes %}
+        {{ user.user }}
+        {% endfor %}
+        </p>
+    </div>
+    <div class="comment-form" id="comment-form">
+        <form action="/comment" method="post">
+            <input type="hidden" name="post_id" value="{{ post.id }}">
+            <input type="hidden" name="user_id" value="{{ user.id }}">
+            <textarea name="content" id="" cols="30" rows="10"></textarea>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <div class="comment-box">
+        <h2>Comments ({{ comments|length }})</h2>
+        <ul>
+            {% for comment in comments %}
+            <li class="comment" id="{{ comment.id }}">
+                <p>{{ comment.content }}</p>
+                <p>Author: {{ comment.user.username }} / {{ comment.user.first_name }} {{ comment.user.last_name }} - Created at {{ comment.created_at }} - last updated at {{ comment.updated_at }}</p>
+                {% if comment.user.id == user.id %}
+                <button onclick="deleteComment('{{ comment.id }}')">Delete</button>
+                <button onclick="editComment('{{ comment.id }}')">Edit</button>
+                {% endif %}
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
 </body>
 </html>
