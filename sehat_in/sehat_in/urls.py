@@ -20,3 +20,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('sehat_in_webproject.urls')),
 ]
+
+handler404 = 'sehat_in_webproject.views.error_404_view'
+handler403 = 'sehat_in_webproject.views.error_403_view'

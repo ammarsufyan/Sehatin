@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load static %}
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register Account</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 </head>
 
 <body>
+    <ul>
+        <li><a class="li-header" href="/">Home</a></li>
+    </ul>
     {% for message in messages %}
     <div class="alert fail">
         {{ message.message }}
@@ -16,33 +21,182 @@
     {% endfor %}
 
     <h1>Register Account</h1>
-    <form method="post" action="register">
+    <form name="registration" method="post" action="register" onsubmit="return validateForm()">
         {% csrf_token %}
         <p>First name</p>
         <input type="text" name="first_name" placeholder="First name" required>
+        
         <p>Last name</p>
         <input type="text" name="last_name" placeholder="Last name" required>
+        
         <p>Username: </p>
-        <input type="text" name="username" placeholder="Username" required>
+        <input type="text" name="username" placeholder="Username" minlength="5" maxlength="50" required>
+        
         <p>Email: </p>
-        <input type="email" name="email" placeholder="Email" required>
+        <input type="email" name="email" placeholder="Email" minlength="3"
+            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="Please enter a valid email address" autocomplete="off" required>
+        
         <p>Password: </p>
-        <input type="password" name="password" placeholder="Password" required>
+        <input type="password" name="password" placeholder="Password" minlength="8"
+            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Please match the valid password pattern"
+            autocomplete="off" required>
+        
         <p>Password Confirmation: </p>
-        <input type="password" name="password_confirmation" placeholder="Confirm Password" required><br>
+        <input type="password" name="password_confirmation" placeholder="Confirm Password"
+            minlength="8" autocomplete="off" required><br>
         <input type="submit" id="submit">
     </form>
 
+    <div id="message-password">
+        <h3>Password must contain the following:</h3>
+        <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
+        <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
+        <p id="number" class="invalid">A <b>number</b></p>
+        <p id="length" class="invalid">Minimum <b>8 characters</b></p>
+    </div>
+
+    <div id="message-password-confirmation">
+        <p id="confirm" class="invalid">Password match</p>
+    </div>
+
+    <p>Already have an account? Login!</p>
+    <button><a href="/auth/login">Login</a></button>
+
+
+    {% if first_name %}
     <script>
-        var submit = document.getElementById('submit');
-        submit.addEventListener('click', function(e) {
-            
-            // e.preventDefault();
-            // var form = document.getElementById('register');
-            // check client side validation
-            // form.submit();
-        });
+        // If username or email already exists, show error message, redirect same page with previous value
+        document.forms["registration"]["first_name"].value = "{{ first_name }}";
+        document.forms["registration"]["last_name"].value = "{{ last_name }}";
+        document.forms["registration"]["username"].value = "{{ username }}";
+        document.forms["registration"]["email"].value = "{{ email }}";
     </script>
+    {% endif %}
+
+
+    <script>
+        // The password input
+        var field_password = document.forms["registration"]["password"];
+        var field_password_confirmation = document.forms["registration"]["password_confirmation"];
+
+        // Popup
+        var letter = document.getElementById("letter");
+        var capital = document.getElementById("capital");
+        var number = document.getElementById("number");
+        var length = document.getElementById("length");
+        var confirm = document.getElementById("confirm");
+
+        // popup div
+        var message_password = document.getElementById("message-password");
+        var message_password_confirmation = document.getElementById("message-password-confirmation");
+
+        field_password.onfocus = function () {
+            message_password.style.display = "block";
+        }
+
+        field_password.onblur = function () {
+            message_password.style.display = "none";
+        }
+
+        field_password_confirmation.onfocus = function () {
+            message_password_confirmation.style.display = "block";
+        }
+
+        field_password_confirmation.onblur = function () {
+            message_password_confirmation.style.display = "none";
+        }
+
+        field_password.onkeyup = function () {
+            // Validate lowercase letters
+            var lowerCaseLetters = /[a-z]/g;
+            if (field_password.value.match(lowerCaseLetters)) {
+                letter.classList.remove("invalid");
+                letter.classList.add("valid");
+            } else {
+                letter.classList.remove("valid");
+                letter.classList.add("invalid");
+            }
+
+            // Validate capital letters
+            var upperCaseLetters = /[A-Z]/g;
+            if (field_password.value.match(upperCaseLetters)) {
+                capital.classList.remove("invalid");
+                capital.classList.add("valid");
+            } else {
+                capital.classList.remove("valid");
+                capital.classList.add("invalid");
+            }
+
+            // Validate numbers
+            var numbers = /[0-9]/g;
+            if (field_password.value.match(numbers)) {
+                number.classList.remove("invalid");
+                number.classList.add("valid");
+            } else {
+                number.classList.remove("valid");
+                number.classList.add("invalid");
+            }
+
+            // Validate length
+            if (field_password.value.length >= 8) {
+                length.classList.remove("invalid");
+                length.classList.add("valid");
+            } else {
+                length.classList.remove("valid");
+                length.classList.add("invalid");
+            }
+        }
+
+        field_password_confirmation.onkeyup = function () {
+            if (field_password.value == field_password_confirmation.value) {
+                confirm.classList.remove("invalid");
+                confirm.classList.add("valid");
+            } else {
+                confirm.classList.remove("valid");
+                confirm.classList.add("invalid");
+            }
+        }
+
+        function validateForm() {
+            var first_name = document.forms["registration"]["first_name"].value;
+            var last_name = document.forms["registration"]["last_name"].value;
+            var username = document.forms["registration"]["username"].value;
+            var email = document.forms["registration"]["email"].value;
+            var password = document.forms["registration"]["password"].value;
+            var password_confirmation = document.forms["registration"]["password_confirmation"].value;
+            const mailRegex = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/gm;
+            if (first_name == "") {
+                alert("First name must be filled out");
+                return false;
+            }
+            if (last_name == "") {
+                alert("Last name must be filled out");
+                return false;
+            }
+            if (username.length < 5 || username.length > 50) {
+                alert("Username must be between 5 and 50 characters");
+                return false;
+            }
+            if (email.length < 3 || !email.match(mailRegex)) {
+                alert("Please enter a valid email address");
+                return false;
+            }
+            if (password == "") {
+                alert("Password must be filled out");
+                return false;
+            }
+            if (password_confirmation == "") {
+                alert("Password confirmation must be filled out");
+                return false;
+            }
+            if (password != password_confirmation) {
+                alert("Passwords do not match");
+                return false;
+            }
+        }
+    </script>
+
+    {% include 'footer.html' %}
 
 </body>
 

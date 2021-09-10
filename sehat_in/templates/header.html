@@ -1,0 +1,14 @@
+<header class="header">
+    <div>
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a class="li-header" href="/post">Post</a></li>
+            {% if user.is_authenticated %}
+            <li><a class="li-header" href="#">Profile</a></li>
+            <li><a class="li-header button logout" href="/logout">Logout</a></li>
+            {% else %}
+            <li><a class="li-header button login-register" href="/auth/login">Login or Register</a></li>
+            {% endif %}
+        </ul>
+    </div>
+</header>

@@ -1,21 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 {% load static %}
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    {% if user_ID %}
+    <title>{{ user_ID }}</title>
+    {% endif %}
 
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 </head>
-
 <body>
     {% include 'templates/header.html' %}
 
-    <h1>Hello worldo, こんいちわ</h1>
     {% if user.is_authenticated %}
+    {% if user_ID == user.id %}
+
     <p>Welcome {{ user.first_name }}!</p>
     <p>Currently logged in as {{ user.username }}</p>
     <p>Your email address is {{ user.email }}</p>
@@ -26,8 +27,10 @@
     <p>Your date joined is {{ user.date_joined }}</p>
     <p>Your last login is {{ user.last_login }}</p>
     {% endif %}
-
-    {% include 'templates/footer.html' %}
+    {% if user_ID %}
+    The value in the url is {{ user_ID }}
+    {% else %}
+    How can you get here? - Should be 404
+    {% endif %}
 </body>
-
 </html>

@@ -1,9 +1,29 @@
-/* The css 
-to load/import:
-{% load static %}
+/* Add a green text color and a checkmark when the requirements are right */
+.valid {
+    color: green;
+}
 
-<link rel="stylesheet" type="text/css" href="{% static 'style.css' %}">
-*/
-h1 {
-    color:red;
+.valid:before {
+    position: relative;
+    left: -5px;
+    content: "✔";
+}
+
+/* Add a red text color and an "x" when the requirements are wrong */
+.invalid {
+    color: red;
+}
+
+.invalid:before {
+    position: relative;
+    left: -5px;
+    content: "✖";
+}
+
+#message-password {
+    display: none;
+}
+
+#message-password-confirmation {
+    display: none;
 }

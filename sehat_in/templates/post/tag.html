@@ -6,17 +6,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Posts</title>
+    
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 </head>
 
 <body>
     {% include 'templates/header.html' %}
 
-    List of posts... 
-    Available tags: 
-    {% for tag in tags %}
-        <a href="/post/tag/{{ tag.name }}">{{ tag.name }}</a>
-    {% endfor %}
+    List of posts... with the tag "{{ tag.name }}"
+
     <br>
     {% if user.is_authenticated %}
         <a class="button" href="/post/create">Create Post</a>
@@ -25,7 +23,7 @@
     {% endif %}
     {% for post in posts %}
     <div class="post-lists">
-        <h1><a href="/post/{{ post.id }}">{{ post.title }}</a></h1>
+        <h1><a href="post/{{ post.id }}">{{ post.title }}</a></h1>
         <p>Tag: {{ post.tag.name }}</p>
         <p>{{ post.content }}</p>
         <p> Author: {{ post.user }} - Created at {{ post.created_at }} - last updated at {{ post.updated_at }}</p>

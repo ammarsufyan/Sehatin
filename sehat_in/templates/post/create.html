@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Post</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    {% include 'templates/header.html' %}
+
+    <form method="post" action="create" onsubmit="return validateForm()">
+        {% csrf_token %}
+        <p>Title</p>
+        <input type="text" name="title" placeholder="Title" autocomplete="off">
+        <p>Content</p>
+        <textarea name="content" placeholder="Content"></textarea>
+        <p>Tag</p>
+        <select name="tag">
+            {% for tag in tags %}
+            <option value="{{ tag.name }}">{{ tag.name }}</option>
+            {% endfor %}
+        </select>
+        <br>
+        <input type="submit" value="Create">
+    </form>
+
+    <script>
+        function validateForm() {
+            var title = document.forms["create"]["title"].value;
+            var content = document.forms["create"]["content"].value;
+            if (title.length < 5) {
+                alert("Title must be at least 5 characters long.");
+                return false;
+            }
+            if (content.length < 10) {
+                alert("Content must be at least 10 characters long");
+                return false;
+            }
+        }
+    </script>
+
+    {% include 'templates/footer.html' %}
+</body>
+</html>

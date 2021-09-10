@@ -22,9 +22,10 @@ class Comment(models.Model): # Comment of a post
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
-class Like(models.Model): # Post like
+class Like(models.Model): # Post/comment like
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, null=True)
 
 class Follow(models.Model): # User following ..
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='follower')

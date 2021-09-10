@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    {% include 'templates/header.html' %}
+
+    <form method="post" action="edit" onsubmit="return validateForm()">
+        {% csrf_token %}
+        <p>Title</p>
+        <input type="text" name="title" placeholder="{{post.title}}" readonly>
+        <p>Content</p>
+        <textarea name="content" placeholder="Content">{{ post.content }}</textarea>
+        <p>Tag</p>
+        <select name="tag">
+            {% for tag in tags %}
+            {% if tag.id == post.tag_id %}
+            <option value="{{ tag.name }}" selected>{{ tag.name }}</option>
+            {% else %}
+            <option value="{{ tag.name }}">{{ tag.name }}</option>
+            {% endif %}
+            {% endfor %}
+        </select>
+        <br>
+        <input type="submit" value="Edit">
+    </form>
+
+    <script>
+        function validateForm() {
+            var title = document.forms["create"]["title"].value;
+            var content = document.forms["create"]["content"].value;
+            if (title.length < 5) {
+                alert("Title must be at least 5 characters long.");
+                return false;
+            }
+            if (content.length < 10) {
+                alert("Content must be at least 10 characters long");
+                return false;
+            }
+        }
+    </script>
+
+    {% include 'templates/footer.html' %}
+</body>
+</html>
