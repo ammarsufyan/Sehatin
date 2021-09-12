@@ -61,6 +61,7 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(max_length=500, null=True)
     location = models.CharField(max_length=50, null=True)
+    isDeleted = models.BooleanField(default=False)
     # cek post apa aja, if post.user.id == user.id
     # cek notif, if notif.user.id == user.id
 

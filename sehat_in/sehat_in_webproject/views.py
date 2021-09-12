@@ -51,13 +51,23 @@ def register(request):
             return redirect('/auth/register')
 
         if password == password_confirmation:
-            # Check if username already exists
-            if User.objects.filter(username=username).exists():
+            # Invalid username
+            if username.lower() == "deleted":
+                messages.info(request, 'Invalid Username!')
+                return render(request, 'auth/register.html', {'email': str(email), 'username': str(username), 'first_name': str(first_name), 'last_name': str(last_name)})
+
+            # if user contain admin
+            if 'admin' in username.lower():
+                messages.info(request, 'Invalid Username!')
+                return render(request, 'auth/register.html', {'email': str(email), 'username': str(username), 'first_name': str(first_name), 'last_name': str(last_name)})
+
+            # Check if username already exists 
+            elif User.objects.filter(username__iexact=username).exists():
                 messages.info(request, f'Username "{username}" Already Taken! Please use a different username!')
                 return render(request, 'auth/register.html', {'email': str(email), 'username': str(username), 'first_name': str(first_name), 'last_name': str(last_name)})
 
-            # Check if email already exists
-            elif User.objects.filter(email=email).exists():
+            # Check if email already exists case insensitive
+            elif User.objects.filter(email__iexact=email).exists():
                 messages.info(request, f'The email "{email}" Already Registered!')
                 return render(request, 'auth/register.html', {'email': str(email), 'username': str(username), 'first_name': str(first_name), 'last_name': str(last_name)})
             
@@ -78,6 +88,17 @@ def login(request):
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
+
+        if username == "deleted":
+            messages.info(request, 'Invalid Credentials!')
+            return redirect('/auth/login')
+
+        userCheckProfile = UserProfile.objects.filter(user=username)
+
+        if userCheckProfile.isDeleted:
+            messages.info(request, 'Invalid Credentials!')
+            return redirect('/auth/login')
+
         user = auth.authenticate(username=username, password=password)
         if user is not None:
             auth.login(request, user)
