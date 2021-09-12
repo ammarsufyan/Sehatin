@@ -7,6 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Post</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 </head>
 <body>
     {% include 'templates/header.html' %}
@@ -28,18 +30,85 @@
     </form>
 
     <script>
-        function validateForm() {
-            var title = document.forms["create"]["title"].value;
-            var content = document.forms["create"]["content"].value;
-            if (title.length < 5) {
-                alert("Title must be at least 5 characters long.");
-                return false;
+        function editPost() {
+            if (!validateForm()){
+                return;
             }
-            if (content.length < 10) {
-                alert("Content must be at least 10 characters long");
-                return false;
+
+            if (confirm("Are you sure?")) {
+                // send ajax
+                var content = document.getElementById('editor').children[0].innerHTML;
+                var tag = $('#tag').val();
+                var csrf = $('input[name=csrfmiddlewaretoken]').val();
+                var title = "{{ post.title }}";
+                var id = "{{ post.id }}";
+                $.ajax({
+                    url: '/post/' + id + '/' + title.replace(' ', '-') + '/edit',
+                    type: 'POST',
+                    data: {
+                        'csrfmiddlewaretoken': csrf,
+                        'content': content,
+                        'tag': tag
+                    },
+                    success: function(data) {
+                        if (data != 'error') {
+                            window.location.href = '/post/' + id + '/' + title.replace(' ', '-');
+                        } else {
+                            alert("Error: " + data);
+                        }
+                    }
+                });
             }
         }
+
+        function validateForm() {
+            // get value from quill
+            var content = document.getElementById("editor").children[0].innerHTML;
+
+            if (content.length < 25) {
+                alert("Content must be at least 25 characters long");
+                return false;
+            }
+
+            return true;
+        }
+    </script>
+
+
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script>
+        var myToolbar= [
+            ['bold', 'italic', 'underline', 'strike'],       
+            ['blockquote', 'code-block'],
+
+            [{ 'color': [] }, { 'background': [] }],         
+            [{ 'font': [] }],
+            [{ 'align': [] }],
+
+            ['clean'],                                        
+            ['image'] //add image here
+        ];
+
+        function imageHandler() {
+            var range = this.quill.getSelection();
+            var value = prompt('please copy paste the image url here.');
+            if(value){
+                this.quill.insertEmbed(range.index, 'image', value, Quill.sources.USER);
+            }
+        }
+
+        var quill = new Quill('#editor', {
+            theme: 'snow',
+            placeholder: 'Post content...',
+            modules: {
+                toolbar: {
+                    container: myToolbar,
+                    handlers: {
+                        image: imageHandler
+                    }
+                }
+            },
+        });
     </script>
 
     {% include 'templates/footer.html' %}

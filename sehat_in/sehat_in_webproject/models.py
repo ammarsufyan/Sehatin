@@ -41,6 +41,13 @@ class Like(models.Model): # Post/comment like
 #     users = models.ManyToManyField(User)
 #     messages = models.ManyToManyField(Message)
 
+class TestHistory(models.Model): # Test history
+    id = models.AutoField(primary_key=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    result = models.TextField()
+    quiz_type = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
 class Notification(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE) # The user who is notified
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True) # Notification in post, ex: someone commented ...

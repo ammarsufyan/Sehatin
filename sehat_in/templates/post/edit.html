@@ -80,11 +80,6 @@
 
 
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-    {% autoescape off %}
-    <div id="content-hidden" style="display:none">
-        {{ post.content }}
-    </div>
-    {% endautoescape %}
     <script>
         var myToolbar= [
             ['bold', 'italic', 'underline', 'strike'],       
@@ -118,13 +113,6 @@
                 }
             },
         });
-        // var Delta = Quill.import('delta');
-        const value = document.getElementById('content-hidden').innerHTML;
-        // const delta = quill.clipboard.convert(value);
-        // var html = document.querySelector(".ql-editor").innerHTML
-
-        quill.root.innerHTML = value.trim();
-        // quill.insertEmbed(value.trim());
     </script>
 
     {% include 'templates/footer.html' %}
