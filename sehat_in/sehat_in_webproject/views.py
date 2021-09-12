@@ -93,12 +93,6 @@ def login(request):
             messages.info(request, 'Invalid Credentials!')
             return redirect('/auth/login')
 
-        userCheckProfile = UserProfile.objects.filter(user=username)
-
-        if userCheckProfile.isDeleted:
-            messages.info(request, 'Invalid Credentials!')
-            return redirect('/auth/login')
-
         user = auth.authenticate(username=username, password=password)
         if user is not None:
             auth.login(request, user)

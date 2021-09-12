@@ -30,7 +30,7 @@
         {% autoescape off %}
         <p>{{ post.content }}</p>
         {% endautoescape %}
-        <p> Author: {{ post.user }} - Created at {{ post.created_at }} - last updated at {{ post.updated_at }}</p>
+        <p> Author: {% if post.user == null %}deleted{% else %}{{ post.user }}{% endif %} - Created at {{ post.created_at }} - last updated at {{ post.updated_at }}</p>
     </div>
     {% endfor %}
 

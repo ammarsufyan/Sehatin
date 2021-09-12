@@ -14,16 +14,17 @@ class Post(models.Model): # Post
     updated_at = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
+
 class Comment(models.Model): # Comment of a post
     id = models.AutoField(primary_key=True)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
 class Like(models.Model): # Post/comment like
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE, null=True)
 
@@ -61,15 +62,14 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(max_length=500, null=True)
     location = models.CharField(max_length=50, null=True)
-    isDeleted = models.BooleanField(default=False)
     # cek post apa aja, if post.user.id == user.id
     # cek notif, if notif.user.id == user.id
 
 class Report(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reporter') # The one that reports
-    reportedUser = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='reported') # If reporting a user
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True) # If reporting a post
-    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, null=True) # If reporting a comment
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='reporter') # The one that reports
+    reportedUser = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='reported') # If reporting a user
+    post = models.ForeignKey(Post, on_delete=models.SET_NULL, null=True) # If reporting a post
+    comment = models.ForeignKey(Comment, on_delete=models.SET_NULL, null=True) # If reporting a comment
     reason = models.CharField(max_length=200)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

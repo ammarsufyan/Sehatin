@@ -21,7 +21,7 @@
         {% autoescape off %}
         {{ post.content }}
         {% endautoescape %}
-        <p> Author: {{ post.user }} - Created at {{ post.created_at }} - last updated at {{ post.updated_at }}</p>
+        <p> Author: {% if post.user == null %}deleted{% else %}{{ post.user }}{% endif %} - Created at {{ post.created_at }} - last updated at {{ post.updated_at }}</p>
         <p>Likes <span id="post-like-count">{{ likes|length }}</span></p>
         <p>Liked by: 
             <span id="post-liker">
@@ -76,8 +76,11 @@
                         totalLikeSpan.innerHTML = '';
                     }
                 </script>
-
-                <p>Author: <a href="/profile/{{ comment.user.username }}">{{ comment.user.username }}</a> / {{ comment.user.first_name }} {{ comment.user.last_name }} - Created at {{ comment.created_at }} - last updated at {{ comment.updated_at }}</p>
+                {% if comment.user == null %}
+                <p>Author: <a href="/profile/deleted">deleted</a> - Created at {{ comment.created_at }} - last updated at {{ comment.updated_at }}</p>
+                {% else %}
+                <p>Author: <a href="/profile/{{ comment.user.username }}">{{ comment.user.username }}</a> ({{ comment.user.first_name }} {{ comment.user.last_name }}) - Created at {{ comment.created_at }} - last updated at {{ comment.updated_at }}</p>
+                {% endif %}
                 
                 <button onclick="likeComment('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ comment.id }}', '{{ csrf_token }}')">Like</button>
                 {% if comment.user.id == user.id %}
