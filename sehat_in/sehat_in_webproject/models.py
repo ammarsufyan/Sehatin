@@ -46,30 +46,27 @@ class Chat(models.Model): # Chat to who ..
     messages = models.ManyToManyField(Message)
 
 class Notification(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, blank=True) # Notification in post, ex: someone commented ...
-    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, blank=True) # Notifcation in comment, ex: someone replied
-    message = models.ForeignKey(Message, on_delete=models.CASCADE, blank=True) # Notifcation in message, ex: a message received from ...
+    user = models.ForeignKey(User, on_delete=models.CASCADE) # The user who is notified
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True) # Notification in post, ex: someone commented ...
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, null=True) # Notifcation in comment, ex: someone replied
+    message = models.ForeignKey(Message, on_delete=models.CASCADE, null=True) # Notifcation in message, ex: a message received from ...
     notification_Content = models.TextField(max_length=500) # The notification message, will be auto generated based on the notification type
     created_at = models.DateTimeField(auto_now_add=True)
     read = models.BooleanField(default=False)
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    bio = models.TextField(max_length=500, blank=True)
-    location = models.CharField(max_length=50, blank=True)
-    birth_date = models.DateField(null=True, blank=True)
-    notifications = models.ManyToManyField(Notification, related_name='notifications', blank=True)
-    user_Posts = models.ManyToManyField(Post, related_name='user_Posts', blank=True)
-    saved_posts = models.ManyToManyField(Post, related_name='following_posts', blank=True)
-    followers = models.ManyToManyField(User, related_name='followers', blank=True)
-    following = models.ManyToManyField(User, related_name='following', blank=True)
+    bio = models.TextField(max_length=500, null=True)
+    location = models.CharField(max_length=50, null=True)
+    birth_date = models.DateField(null=True)
+    # cek post apa aja, if post.user.id == user.id
+    # cek notif, if notif.user.id == user.id
 
 class Report(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reporter') # The one that reports
-    reportedUser = models.ForeignKey(User, on_delete=models.CASCADE, blank=True, related_name='reported') # If reporting a user
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, blank=True) # If reporting a post
-    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, blank=True) # If reporting a comment
+    reportedUser = models.ForeignKey(User, on_delete=models.CASCADE, null=True, related_name='reported') # If reporting a user
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True) # If reporting a post
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, null=True) # If reporting a comment
     reason = models.CharField(max_length=200)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

@@ -62,7 +62,7 @@
                 {{ comment.content }}
                 {% endautoescape %}
 
-                <p>Likes: <span id="comment-like-count-{{ comment.id }}"> 0 </span><span id="comment-liker-{{ comment.id }}">{% for like in likes %}{% if like.comment.id == comment.id %}{{ like.user }} {% endif %}{% endfor %}</span></p>
+                <p>Likes: <span id="comment-like-count-{{ comment.id }}"> 0 </span><span id="comment-liker-{{ comment.id }}" style="display:none">{% for like in likes %}{% if like.comment.id == comment.id %}{{ like.user }} {% endif %}{% endfor %}</span></p>
 
                 <script>        
                     var likeSpan = document.getElementById('comment-like-count-' + "{{ comment.id }}");

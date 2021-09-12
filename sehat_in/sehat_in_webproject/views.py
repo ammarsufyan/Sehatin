@@ -263,6 +263,12 @@ def post_Comment(request, id, title):
 
             comment = Comment(user=user, post=post, content=commentGet)
             comment.save()
+
+            # send notification
+            if post.user != user:
+                notification = Notification(user=post.user, post=post, notification_Content=user.username + 'posted a comment on your post')
+                notification.save()
+
             return HttpResponse('success')
         else:
             messages.info(request, 'Need to login first!')
