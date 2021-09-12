@@ -12,3 +12,13 @@
         </ul>
     </div>
 </header>
+
+{% if messages %}
+<div class="message-alert">
+    {% for message in messages %}
+    <div class="message-alert-content">
+        <p>{{ message.message }}</p>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}

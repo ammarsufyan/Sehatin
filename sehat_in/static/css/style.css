@@ -1,3 +1,17 @@
+/* original html element */
+html,
+body { /* Ignore aja ini cuma ngetes, nanti ubah sesuka front-end */
+    /* background-color: #15d1e6; */
+    width: 100%; 
+    height: 100%;
+    background-attachment: fixed;
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow-x: hidden;
+    margin: 0px;
+    scroll-behavior: smooth;
+}
+
 /* Add a green text color and a checkmark when the requirements are right */
 .valid {
     color: green;
@@ -26,4 +40,14 @@
 
 #message-password-confirmation {
     display: none;
+}
+
+/* ini buat textfield comment dan buat post pakai quill, bisa di edit ininya sama textfieldnya paketin aja */
+.ql-toolbar {
+    max-width: 800px;
+}
+
+#editor {
+    max-width: 800px;
+    min-height: 200px;
 }

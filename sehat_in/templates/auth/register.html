@@ -8,17 +8,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register Account</title>
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
 </head>
 
 <body>
-    <ul>
-        <li><a class="li-header" href="/">Home</a></li>
-    </ul>
-    {% for message in messages %}
-    <div class="alert fail">
-        {{ message.message }}
-    </div>
-    {% endfor %}
+    {% include 'templates/header.html' %}
 
     <h1>Register Account</h1>
     <form name="registration" method="post" action="register" onsubmit="return validateForm()">
@@ -30,7 +24,7 @@
         <input type="text" name="last_name" placeholder="Last name" required>
         
         <p>Username: </p>
-        <input type="text" name="username" placeholder="Username" minlength="5" maxlength="50" required>
+        <input type="text" name="username" id="username" placeholder="Username" minlength="5" maxlength="50" required>
         
         <p>Email: </p>
         <input type="email" name="email" placeholder="Email" minlength="3"
@@ -73,8 +67,19 @@
     </script>
     {% endif %}
 
-
     <script>
+        // Block special characters
+        $('#username').on('input', function() {
+            var c = this.selectionStart,
+                r = /[^a-z0-9]/gi,
+                v = $(this).val();
+            if(r.test(v)) {
+                $(this).val(v.replace(r, ''));
+                c--;
+            }
+            this.setSelectionRange(c, c);
+        });
+
         // The password input
         var field_password = document.forms["registration"]["password"];
         var field_password_confirmation = document.forms["registration"]["password_confirmation"];
@@ -165,6 +170,9 @@
             var password = document.forms["registration"]["password"].value;
             var password_confirmation = document.forms["registration"]["password_confirmation"].value;
             const mailRegex = /[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$/gm;
+            var lowerCaseLetters = /[a-z]/g;
+            var upperCaseLetters = /[A-Z]/g;
+            var numbers = /[0-9]/g;
             if (first_name == "") {
                 alert("First name must be filled out");
                 return false;
@@ -181,12 +189,8 @@
                 alert("Please enter a valid email address");
                 return false;
             }
-            if (password == "") {
-                alert("Password must be filled out");
-                return false;
-            }
-            if (password_confirmation == "") {
-                alert("Password confirmation must be filled out");
+            if (password < 8 || password.match(lowerCaseLetters) == null || password.match(upperCaseLetters) == null || password.match(numbers) == null) {
+                alert("Invalid password");
                 return false;
             }
             if (password != password_confirmation) {
@@ -196,7 +200,7 @@
         }
     </script>
 
-    {% include 'footer.html' %}
+    {% include 'templates/footer.html' %}
 
 </body>
 

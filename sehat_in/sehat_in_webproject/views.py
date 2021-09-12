@@ -6,6 +6,7 @@ from .models import *
 from django.core.exceptions import PermissionDenied
 from django.http import Http404
 import json
+import re
 
 # Create your views here.
 # Assigning the function to each url
@@ -29,9 +30,24 @@ def register(request):
         password_confirmation = request.POST.get('password_confirmation')
         
         # Empty Validation -> in case the user play with inspect element
-        # nanti gantiin sesuai minimalnya brp atau gimana bebas
         if len(first_name) == 0 or len(last_name) == 0 or len(username) == 0 or len(email) == 0 or len(password) == 0 or len(password_confirmation) == 0:
             messages.info(request, 'Please fill out all fields!')
+            return redirect('/auth/register')
+
+        # Check length
+        if len(username) < 5 or len(username) > 50:
+            messages.info(request, 'Username must be between 5 and 50 characters!')
+            return redirect('/auth/register')
+        
+        regex = "[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+        if not re.search(regex, email) or len(email) < 3:
+            messages.info(request, 'Invalid email address!')
+            return redirect('/auth/register')
+
+        lowercase = re.compile('[a-z]')
+        uppercase = re.compile('[A-Z]')
+        if not lowercase.search(password) or not uppercase.search(password) or len(password) < 8 or len(password) > 50:
+            messages.info(request, 'Password must be between 8 and 50 characters and contain at least one lowercase and one uppercase letter!')
             return redirect('/auth/register')
 
         if password == password_confirmation:
@@ -85,8 +101,9 @@ def post_Url(request, id, title):
             return redirect('/post/' + str(post.id) + '/' + post.title.replace(' ', '-'))
         
         if post is not None:
-            comments = Comment.objects.filter(post=post)
+            comments = Comment.objects.filter(post=post).order_by('created_at') # oldest to newest
             likes = Like.objects.filter(post=post)
+            
             return render(request, 'post/postview.html', {'post': post, 'comments': comments, 'likes': likes})
         else:
             raise Http404
@@ -145,11 +162,16 @@ def post_Edit(request, id, title):
         raise PermissionDenied()
 
     if request.user.is_authenticated:
-        if request.method == 'POST':
+        if request.method == 'POST': # If an update is made
             # Can't change title
             content = request.POST.get('content') # content change
             tag_name = request.POST.get('tag') # if user change the tag, it will be changed
 
+            if len(content) < 25:
+                messages.info(request, 'Content must be at least 25 characters!')
+                redirect('/post/' + str(id) + '/' + title.replace(' ', '-') + '/edit')
+                return
+            
             # Get the post and tag object
             post = Post.objects.get(id=id)
             tag = Tag.objects.get(name=tag_name)
@@ -163,7 +185,7 @@ def post_Edit(request, id, title):
 
             # Redirect to the post
             return redirect('/post/' + str(post.id) + '/' + post.title.replace(' ', '-'))
-        else:
+        else: # If user enter the edit page
             post = Post.objects.get(id=id)
             tag = Tag.objects.all()
 
@@ -205,7 +227,8 @@ def post_Like(request, id, title):
 
                 return HttpResponse(json.dumps(jsonData))
         else:
-            return redirect('/post/' + str(id) + '/' + title.replace(' ', '-'))
+            jsonData = {'likes': 0, 'names': 'error'}
+            return HttpResponse(json.dumps(jsonData))
     else:
         raise Http404
 
@@ -224,3 +247,25 @@ def post_Report(request):
     else:
         messages.info(request, 'Need to login first!')
         return redirect('/auth/login')
+
+def post_Comment(request, id, title):
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+            # Comment
+            user = request.user
+            post = Post.objects.get(id=id)
+            commentGet = request.POST.get('comment')
+
+            # If comment empty
+            if commentGet == None:
+                messages.info(request, 'Invalid comment length!')
+                return HttpResponse('error')
+
+            comment = Comment(user=user, post=post, content=commentGet)
+            comment.save()
+            return HttpResponse('success')
+        else:
+            messages.info(request, 'Need to login first!')
+            return HttpResponse('error')
+    else:
+        raise Http404

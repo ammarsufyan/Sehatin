@@ -9,14 +9,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    <ul>
-        <li><a class="li-header" href="/">Home</a></li>
-    </ul>
-    {% for message in messages %}
-    <div class="alert fail">
-        {{ message.message }}
-    </div>
-    {% endfor %}
+    {% include 'templates/header.html' %}
 
     <h1>Login</h1>
     <form action="login" method="POST">
@@ -30,5 +23,7 @@
     <br>
     <p>Don't have an account? Register!</p>
     <button><a href="/auth/register">Register</a></button>
+
+    {% include 'templates/footer.html' %}
 </body>
 </html>

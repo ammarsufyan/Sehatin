@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -9,95 +10,145 @@
 
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
     <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
-    <script>
-        function editPost(id, title) {
-            window.location.href = '/post/' + id + '/' + title.replace(' ', '-')+ '/edit';
-        }
-
-        function likePost(id, title) {
-            $.ajax({
-                url: '/post/' + id + '/' + title.replace(' ', '-') + '/like',
-                type: 'POST',
-                data: {
-                    'csrfmiddlewaretoken': '{{ csrf_token }}'
-                },
-                success: function (data) {
-                    dataJson = JSON.parse(data);
-                    $('#post-like-count').html(dataJson.likes);
-                    $('#post-liker').html(dataJson.names.join(', '));
-                }
-            });
-        }
-
-
-        // var submit = document.getElementById('submit');
-        // submit.addEventListener('click', function(e) { 
-        //     e.preventDefault();
-        //     var form = document.getElementById('comment-form');
-        //     var formData = new FormData(form);
-        //     var xhr = new XMLHttpRequest();
-        //     xhr.open('POST', '/post/{{ post.id }}/comment');
-        //     xhr.send(formData);
-        //     xhr.onload = function() {
-        //         if (xhr.status == 200) {
-        //             var comment = JSON.parse(xhr.responseText);
-        //             var commentList = document.getElementById('comment-list');
-        //             var li = document.createElement('li');
-        //             li.className = 'comment';
-        //             li.id = comment.id;
-        //             li.innerHTML = '<p>' + comment.content + '</p><p>Author: ' + comment.user.username + ' / ' + comment.user.first_name + ' ' + comment.user.last_name + ' - Created at ' + comment.created_at + ' - last updated at ' + comment.updated_at + '</p>';
-        //             commentList.appendChild(li);
-        //         }
-        //     }
-        // });
-    </script>
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 </head>
 <body>
     {% include 'templates/header.html' %}
 
-    {% if post.user.id == user.id %}
-        <button class="button edit" onclick="editPost('{{ post.id }}', '{{ post.title }}')">Edit</button>
-        <button class="button delete" onclick="deletePost('{{ post.id }}', '{{ post.title }}')">Delete</button>
-    {% endif %}
     <div class="post">
         <h1>{{ post.title }}</a></h1>
         <p>Tag: {{ post.tag.name }}</p>
-        <p>{{ post.content }}</p>
+        {% autoescape off %}
+        {{ post.content }}
+        {% endautoescape %}
         <p> Author: {{ post.user }} - Created at {{ post.created_at }} - last updated at {{ post.updated_at }}</p>
         <p>Likes <span id="post-like-count">{{ likes|length }}</span></p>
-        <button class="button like" onclick="likePost('{{ post.id }}', '{{ post.title }}')">Like</button>
-        <p> Liked by: 
+        <p>Liked by: 
             <span id="post-liker">
             {% for user in likes %}
             {{ user.user }}
             {% endfor %}
             </span>
         </p>
+        <button class="button like" onclick="likePost('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ csrf_token }}')">Like</button>
+        
+        {% if post.user.id == user.id %}
+            <button class="button edit" onclick="editPost('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}')">Edit</button>
+            <button class="button delete" onclick="deletePost('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ csrf_token }}')">Delete</button>
+        {% else %}
+            <button class="button report" onclick="reportPost('{{ user.is_authenticated }}', '{{ post.id }}', '{{ csrf_token }}')">Report</button>
+        {% endif %}
+        {% if user.is_staff %}
+            <button onclick="deleteComment('{{ comment.id }}', '{{ csrf_token }}', 'admin')">Delete (Admin Mode)</button>
+        {% endif %}
     </div>
-    <div class="comment-form" id="comment-form">
-        <form action="/comment" method="post">
-            <input type="hidden" name="post_id" value="{{ post.id }}">
-            <input type="hidden" name="user_id" value="{{ user.id }}">
-            <textarea name="content" id="" cols="50" rows="10"></textarea>
-            <button type="submit">Submit</button>
-        </form>
+
+    <div class="comment-form">
+        <div id="editor"></div>
+        {% if user.is_authenticated %}
+            <button type="submit" onclick="comment('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ csrf_token }}')">Submit</button>
+        {% else %}
+            <button type="submit" onclick="comment('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ csrf_token }}')" disabled>Submit</button>
+        {% endif %}
     </div>
 
     <div class="comment-box">
         <h2>Comments ({{ comments|length }})</h2>
+
         <ul>
             {% for comment in comments %}
             <li class="comment" id="{{ comment.id }}">
-                <p>{{ comment.content }}</p>
-                <p>Author: {{ comment.user.username }} / {{ comment.user.first_name }} {{ comment.user.last_name }} - Created at {{ comment.created_at }} - last updated at {{ comment.updated_at }}</p>
+                {% autoescape off %}
+                {{ comment.content }}
+                {% endautoescape %}
+
+                <p>Likes: <span id="comment-like-count-{{ comment.id }}"> 0 </span><span id="comment-liker-{{ comment.id }}">{% for like in likes %}{% if like.comment.id == comment.id %}{{ like.user }} {% endif %}{% endfor %}</span></p>
+
+                <script>        
+                    var likeSpan = document.getElementById('comment-like-count-' + "{{ comment.id }}");
+                    var totalLikeSpan = document.getElementById('comment-liker-' + "{{ comment.id }}");
+                    var likeCount = totalLikeSpan.innerHTML;
+
+                    var totalLikes; 
+                    if (likeCount.trim().length != 0) {
+                        totalLikes = likeCount.trim().split(' ').length;
+                        likeSpan.innerHTML = totalLikes;
+                        totalLikeSpan.innerHTML = '';
+                    }
+                </script>
+
+                <p>Author: <a href="/profile/{{ comment.user.username }}">{{ comment.user.username }}</a> / {{ comment.user.first_name }} {{ comment.user.last_name }} - Created at {{ comment.created_at }} - last updated at {{ comment.updated_at }}</p>
+                
+                <button onclick="likeComment('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ comment.id }}', '{{ csrf_token }}')">Like</button>
                 {% if comment.user.id == user.id %}
-                <button onclick="deleteComment('{{ comment.id }}')">Delete</button>
-                <button onclick="editComment('{{ comment.id }}')">Edit</button>
+                <button onclick="deleteComment('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ csrf_token }}', '{{ comment.id }}', 'user')">Delete</button>
+                <button onclick="editComment('{{ user.is_authenticated }}', '{{ comment.id }}')">Edit</button>
+                {% endif %}
+                <button onclick="reportComment('{{ user.is_authenticated }}', '{{ comment.id }}')">Report</button>
+                {% if user.is_staff %}
+                <button onclick="deleteComment('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ csrf_token }}', '{{ comment.id }}', 'admin')">Delete (Admin Mode)</button>
                 {% endif %}
             </li>
             {% endfor %}
         </ul>
     </div>
+
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script>
+        var myToolbar= [
+            ['bold', 'italic', 'underline', 'strike'],       
+            ['blockquote', 'code-block'],
+
+            [{ 'color': [] }, { 'background': [] }],         
+            [{ 'font': [] }],
+            [{ 'align': [] }],
+
+            ['clean'],                                        
+            ['image']
+        ];
+
+        function imageHandler() {
+            var range = this.quill.getSelection();
+            var value = prompt('please copy paste the image url here.');
+            if(value){
+                this.quill.insertEmbed(range.index, 'image', value, Quill.sources.USER);
+            }
+        }
+    </script>
+    {% if user.is_authenticated %}
+    <script>
+        var quill = new Quill('#editor', {
+            theme: 'snow',
+            placeholder: 'Submit a comment',
+            modules: {
+                toolbar: {
+                    container: myToolbar,
+                    handlers: {
+                        image: imageHandler
+                    }
+                }
+            },
+        });
+    </script>
+    {% else %}
+    <script>
+        var quill = new Quill('#editor', {
+            theme: 'snow',
+            placeholder: 'Login to submit a comment',
+            readOnly: true,
+            modules: {
+                toolbar: {
+                    container: myToolbar,
+                    handlers: {
+                        image: imageHandler
+                    }
+                }
+            },
+        });
+    </script>
+    {% endif %}
+    <script type="text/javascript" src="{% static 'js/postView.js' %}"></script>
+
 
     {% include 'templates/footer.html' %}
 </body>
