@@ -27,8 +27,9 @@ urlpatterns = [
 
 
     # Profile
-    # path('<str:username>', views.profile, name='profile'),
-    # path('<str:username>/setting', views.profile, name='profile'),
+    # path('/profile/<str:username>', views.profile, name='profile'),
+    # path('/profile/<str:username>/setting', views.profile, name='profile'),
+    # # path('/profile/<str:username>/notification/', views.profile, name='profile'),
     # path('post/<str:id>/edit', views.post_Edit, name='post/edit'),
     # path('report/post/<str:id>', views.post_Report, name='post/report'),
     # path('post/<str:id>/comment', views.post_Comment, name='post/comment'),

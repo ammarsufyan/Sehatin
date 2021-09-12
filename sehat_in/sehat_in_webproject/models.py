@@ -27,29 +27,25 @@ class Like(models.Model): # Post/comment like
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE, null=True)
 
-class Follow(models.Model): # User following ..
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='follower')
-    follow = models.ForeignKey(User, on_delete=models.CASCADE, related_name='followee')
+# class Message(models.Model): # The message of the chat
+#     id = models.AutoField(primary_key=True)
+#     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sender')
+#     receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='receiver')
+#     content = models.TextField()
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     updated_at = models.DateTimeField(auto_now=True)
+#     read = models.BooleanField(default=False)
 
-class Message(models.Model): # The message of the chat
-    id = models.AutoField(primary_key=True)
-    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sender')
-    receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='receiver')
-    content = models.TextField()
-    created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
-    read = models.BooleanField(default=False)
-
-class Chat(models.Model): # Chat to who ..
-    id = models.AutoField(primary_key=True)
-    users = models.ManyToManyField(User)
-    messages = models.ManyToManyField(Message)
+# class Chat(models.Model): # Chat to who ..
+#     id = models.AutoField(primary_key=True)
+#     users = models.ManyToManyField(User)
+#     messages = models.ManyToManyField(Message)
 
 class Notification(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE) # The user who is notified
     post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True) # Notification in post, ex: someone commented ...
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE, null=True) # Notifcation in comment, ex: someone replied
-    message = models.ForeignKey(Message, on_delete=models.CASCADE, null=True) # Notifcation in message, ex: a message received from ...
+    # message = models.ForeignKey(Message, on_delete=models.CASCADE, null=True) # Notifcation in message, ex: a message received from ...
     notification_Content = models.TextField(max_length=500) # The notification message, will be auto generated based on the notification type
     created_at = models.DateTimeField(auto_now_add=True)
     read = models.BooleanField(default=False)
@@ -58,7 +54,6 @@ class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     bio = models.TextField(max_length=500, null=True)
     location = models.CharField(max_length=50, null=True)
-    birth_date = models.DateField(null=True)
     # cek post apa aja, if post.user.id == user.id
     # cek notif, if notif.user.id == user.id
 
