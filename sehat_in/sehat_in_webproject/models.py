@@ -14,7 +14,6 @@ class Post(models.Model): # Post
     updated_at = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
-
 class Comment(models.Model): # Comment of a post
     id = models.AutoField(primary_key=True)
     content = models.TextField()
@@ -24,7 +23,7 @@ class Comment(models.Model): # Comment of a post
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
 class Like(models.Model): # Post/comment like
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE, null=True)
 

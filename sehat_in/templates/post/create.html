@@ -13,48 +13,48 @@
 <body>
     {% include 'templates/header.html' %}
 
-    <form method="post" action="create" onsubmit="return validateForm()">
+    <div class="post-form">
         {% csrf_token %}
         <p>Title</p>
         <input type="text" name="title" placeholder="Title" autocomplete="off">
         <p>Content</p>
-        <textarea name="content" placeholder="Content"></textarea>
+        <div id="editor"></div>
         <p>Tag</p>
-        <select name="tag">
+        <select name="tag" id="tag">
             {% for tag in tags %}
             <option value="{{ tag.name }}">{{ tag.name }}</option>
             {% endfor %}
         </select>
         <br>
-        <input type="submit" value="Create">
-    </form>
+        <input type="submit" value="Create" onclick="createPost()">
+    </div>
 
     <script>
-        function editPost() {
+        function createPost() {
+            /* send ajax, if sucess go to the post, if fail reload the page */
             if (!validateForm()){
                 return;
             }
 
             if (confirm("Are you sure?")) {
-                // send ajax
                 var content = document.getElementById('editor').children[0].innerHTML;
+                var title = document.getElementsByName('title')[0].value;
                 var tag = $('#tag').val();
                 var csrf = $('input[name=csrfmiddlewaretoken]').val();
-                var title = "{{ post.title }}";
-                var id = "{{ post.id }}";
                 $.ajax({
-                    url: '/post/' + id + '/' + title.replace(' ', '-') + '/edit',
+                    url: '/post/create',
                     type: 'POST',
                     data: {
                         'csrfmiddlewaretoken': csrf,
-                        'content': content,
+                        'title': title.trim(),
+                        'content': content.trim(),
                         'tag': tag
                     },
                     success: function(data) {
                         if (data != 'error') {
-                            window.location.href = '/post/' + id + '/' + title.replace(' ', '-');
+                            window.location.href = '/post/' + data;
                         } else {
-                            alert("Error: " + data);
+                            window.location.href = '/post/create';
                         }
                     }
                 });
@@ -62,9 +62,17 @@
         }
 
         function validateForm() {
+            /* Validate form */
             // get value from quill
             var content = document.getElementById("editor").children[0].innerHTML;
+            var title = document.getElementsByName('title')[0].value;
 
+            // Title min 5
+            if (title.length < 5) {
+                alert("Title must be at least 5 characters");
+                return false;
+            }
+            // Content min 25
             if (content.length < 25) {
                 alert("Content must be at least 25 characters long");
                 return false;

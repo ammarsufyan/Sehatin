@@ -22,11 +22,11 @@
         <p>Tag</p>
         <select name="tag" id="tag">
             {% for tag in tags %}
-            {% if tag.id == post.tag_id %}
-            <option value="{{ tag.name }}" selected>{{ tag.name }}</option>
-            {% else %}
-            <option value="{{ tag.name }}">{{ tag.name }}</option>
-            {% endif %}
+                {% if tag.id == post.tag_id %}
+                <option value="{{ tag.name }}" selected>{{ tag.name }}</option>
+                {% else %}
+                <option value="{{ tag.name }}">{{ tag.name }}</option>
+                {% endif %}
             {% endfor %}
         </select>
         <br>
@@ -35,6 +35,7 @@
 
     <script>
         function editPost() {
+            /* send ajax, if sucess go to the post, if fail reload the page */
             if (!validateForm()){
                 return;
             }
@@ -47,16 +48,16 @@
                 var title = "{{ post.title }}";
                 var id = "{{ post.id }}";
                 $.ajax({
-                    url: '/post/' + id + '/' + title.replace(' ', '-') + '/edit',
+                    url: '/post/' + id + '/' + title.replaceAll(' ', '-') + '/edit',
                     type: 'POST',
                     data: {
                         'csrfmiddlewaretoken': csrf,
-                        'content': content,
+                        'content': content.trim(),
                         'tag': tag
                     },
                     success: function(data) {
                         if (data != 'error') {
-                            window.location.href = '/post/' + id + '/' + title.replace(' ', '-');
+                            window.location.href = '/post/' + id + '/' + title.replaceAll(' ', '-');
                         } else {
                             alert("Error: " + data);
                         }
@@ -80,6 +81,11 @@
 
 
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    {% autoescape off %}
+    <div style="display: none; visibility: hidden;" id="content-hidden">
+        {{ post.content }}
+    </div>
+    {% endautoescape %}
     <script>
         var myToolbar= [
             ['bold', 'italic', 'underline', 'strike'],       
@@ -113,6 +119,9 @@
                 }
             },
         });
+
+        const value = document.getElementById('content-hidden').innerHTML;
+        quill.root.innerHTML = value.trim();
     </script>
 
     {% include 'templates/footer.html' %}
