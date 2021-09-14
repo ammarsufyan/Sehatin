@@ -482,3 +482,35 @@ def post_Comment_Edit(request, id, title, comment_id):
             return HttpResponse('error')
     else: # If user enter the url like an idiot
         raise Http404
+
+def post_Comment_Delete(request, id, title, comment_id):
+    """Delete a comment, if no request throw 404. Request are made using jquery ajax
+    
+    onsuccess: Use jquery to update the comment
+    onfail: Alert fail using jquery
+    """
+    # Check if a post request is made
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+            comment = Comment.objects.get(id=comment_id)
+            user = request.user
+            mode = request.POST.get('mode')
+
+            # If delete mode admin send notification to the user
+            if mode == 'admin':
+                if comment.user != None: # Check if post user's account still exist
+                    # Check if user is admin, if admin then dont send notification
+                    if not user.is_superuser:
+                        notification = Notification(user=comment.user, notification_Content='Your comment has been deleted by admin (' + user.username + ')')
+                        notification.save()
+
+            # Delete comment
+            comment.delete()
+
+            # To add later, return comment count, so comment count can be updated
+            return HttpResponse('success')
+        else: # If user is not logged in
+            messages.info(request, 'Need to login first!')
+            return HttpResponse('error')
+    else: # If user enter the url like an idiot
+        raise Http404

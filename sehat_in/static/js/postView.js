@@ -122,7 +122,7 @@ function reportComment(logged_in, id, csrf_token) {
     });
 }
 
-function deleteComment(logged_in, postid, title, userid, csrf_token, mode) {
+function deleteComment(logged_in, postid, title, commentId, csrf_token, mode) {
     /* delete comment, ... */
     if (logged_in == "False") {
         alert('You must be logged in to delete a comment');
@@ -133,31 +133,29 @@ function deleteComment(logged_in, postid, title, userid, csrf_token, mode) {
     if (!isExecuted) {
         return;
     }
-    if (mode == 'admin') {
-        $.ajax({
-            url: '/post/' + postid + '/' + title.replaceAll(' ', '-') + '/comment/' + userid + '/delete-adminmode',
-            type: 'POST',
-            data: {
-                'csrfmiddlewaretoken': csrf_token
-            },
-            success: function (data) {
-                // redirect from the backend, with message value of post deleted or something
 
-            }
-        });
-    } else {
-        $.ajax({
-            url: '/post/' + postid + '/' + title.replaceAll(' ', '-') + '/comment/' + userid + '/delete',
-            type: 'POST',
-            data: {
-                'csrfmiddlewaretoken': csrf_token
-            },
-            success: function (data) {
-                // redirect from the backend, with message value of msg deleted or something
-                // window.location.href = '/post/' + id + '/' + title.replaceAll(' ', '-');
-            }
-        });
+    // Second confirmation
+    isExecuted = confirm("Are you really sure you want to delete this comment?");
+    if (!isExecuted) {
+        return;
     }
+
+    $.ajax({
+        url: '/post/' + postid + '/' + title.replaceAll(' ', '-') + '/comment/' + commentId + '/delete',
+        type: 'POST',
+        data: {
+            'csrfmiddlewaretoken': csrf_token,
+            'mode': mode
+        },
+        success: function (data) {
+            if (data == 'success') {
+                $('#comments-' + commentId).remove();
+            } else {
+                alert("Error! Fail to delete comment!");
+            }
+        }
+    });
+
 }
 
 function editComment(logged_in, id, title, comment_id, csrf_token) {

@@ -50,8 +50,8 @@ class TestHistory(models.Model): # Test history
 
 class Notification(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE) # The user who is notified
-    post = models.ForeignKey(Post, on_delete=models.CASCADE, null=True) # Notification in post, ex: someone commented ...
-    comment = models.ForeignKey(Comment, on_delete=models.CASCADE, null=True) # Notifcation in comment, ex: someone replied
+    post = models.ForeignKey(Post, on_delete=models.SET_NULL, null=True) # Notification in post, ex: someone commented ...
+    comment = models.ForeignKey(Comment, on_delete=models.SET_NULL, null=True) # Notifcation in comment, ex: someone replied
     # message = models.ForeignKey(Message, on_delete=models.CASCADE, null=True) # Notifcation in message, ex: a message received from ...
     notification_Content = models.TextField(max_length=500) # The notification message, will be auto generated based on the notification type
     created_at = models.DateTimeField(auto_now_add=True)

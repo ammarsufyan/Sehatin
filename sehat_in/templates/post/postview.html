@@ -93,7 +93,7 @@
                 {% endif %}
                 <button onclick="reportComment('{{ user.is_authenticated }}', '{{ comment.id }}')">Report</button>
                 {% if user.is_staff %}
-                <button onclick="deleteComment('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ csrf_token }}', '{{ comment.id }}', 'admin')">Delete (Admin Mode)</button>
+                <button onclick="deleteComment('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ comment.id }}', '{{ csrf_token }}', 'admin')">Delete (Admin Mode)</button>
                 {% endif %}
             </li>
             {% endfor %}
