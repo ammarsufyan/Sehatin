@@ -23,6 +23,7 @@ urlpatterns = [
     # path('post/<str:id>/<str:title>/delete', views.post_Delete, name='post/delete'),
     path('post/<str:id>/<str:title>/like', views.post_Like, name='post/like'),
     path('post/<str:id>/<str:title>/comment', views.post_Comment, name='post/comment'),
+    path('post/<str:id>/<str:title>/comment/<str:comment_id>/like', views.post_Comment_Like, name='post/comment/like'),
     # path('post/<str:id>/<str:title>/comment/<str:commentId>/delete', views.post_Comment_Delete, name='post/comment/delete'),
 
 

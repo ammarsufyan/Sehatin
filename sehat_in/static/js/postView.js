@@ -29,7 +29,7 @@ function likePost(logged_in, id, title, csrf_token) {
                 $('#post-like-count').html(dataJson.likes);
                 $('#post-liker').html(dataJson.names.join(', '));
             } else {
-                alert("Error! Fail to like comments!");
+                alert("Error! Fail to like post!");
             }
         }
     });
@@ -152,7 +152,7 @@ function editComment(logged_in, id, title, csrf_token) {
     })
 }
 
-function likeComment(logged_in, id, title, csrf_token) {
+function likeComment(logged_in, post_id, title, comment_id, csrf_token) {
     /* like comment, if sucess edit likes count, if fail alert fail */
     if (logged_in == "False") {
         alert('You must be logged in to like a comment');
@@ -160,15 +160,18 @@ function likeComment(logged_in, id, title, csrf_token) {
     }
 
     $.ajax({
-        url: '/post/' + id + '/' + title.replaceAll(' ', '-') + '/comment/' + id + '/like',
+        url: '/post/' + post_id + '/' + title.replaceAll(' ', '-') + '/comment/' + comment_id + '/like',
         type: 'POST',
         data: {
             'csrfmiddlewaretoken': csrf_token
         },
         success: function (data) {
             dataJson = JSON.parse(data);
-            $('#comment-like-count-' + id).html(dataJson.likes);
-            $('#comment-liker-' + id).html(dataJson.names.join(', '));
+            if(dataJson.names != 'error') {
+                $('#comment-like-count-' + comment_id).html(dataJson.likes);
+            } else {
+                alert("Error! Fail to like comment!");
+            }
         }
     });
 }

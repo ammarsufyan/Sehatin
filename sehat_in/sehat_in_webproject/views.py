@@ -350,13 +350,29 @@ def post_Comment(request, id, title):
                 messages.info(request, 'Invalid comment length!')
                 return HttpResponse('error')
 
-            comment = Comment(user=user, post=post, content=commentGet)
-            comment.save()
-
             # send notification
             if post.user != user:
-                notification = Notification(user=post.user, post=post, notification_Content=user.username + 'posted a comment on your post')
-                notification.save()
+                if post.user != None: # Check if post user's account still exist
+                    notification = Notification(user=post.user, post=post, notification_Content=user.username + 'posted a comment on your post')
+                    notification.save()
+
+            # Send notification to mentioned users @
+            mentioned = re.findall(r'@\w+', commentGet)
+            for mentionedUser in mentioned:
+                mentionedUser = mentionedUser[1:] # Remove @
+                if mentionedUser != user.username:
+                    # Get the mentioned user object
+                    mentionedUserObject = User.objects.get(username=mentionedUser)
+                    # Check if mentioned user exist
+                    if mentionedUserObject != None:
+                        # Get the comment object
+                        mentionedComment = Comment.objects.filter(user=user, post=post, content=commentGet)
+                    
+                        notification = Notification(user=mentionedUserObject, comment=mentionedComment,  post=post, notification_Content=user.username + ' mentioned you in a comment')
+                        notification.save()
+
+            comment = Comment(user=user, post=post, content=commentGet)
+            comment.save()
 
             return HttpResponse('success')
         else: # If user is not logged in
@@ -365,7 +381,7 @@ def post_Comment(request, id, title):
     else: # If user enter the url like an idiot
         raise Http404
 
-def comment_Likes(request, id, title, comment_id): # ini belom gw cek copilot langsung buat semuanya gila wkwkjkw
+def post_Comment_Like(request, id, title, comment_id):
     """Like a comment, if no request throw 404. Request are made using jquery ajax
     
     onsuccess: Use jquery to update the likes
@@ -376,8 +392,10 @@ def comment_Likes(request, id, title, comment_id): # ini belom gw cek copilot la
             comment = Comment.objects.get(id=comment_id)
             user = request.user
             like = Like.objects.filter(user=user, comment=comment)
+            post = Post.objects.get(id=id)
+
             if like.count() == 0: # If user hasn't liked this comment
-                like = Like(user=user, comment=comment)
+                like = Like(user=user, comment=comment, post=post)
                 like.save()
 
                 # Get amount of comments like
