@@ -208,7 +208,12 @@ def post_Create(request):
             # Check content length
             if len(content) < 25:
                 messages.info(request, 'Content must be at least 25 characters!')
-                return HttpResponse('error')
+                return HttpResponse('limit')
+
+            # Max 40k
+            if len(content) > 40000:
+                messages.info(request, 'Invalid content length! Max allowed are 40k including formatting')
+                return HttpResponse('limit')
 
             # Check if tag is found
             tag = Tag.objects.get(name=tag_get)
@@ -249,7 +254,13 @@ def post_Edit(request, id, title):
 
             if len(content) < 25:
                 messages.info(request, 'Content must be at least 25 characters!')
-                return HttpResponse('error')
+                return HttpResponse('limit')
+
+            # Max 40k
+            if len(content) > 40000:
+                messages.info(request, 'Invalid content length! Max allowed are 40k including formatting')
+                return HttpResponse('limit')
+
             
             # Get the post and tag object
             post = Post.objects.get(id=id)
@@ -350,6 +361,11 @@ def post_Comment(request, id, title):
                 messages.info(request, 'Invalid comment length!')
                 return HttpResponse('error')
 
+            # If comment too long or too short
+            if len(commentGet) > 10000 or len(commentGet) < 20:
+                messages.info(request, 'Invalid comment length!')
+                return HttpResponse('limit')
+
             # send notification
             if post.user != user:
                 if post.user != None: # Check if post user's account still exist
@@ -420,5 +436,40 @@ def post_Comment_Like(request, id, title, comment_id):
         else: # If user is not logged in
             jsonData = {'likes': 0, 'names': 'error'}
             return HttpResponse(json.dumps(jsonData))
+    else: # If user enter the url like an idiot
+        raise Http404
+
+# Edit a comment
+def post_Comment_Edit(request, id, title, comment_id):
+    """Edit a comment, if no request throw 404. Request are made using jquery ajax
+    
+    onsuccess: Use jquery to update the comment
+    onfail: Alert fail using jquery
+    """
+    # Check if a post request is made
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+            comment = Comment.objects.get(id=comment_id)
+            user = request.user
+            commentGet = request.POST.get('comment')
+
+            # Check length of comment
+            if len(commentGet) > 10000 or len(commentGet) < 20:
+                messages.info(request, 'Invalid comment length!')
+                return HttpResponse('limit')
+
+            # If comment empty
+            if commentGet == None:
+                messages.info(request, 'Invalid comment length!')
+                return HttpResponse('error')
+
+            # Edit comment
+            comment.content = commentGet
+            comment.save()
+
+            return HttpResponse('success')
+        else: # If user is not logged in
+            messages.info(request, 'Need to login first!')
+            return HttpResponse('error')
     else: # If user enter the url like an idiot
         raise Http404

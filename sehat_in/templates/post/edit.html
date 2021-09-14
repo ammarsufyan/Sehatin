@@ -56,8 +56,12 @@
                         'tag': tag
                     },
                     success: function(data) {
-                        if (data != 'error') {
+                        // on success return success
+                        if (data == 'success') {
                             window.location.href = '/post/' + id + '/' + title.replaceAll(' ', '-');
+                        } else
+                        if (data == 'limit')  {
+                            alert('Character length invalid!')
                         } else {
                             alert("Error: " + data);
                         }
@@ -70,8 +74,14 @@
             // get value from quill
             var content = document.getElementById("editor").children[0].innerHTML;
 
+            // Content min 25
             if (content.length < 25) {
-                alert("Content must be at least 25 characters long");
+                alert("Content too short! Min content including formatting are 25 characters long");
+                return false;
+            }
+            // content max 40k
+            if (content.length > 40000) {
+                alert("Content too long! Max content including formatting are 40,000 characters long");
                 return false;
             }
 

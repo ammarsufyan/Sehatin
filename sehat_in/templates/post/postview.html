@@ -56,14 +56,18 @@
         <h2>Comments ({{ comments|length }})</h2>
         <ul>
             {% for comment in comments %}
-            <li class="comment" id="{{ comment.id }}">
-                {% autoescape off %}
-                {{ comment.content }}
-                {% endautoescape %}
+            <li class="comment" id="comments-{{ comment.id }}">
+                <span id="fill-{{ comment.id }}">
+                    <div style="max-width: 800px;" id="comment-{{comment.id}}">
+                        {% autoescape off %}
+                        {{ comment.content }}
+                        {% endautoescape %}
+                    </div>
+                </span>
 
                 <p>Likes: <span id="comment-like-count-{{ comment.id }}"> 0 </span><span id="comment-liker-{{ comment.id }}" style="display:none">{% for like in likes %}{% if like.comment.id == comment.id %}{{ like.user }} {% endif %}{% endfor %}</span></p>
 
-                <script id="like-count-onload-{{ comment.id }}">        
+                <script id="like-counter-script">        
                     var likeSpan = document.getElementById('comment-like-count-' + "{{ comment.id }}");
                     var totalLikeSpan = document.getElementById('comment-liker-' + "{{ comment.id }}");
                     var likeCount = totalLikeSpan.innerHTML;
@@ -84,8 +88,8 @@
                 
                 <button onclick="likeComment('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ comment.id }}', '{{ csrf_token }}')">Like</button>
                 {% if comment.user.id == user.id %}
-                <button onclick="deleteComment('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ csrf_token }}', '{{ comment.id }}', 'user')">Delete</button>
-                <button onclick="editComment('{{ user.is_authenticated }}', '{{ comment.id }}')">Edit</button>
+                <button onclick="deleteComment('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ comment.id }}', '{{ csrf_token }}', 'user')">Delete</button>
+                <button onclick="editComment('{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ comment.id }}', '{{ csrf_token }}')">Edit</button>
                 {% endif %}
                 <button onclick="reportComment('{{ user.is_authenticated }}', '{{ comment.id }}')">Report</button>
                 {% if user.is_staff %}
