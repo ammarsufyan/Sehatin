@@ -8,8 +8,10 @@ from django.http import Http404
 import json
 import re
 
-# Create your views here.
+# Views of each URL
 # Assigning the function to each url
+# ----------------------------------------------------------------
+# Error
 def error_404_view(request, exception):
     """Custom 404 Error View"""
     return render(request, 'error/404.html')
@@ -18,10 +20,14 @@ def error_403_view(request, exception):
     """Custom 403 Error View"""
     return render(request, 'error/403.html')
 
+# ----------------------------------------------------------------
+# Home
 def index(request):
     """Index page (Home)"""
     return render(request, 'index.html')
 
+# ----------------------------------------------------------------
+# Auth
 def register(request):
     """Request, if no request open page like usual. Request made using html form.
     
@@ -134,6 +140,8 @@ def logout(request):
 
     return redirect('/')
 
+# ----------------------------------------------------------------
+# Post
 def post_Url(request, id, title):
     """Generate URL for post with vanity url of title"""
     # Title in the link is just for vanity url
@@ -343,6 +351,8 @@ def post_Report(request):
         messages.info(request, 'Need to login first!')
         return redirect('/auth/login')
 
+# ----------------------------------------------------------------
+# Comment
 def post_Comment(request, id, title):
     """Comment on a post, if no request throw 404. Request are made using jquery ajax
     
@@ -439,7 +449,6 @@ def post_Comment_Like(request, id, title, comment_id):
     else: # If user enter the url like an idiot
         raise Http404
 
-# Edit a comment
 def post_Comment_Edit(request, id, title, comment_id):
     """Edit a comment, if no request throw 404. Request are made using jquery ajax
     
