@@ -350,21 +350,43 @@ def post_Like(request, id, title):
     else: # If user enter the url like an idiot
         raise Http404
 
-def post_Report(request):
-    if request.user.is_authenticated:
-        if request.method == 'POST':
+def post_Report(request, id, title):
+    if request.method == 'POST':
+        if request.user.is_authenticated:
             # Report
             user = request.user
             post = Post.objects.get(id=id)
             reason = request.POST.get('reason')
-            report = Report(user=user, post=post, reason=reason)
-            report.save()
-            return redirect('/post')
+            reportType = request.POST.get('reportType')
+
+            # Validate reason
+            if len(reason) < 4:
+                messages.info(request, 'Invalid Reason Length! Min input are 4 characters')
+                jsonData = {'status': 'limit', 'message': 'Reason inputted is too short (Min input are 4 characters)! '}
+                return HttpResponse(json.dumps(jsonData))
+
+            if len(reason) > 200:
+                messages.info(request, 'Invalid Reason Length! Max input are 200 characters!')
+                jsonData = {'status': 'limit', 'message': 'Reason inputted is too long (Max input are 200 characters)!'}
+                return HttpResponse(json.dumps(jsonData))
+
+            # Check if user has already reported this post
+            report = Report.objects.filter(user=user, post=post)
+            if report.count() == 0:
+                report = Report(user=user, post=post, reason=reason, reportType=reportType)
+                report.save()
+                jsonData = {'status': 'success', 'message': 'Post has been reported successfully!'}
+                return HttpResponse(json.dumps(jsonData))
+            else:
+                messages.info(request, 'You have already reported this post!')
+                jsonData = {'status': 'error', 'message': 'You have already reported this post!'}
+                return HttpResponse('error')
         else:
-            return render(request, 'post/report.html')
+            messages.info(request, 'Need to login first!')
+            jsonData = {'status': 'error', 'message': 'Need to login first!'}
+            return HttpResponse(json.dumps(jsonData))
     else:
-        messages.info(request, 'Need to login first!')
-        return redirect('/auth/login')
+        raise Http404
 
 # ----------------------------------------------------------------
 # Comment
@@ -552,6 +574,54 @@ def post_Comment_Delete(request, id, title, comment_id):
             comments = Comment.objects.filter(post=comment.post)
             dataJson = {'status': 'success', 'message': comments.count()}
             return HttpResponse(json.dumps(dataJson))
+        else: # If user is not logged in
+            messages.info(request, 'Need to login first!')
+            dataJson = {'status': 'error', 'message': 'Need to login first!'}
+            return HttpResponse(json.dumps(dataJson))
+    else: # If user enter the url like an idiot
+        raise Http404
+
+# Reports a comment
+def post_Comment_Report(request, id, title, comment_id):
+    """Report a comment, if no request throw 404. Request are made using jquery ajax
+    
+    onsuccess: Tell report success using jquery
+    onfail: Alert fail using jquery
+    """
+    # Check if a post request is made
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+            comment = Comment.objects.get(id=comment_id)
+            user = request.user
+            reason = request.POST.get('reason')
+            reportType = request.POST.get('reportType')
+
+            # Validate reason
+            if len(reason) < 4:
+                messages.info(request, 'Invalid Reason Length! Min input are 4 characters')
+                jsonData = {'status': 'limit', 'message': 'Reason inputted is too short (Min input are 4 characters)! '}
+                return HttpResponse(json.dumps(jsonData))
+
+            if len(reason) > 200:
+                messages.info(request, 'Invalid Reason Length! Max input are 200 characters!')
+                jsonData = {'status': 'limit', 'message': 'Reason inputted is too long (Max input are 200 characters)!'}
+                return HttpResponse(json.dumps(jsonData))
+
+            # Check if user has already reported this comment
+            report = Report.objects.filter(user=user, comment=comment)
+            # If have not reported this comment
+            if report.count() == 0:
+                # Report comment
+                report = Report(user=user, comment=comment, reason=reason, reportType=reportType)
+                report.save()
+
+                # Get amount of reports
+                reports = Report.objects.filter(comment=comment)
+                dataJson = {'status': 'success', 'message': reports.count()}
+                return HttpResponse(json.dumps(dataJson))
+            else: # If user has already reported this comment
+                dataJson = {'status': 'error', 'message': 'You have already reported this comment!'}
+                return HttpResponse(json.dumps(dataJson))
         else: # If user is not logged in
             messages.info(request, 'Need to login first!')
             dataJson = {'status': 'error', 'message': 'Need to login first!'}

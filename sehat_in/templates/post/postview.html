@@ -34,12 +34,12 @@
         
         {% if post.user.id == user.id %}
             <button class="button edit" onclick="editPost('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}')">Edit</button>
-            <button class="button delete" onclick="deletePost('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ csrf_token }}')">Delete</button>
+            <button class="button delete" onclick="deletePost('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ csrf_token }}', 'user')">Delete</button>
         {% else %}
-            <button class="button report" onclick="reportPost('{{ user.is_authenticated }}', '{{ post.id }}', '{{ csrf_token }}')">Report</button>
+            <button class="button report" onclick="reportPost('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ csrf_token }}')">Report</button>
         {% endif %}
         {% if user.is_staff %}
-            <button onclick="deleteComment('{{ comment.id }}', '{{ csrf_token }}', 'admin')">Delete (Admin Mode)</button>
+            <button onclick="deletePost('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ csrf_token }}', 'admin')">Delete (Admin Mode)</button>
         {% endif %}
     </div>
 
@@ -65,7 +65,7 @@
                     </div>
                 </span>
 
-                <p>Likes: <span id="comment-like-count-{{ comment.id }}"> {{ comment.likes}}</p>
+                <p>Likes: <span id="comment-like-count-{{ comment.id }}"> {{ comment.likes }}</p>
 
                 {% if comment.user == null %}
                 <p>Author: <a href="/profile/deleted">deleted</a> - Created at {{ comment.created_at }} - last updated at {{ comment.updated_at }}</p>
@@ -76,9 +76,9 @@
                 <button onclick="likeComment('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ comment.id }}', '{{ csrf_token }}')">Like</button>
                 {% if comment.user.id == user.id %}
                 <button onclick="deleteComment('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ comment.id }}', '{{ csrf_token }}', 'user')">Delete</button>
-                <button onclick="editComment('{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ comment.id }}', '{{ csrf_token }}')">Edit</button>
+                <button onclick="editComment('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ comment.id }}', '{{ csrf_token }}')">Edit</button>
                 {% endif %}
-                <button onclick="reportComment('{{ user.is_authenticated }}', '{{ comment.id }}')">Report</button>
+                <button onclick="reportComment('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ comment.id }}', '{{ csrf_token }}')">Report</button>
                 {% if user.is_staff %}
                 <button onclick="deleteComment('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ comment.id }}', '{{ csrf_token }}', 'admin')">Delete (Admin Mode)</button>
                 {% endif %}

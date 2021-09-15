@@ -83,41 +83,92 @@ function deletePost(logged_in, id, title, csrf_token) {
     });
 }
 
-function reportPost(logged_in, id, csrf_token) {
-    /* report post, ... */
+function reportPost(logged_in, postid, title, csrf_token) {
+    /* report comment, ... */
     if (logged_in == "False") {
-        alert('You must be logged in to report a post');
+        alert('You need to login to report a post');
+        return;
+    }
+
+    // Ask for confirmation
+    if (!confirm("Are you sure you want to report this post?")) {
+        return;
+    }
+
+    // Ask for reasons
+    var reason = prompt("Please enter a reason for reporting this post:");
+    if (reason == null) { // cancel button pressed
+        return;
+    }
+    if (reason == "") {
+        alert("You must enter a reason for reporting this post.");
+        return;
+    }
+    if (reason < 4 || reason > 200) {
+        alert("Invalid Reason Length! Must be between 4 and 200 characters!");
         return;
     }
 
     $.ajax({
-        url: '/report/post/' + id,
+        url: '/post/' + postid + '/' + title.replaceAll(' ', '-') + '/report',
         type: 'POST',
         data: {
-            'csrfmiddlewaretoken': csrf_token
+            'csrfmiddlewaretoken': csrf_token,
+            'reason': reason,
+            'reportType': 'post'
         },
         success: function (data) {
-            // redirect from the backend, with message value of post deleted or something
-
+            dataJson = JSON.parse(data);
+            if (dataJson.status == 'success') {
+                alert("Post has been Reported Sucessfully! Thanks for trying to make the site a better place!");
+            } else {
+                alert("Error! Fail to report post! " + dataJson.message);
+            }
         }
     });
 }
 
-function reportComment(logged_in, id, csrf_token) {
+function reportComment(logged_in, postid, title, commentId, csrf_token) {
     /* report comment, ... */
     if (logged_in == "False") {
         alert('You need to login to report a comment');
         return;
     }
 
+    // Ask for confirmation
+    if (!confirm("Are you sure you want to report this comment?")) {
+        return;
+    }
+
+    // Ask for reasons
+    var reason = prompt("Please enter a reason for reporting this comment:");
+    if (reason == null) { // cancel button pressed
+        return;
+    }
+    if (reason == "") {
+        alert("You must enter a reason for reporting this comment.");
+        return;
+    }
+    if (reason < 4 || reason > 200) {
+        alert("Invalid Reason Length! Must be between 4 and 200 characters!");
+        return;
+    }
+
     $.ajax({
-        url: '/report/comment/' + id,
+        url: '/post/' + postid + '/' + title.replaceAll(' ', '-') + '/comment/' + commentId + '/report',
         type: 'POST',
         data: {
-            'csrfmiddlewaretoken': csrf_token
+            'csrfmiddlewaretoken': csrf_token,
+            'reason': reason,
+            'reportType': 'comment'
         },
         success: function (data) {
-
+            dataJson = JSON.parse(data);
+            if (dataJson.status == 'success') {
+                alert("Comment Has Been Reported Sucessfully! Thanks for trying to make the site a better place!");
+            } else {
+                alert("Error! Fail to report comment! " + dataJson.message);
+            }
         }
     });
 }
@@ -137,7 +188,10 @@ function deleteComment(logged_in, postid, title, commentId, csrf_token, mode) {
     // if mode admin ask for reason
     if (mode == 'admin') {
         let reason = prompt("Please enter the reason for deleting this comment");
-        if (reason == null || reason == "") {
+        if (reason == null) { // cancel button pressed
+            return;
+        }
+        if (reason == "") {
             alert("Please enter a valid reason!");
             return;
         } else

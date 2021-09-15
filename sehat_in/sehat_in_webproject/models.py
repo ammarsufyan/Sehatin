@@ -73,5 +73,6 @@ class Report(models.Model):
     post = models.ForeignKey(Post, on_delete=models.SET_NULL, null=True) # If reporting a post
     comment = models.ForeignKey(Comment, on_delete=models.SET_NULL, null=True) # If reporting a comment
     reason = models.CharField(max_length=200)
+    reportType = models.CharField(max_length=50)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
