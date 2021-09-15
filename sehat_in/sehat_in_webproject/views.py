@@ -69,6 +69,12 @@ def register(request):
             messages.info(request, 'Password must be between 8 and 50 characters and contain at least one lowercase and one uppercase letter!')
             return redirect('/auth/register')
 
+        # Prevent special characters on username
+        regex = "[^a-zA-Z0-9_]"
+        if re.search(regex, username):
+            messages.info(request, 'Username must not contain special characters!')
+            return redirect('/auth/register')
+
         if password == password_confirmation:
             # Invalid username
             if username.lower() == "deleted":
