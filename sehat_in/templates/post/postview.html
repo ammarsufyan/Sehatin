@@ -53,7 +53,7 @@
     </div>
 
     <div class="comment-box">
-        <h2>Comments ({{ comments|length }})</h2>
+        <h2>Comments (<span id="comment-counter">{{ comments|length }}</span>)</h2>
         <ul>
             {% for comment in comments %}
             <li class="comment" id="comments-{{ comment.id }}">

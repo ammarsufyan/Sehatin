@@ -134,28 +134,61 @@ function deleteComment(logged_in, postid, title, commentId, csrf_token, mode) {
         return;
     }
 
-    // Second confirmation
-    isExecuted = confirm("Are you really sure you want to delete this comment?");
-    if (!isExecuted) {
-        return;
-    }
-
-    $.ajax({
-        url: '/post/' + postid + '/' + title.replaceAll(' ', '-') + '/comment/' + commentId + '/delete',
-        type: 'POST',
-        data: {
-            'csrfmiddlewaretoken': csrf_token,
-            'mode': mode
-        },
-        success: function (data) {
-            if (data == 'success') {
-                $('#comments-' + commentId).remove();
-            } else {
-                alert("Error! Fail to delete comment!");
-            }
+    // if mode admin ask for reason
+    if (mode == 'admin') {
+        let reason = prompt("Please enter the reason for deleting this comment");
+        if (reason == null || reason == "") {
+            alert("Please enter a valid reason!");
+            return;
+        } else
+        if (reason.trim().length < 4) {
+            alert("Reason too short! Min input length: 4 characters.");
+            return;
+        } else {
+            $.ajax({
+                url: '/post/' + postid + '/' + title.replaceAll(' ', '-') + '/comment/' + commentId + '/delete',
+                type: 'POST',
+                data: {
+                    'csrfmiddlewaretoken': csrf_token,
+                    'mode': mode,
+                    'reason': reason
+                },
+                success: function (data) {
+                    dataJson = JSON.parse(data);
+                    if (dataJson.status != 'error') {
+                        $('#comments-' + commentId).remove();
+                        $('#comment-counter').html(dataJson.message);
+                    } else {
+                        alert("Error! Fail to delete comment!" + dataJson.message);
+                    }
+                }
+            });
         }
-    });
+    } else {
+        // Second confirmation
+        isExecuted = confirm("Are you really sure you want to delete this comment?");
+        if (!isExecuted) {
+            return;
+        }
 
+        $.ajax({
+            url: '/post/' + postid + '/' + title.replaceAll(' ', '-') + '/comment/' + commentId + '/delete',
+            type: 'POST',
+            data: {
+                'csrfmiddlewaretoken': csrf_token,
+                'mode': mode
+            },
+            success: function (data) {
+                dataJson = JSON.parse(data);
+                if (dataJson.status != 'error') {
+                    $('#comments-' + commentId).remove();
+                    $('#comment-counter').html(dataJson.message);
+                } else {
+                    alert("Error! Fail to delete comment!" + dataJson.message);
+                }
+            }
+        });
+    }
 }
 
 function editComment(logged_in, id, title, comment_id, csrf_token) {

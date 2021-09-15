@@ -376,7 +376,11 @@ def post_Comment(request, id, title):
                 messages.info(request, 'Invalid comment length!')
                 return HttpResponse('limit')
 
-            # send notification
+            # Save comment first
+            comment = Comment(user=user, post=post, content=commentGet)
+            comment.save()
+
+            # send notification to post owner
             if post.user != user:
                 if post.user != None: # Check if post user's account still exist
                     notification = Notification(user=post.user, post=post, notification_Content=user.username + 'posted a comment on your post')
@@ -384,21 +388,23 @@ def post_Comment(request, id, title):
 
             # Send notification to mentioned users @
             mentioned = re.findall(r'@\w+', commentGet)
-            for mentionedUser in mentioned:
+            # Remove dupe
+            mentionedNoDupe = list(dict.fromkeys(mentioned))
+            # Loop
+            for mentionedUser in mentionedNoDupe:
                 mentionedUser = mentionedUser[1:] # Remove @
                 if mentionedUser != user.username:
-                    # Get the mentioned user object
-                    mentionedUserObject = User.objects.get(username=mentionedUser)
-                    # Check if mentioned user exist
-                    if mentionedUserObject != None:
+                    try:
+                        # Get the mentioned user object
+                        mentionedUserObject = User.objects.get(username=mentionedUser)
+
                         # Get the comment object
-                        mentionedComment = Comment.objects.filter(user=user, post=post, content=commentGet)
+                        mentionedComment = Comment.objects.get(user=user, post=post, content=commentGet)
                     
                         notification = Notification(user=mentionedUserObject, comment=mentionedComment,  post=post, notification_Content=user.username + ' mentioned you in a comment')
                         notification.save()
-
-            comment = Comment(user=user, post=post, content=commentGet)
-            comment.save()
+                    except:
+                        continue
 
             return HttpResponse('success')
         else: # If user is not logged in
@@ -501,16 +507,22 @@ def post_Comment_Delete(request, id, title, comment_id):
                 if comment.user != None: # Check if post user's account still exist
                     # Check if user is admin, if admin then dont send notification
                     if not user.is_superuser:
-                        notification = Notification(user=comment.user, notification_Content='Your comment has been deleted by admin (' + user.username + ')')
+                        # Get reason for deletion by admin
+                        reason = request.POST.get('reason')
+                        # Send notification to user
+                        notification = Notification(user=comment.user, notification_Content='Your comment has been deleted by admin (' + user.username + '). Reason: ' + reason)
                         notification.save()
 
             # Delete comment
             comment.delete()
 
-            # To add later, return comment count, so comment count can be updated
-            return HttpResponse('success')
+            # Get current comment count
+            comments = Comment.objects.filter(post=comment.post)
+            dataJson = {'status': 'success', 'message': comments.count()}
+            return HttpResponse(json.dumps(dataJson))
         else: # If user is not logged in
             messages.info(request, 'Need to login first!')
-            return HttpResponse('error')
+            dataJson = {'status': 'error', 'message': 'Need to login first!'}
+            return HttpResponse(json.dumps(dataJson))
     else: # If user enter the url like an idiot
         raise Http404
