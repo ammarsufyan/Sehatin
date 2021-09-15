@@ -302,6 +302,44 @@ def post_Edit(request, id, title):
         messages.info(request, 'Need to login first!')
         return HttpResponse('error')
 
+def post_Delete(request, id, title):
+    """Delete a post. Only post request allowed, if no request throw 404. Request are made using jquery ajax
+    
+    onsuccess: Go to post home
+    onfail: Alert fail using jquery
+    """
+    # Check if user is logged in and it's the post owner
+    if request.method == 'POST': # If a request is made
+        mode = request.POST.get('mode')
+        user = request.user
+        post = Post.objects.get(id=id)
+
+        if not user.is_superuser:
+            if user != post.user:
+                messages.info(request, 'Need to login first!')
+                dataJson = {'status': 'error', 'message': 'Need to login first!'}
+                return HttpResponse(json.dumps(dataJson))
+
+        # If delete mode admin send notification to the user
+        if mode == 'admin' and user.is_superuser:
+            if post.user != None: # Check if post user's account still exist
+                # Check if the deleted comment's user is admin, if admin then dont send notification
+                if not post.user.is_superuser:
+                    # Get reason for deletion by admin
+                    reason = request.POST.get('reason')
+                    # Send notification to user
+                    notification = Notification(user=post.user, notification_Content='Your post has been deleted by admin (' + user.username + '). Reason: ' + reason)
+                    notification.save()
+
+        # Delete the post
+        post.delete()
+
+        # Return success
+        dataJson = {'status': 'success', 'message': 'The post has been deleted successfully!'}
+        return HttpResponse(json.dumps(dataJson))
+    else: # If no request, throw 404
+        raise Http404
+
 def post_Like(request, id, title):
     """Like post, if no request throw 404. Request are made using jquery ajax
     
@@ -347,7 +385,7 @@ def post_Like(request, id, title):
         else: # If user is not logged in
             jsonData = {'likes': 0, 'names': 'error'}
             return HttpResponse(json.dumps(jsonData))
-    else: # If user enter the url like an idiot
+    else: # If no request, throw 404
         raise Http404
 
 def post_Report(request, id, title):
@@ -451,7 +489,7 @@ def post_Comment(request, id, title):
         else: # If user is not logged in
             messages.info(request, 'Need to login first!')
             return HttpResponse('error')
-    else: # If user enter the url like an idiot
+    else: # If no request, throw 404
         raise Http404
 
 def post_Comment_Like(request, id, title, comment_id):
@@ -501,7 +539,7 @@ def post_Comment_Like(request, id, title, comment_id):
         else: # If user is not logged in
             jsonData = {'likes': 0, 'names': 'error'}
             return HttpResponse(json.dumps(jsonData))
-    else: # If user enter the url like an idiot
+    else: # If no request, throw 404
         raise Http404
 
 def post_Comment_Edit(request, id, title, comment_id):
@@ -535,7 +573,7 @@ def post_Comment_Edit(request, id, title, comment_id):
         else: # If user is not logged in
             messages.info(request, 'Need to login first!')
             return HttpResponse('error')
-    else: # If user enter the url like an idiot
+    else: # If no request, throw 404
         raise Http404
 
 def post_Comment_Delete(request, id, title, comment_id):
@@ -551,6 +589,10 @@ def post_Comment_Delete(request, id, title, comment_id):
             comment = Comment.objects.get(id=comment_id)
             user = request.user
             mode = request.POST.get('mode')
+
+            if not user.is_superuser:
+                if user != Post.user:
+                    raise PermissionDenied()
 
             # If delete mode admin send notification to the user
             if mode == 'admin' and user.is_superuser:
@@ -578,7 +620,7 @@ def post_Comment_Delete(request, id, title, comment_id):
             messages.info(request, 'Need to login first!')
             dataJson = {'status': 'error', 'message': 'Need to login first!'}
             return HttpResponse(json.dumps(dataJson))
-    else: # If user enter the url like an idiot
+    else: # If no request, throw 404
         raise Http404
 
 # Reports a comment
@@ -626,5 +668,5 @@ def post_Comment_Report(request, id, title, comment_id):
             messages.info(request, 'Need to login first!')
             dataJson = {'status': 'error', 'message': 'Need to login first!'}
             return HttpResponse(json.dumps(dataJson))
-    else: # If user enter the url like an idiot
+    else: # If no request, throw 404
         raise Http404

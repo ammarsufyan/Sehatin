@@ -20,7 +20,7 @@ urlpatterns = [
     path('post/<str:id>/<str:title>', views.post_Url, name='post'), # Vanity url
     path('post/<str:id>/<str:title>/', views.post_Url, name='post'),
     path('post/<str:id>/<str:title>/edit', views.post_Edit, name='post/edit'),
-    # path('post/<str:id>/<str:title>/delete', views.post_Delete, name='post/delete'),
+    path('post/<str:id>/<str:title>/delete', views.post_Delete, name='post/delete'),
     path('post/<str:id>/<str:title>/report', views.post_Report, name='post/report'),
     path('post/<str:id>/<str:title>/like', views.post_Like, name='post/like'),
 

@@ -63,22 +63,62 @@ function likePost(logged_in, id, title, csrf_token) {
     });
 }
 
-function deletePost(logged_in, id, title, csrf_token) {
-    /* delete post, .. */
+function deletePost(logged_in, postid, title, csrf_token, mode) {
+    /* delete comment, ... */
     if (logged_in == "False") {
-        alert('You must be logged in to delete a post');
+        alert('You must be logged in to delete a comment');
+        return;
+    }
+
+    let isExecuted = confirm("Are you sure you want to delete this post?");
+    if (!isExecuted) {
+        return;
+    }
+
+    let reason = "";
+    // Admin prompt for reason
+    if (mode == 'admin') {
+        // prompt for reason
+        reason = prompt("Please enter a reason for deleting this post:");
+        if (reason == null) { // cancel button pressed
+            return;
+        }
+        if (reason == "") {
+            alert("Please enter a reason for deleting this post!");
+            return;
+        }
+    }
+
+    // prompt for the title
+    let confirmTitle = prompt("Please enter the title of the post to confirm deletion:");
+    if (confirmTitle == null) { // cancel button pressed
+        return;
+    }
+    if (confirmTitle == "") {
+        alert("Please enter the title of the post to confirm deletion!");
+        return;
+    }
+    if (confirmTitle.trim() != title) {
+        alert("The title you entered does not match the title of the post!");
         return;
     }
 
     $.ajax({
-        url: '/post/' + id + '/' + title.replaceAll(' ', '-') + '/delete',
+        url: '/post/' + postid + '/' + title.replaceAll(' ', '-') + '/delete',
         type: 'POST',
         data: {
-            'csrfmiddlewaretoken': csrf_token
+            'csrfmiddlewaretoken': csrf_token,
+            'mode': mode,
+            'reason': reason.trim()
         },
         success: function (data) {
-            // redirect from the backend, with message value of post deleted or something
-            // window.location.href = '/post';
+            dataJson = JSON.parse(data);
+            if (dataJson.status == 'success') {
+                alert("Post has been deleted Sucessfully!");
+                window.location.href = '/post';
+            } else {
+                alert("Error! Fail to delete post!" + dataJson.message);
+            }
         }
     });
 }
