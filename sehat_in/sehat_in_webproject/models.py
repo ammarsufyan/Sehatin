@@ -13,6 +13,8 @@ class Post(models.Model): # Post
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    likes = models.IntegerField(default=0)
+    comments = models.IntegerField(default=0)
 
 class Comment(models.Model): # Comment of a post
     id = models.AutoField(primary_key=True)
@@ -21,6 +23,7 @@ class Comment(models.Model): # Comment of a post
     updated_at = models.DateTimeField(auto_now=True)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    likes = models.IntegerField(default=0)
 
 class Like(models.Model): # Post/comment like
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)

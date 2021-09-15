@@ -185,6 +185,7 @@ def post(request):
     """See all post"""
     posts = Post.objects.all()
     tags = Tag.objects.all()
+
     return render(request, 'post/index.html', {'posts': posts.order_by('-created_at'), 'tags': tags})
 
 def post_Tag(request, tagName):
@@ -323,6 +324,10 @@ def post_Like(request, id, title):
                     names.append(like.user.username)
                 jsonData = {'likes': likes.count(), 'names': names}
 
+                # Increase the post likes
+                post.likes += 1
+                post.save()
+
                 return HttpResponse(json.dumps(jsonData))
             else: # If user has liked this post
                 like.delete()
@@ -333,6 +338,10 @@ def post_Like(request, id, title):
                 for like in likes:
                     names.append(like.user.username)
                 jsonData = {'likes': likes.count(), 'names': names}
+
+                # Decrease the post likes
+                post.likes -= 1
+                post.save()
 
                 return HttpResponse(json.dumps(jsonData))
         else: # If user is not logged in
@@ -385,6 +394,10 @@ def post_Comment(request, id, title):
             # Save comment first
             comment = Comment(user=user, post=post, content=commentGet)
             comment.save()
+
+            # Increase the post comments
+            post.comments += 1
+            post.save()
 
             # send notification to post owner
             if post.user != user:
@@ -443,6 +456,10 @@ def post_Comment_Like(request, id, title, comment_id):
                     names.append(like.user.username)
                 jsonData = {'likes': likes.count(), 'names': names}
 
+                # Increase the comment likes
+                comment.likes += 1
+                comment.save()
+
                 return HttpResponse(json.dumps(jsonData))
             else: # If user has liked this comment
                 like.delete()
@@ -453,6 +470,10 @@ def post_Comment_Like(request, id, title, comment_id):
                 for like in likes:
                     names.append(like.user.username)
                 jsonData = {'likes': likes.count(), 'names': names}
+
+                # Decrease the comment likes
+                comment.likes -= 1
+                comment.save()
 
                 return HttpResponse(json.dumps(jsonData))
         else: # If user is not logged in
@@ -504,15 +525,16 @@ def post_Comment_Delete(request, id, title, comment_id):
     # Check if a post request is made
     if request.method == 'POST':
         if request.user.is_authenticated:
+            post = Post.objects.get(id=id)
             comment = Comment.objects.get(id=comment_id)
             user = request.user
             mode = request.POST.get('mode')
 
             # If delete mode admin send notification to the user
-            if mode == 'admin':
+            if mode == 'admin' and user.is_superuser:
                 if comment.user != None: # Check if post user's account still exist
-                    # Check if user is admin, if admin then dont send notification
-                    if not user.is_superuser:
+                    # Check if the deleted comment's user is admin, if admin then dont send notification
+                    if not comment.user.is_superuser:
                         # Get reason for deletion by admin
                         reason = request.POST.get('reason')
                         # Send notification to user
@@ -521,6 +543,10 @@ def post_Comment_Delete(request, id, title, comment_id):
 
             # Delete comment
             comment.delete()
+
+            # Decrease the post comments
+            post.comments -= 1
+            post.save()
 
             # Get current comment count
             comments = Comment.objects.filter(post=comment.post)
