@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 {% load static %}
+{% load space_to_dash %}
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -15,7 +16,7 @@
     List of posts... 
     Available tags: 
     {% for tag in tags %}
-        <a href="/post/tag/{{ tag.name }}">{{ tag.name }}</a>
+        <a href="/post/tag/{{ tag.name|space_to_dash }}">{{ tag.name }}</a>
     {% endfor %}
     <br>
     {% if user.is_authenticated %}

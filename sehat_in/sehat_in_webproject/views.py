@@ -190,7 +190,7 @@ def post(request):
 
 def post_Tag(request, tagName):
     """See post by tag"""
-    tag = Tag.objects.get(name=tagName)
+    tag = Tag.objects.get(name=tagName.replace('-', ' '))
     if tag is not None:
         posts = Post.objects.filter(tag=tag)
         return render(request, 'post/tag.html', {'posts': posts.order_by('-created_at'), 'tag': tag})
