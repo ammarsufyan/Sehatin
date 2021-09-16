@@ -87,6 +87,10 @@ function deletePost(logged_in, postid, title, csrf_token, mode) {
             alert("Please enter a reason for deleting this post!");
             return;
         }
+        if (reason.length < 4) {
+            alert("Invalid Reason Length! Must be between 4 and 200 characters!");
+            return;
+        }
     }
 
     // prompt for the title
@@ -284,6 +288,8 @@ function deleteComment(logged_in, postid, title, commentId, csrf_token, mode) {
         });
     }
 }
+// global var to control the comment edit form
+isOpen = false;
 
 function editComment(logged_in, id, title, comment_id, csrf_token) {
     /* edit comment, on sucess comment will be updated on database, and client side page. On fail show alert popup -> shouldn't have failed in the first place but just in case */
@@ -292,9 +298,18 @@ function editComment(logged_in, id, title, comment_id, csrf_token) {
         return;
     }
 
+    if(isOpen == true) {
+        return;
+    }
+
+    // Make isOpen true
+    isOpen = true;
+
+    // Get values
     const valueDiv = document.getElementById('comment-' + comment_id);
     const value = valueDiv.innerHTML
     const toFillAfter = document.getElementById('fill-' + comment_id);
+    
     // activate quill
     let quillEdit = new Quill('#comment-' + comment_id, {
         theme: 'snow',
@@ -322,6 +337,8 @@ function editComment(logged_in, id, title, comment_id, csrf_token) {
 
         // fill the div again
         toFillAfter.appendChild(div);
+
+        isOpen = false;
     }
 
     // Appen a save button and cancel edit button
@@ -356,6 +373,7 @@ function editComment(logged_in, id, title, comment_id, csrf_token) {
                     // Create the div again and append the value
                     var div = document.createElement('div');
                     div.innerHTML = newValue;
+                    div.style = 'max-width: 800px;';
                     div.id = 'comment-' + comment_id;
                     reset(div);
                 } else {
@@ -372,6 +390,7 @@ function editComment(logged_in, id, title, comment_id, csrf_token) {
         // Create the div again and append the value
         var div = document.createElement('div');
         div.innerHTML = value;
+        div.style = 'max-width: 800px;';
         div.id = 'comment-' + comment_id;
         reset(div);
     }

@@ -78,7 +78,9 @@
                 <button onclick="deleteComment('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ comment.id }}', '{{ csrf_token }}', 'user')">Delete</button>
                 <button onclick="editComment('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ comment.id }}', '{{ csrf_token }}')">Edit</button>
                 {% endif %}
+                {% if not comment.user.id == user.id %}
                 <button onclick="reportComment('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ comment.id }}', '{{ csrf_token }}')">Report</button>
+                {% endif %}
                 {% if user.is_staff %}
                 <button onclick="deleteComment('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ comment.id }}', '{{ csrf_token }}', 'admin')">Delete (Admin Mode)</button>
                 {% endif %}
