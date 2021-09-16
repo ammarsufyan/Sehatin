@@ -209,15 +209,20 @@ def post_Create(request):
             title = request.POST.get('title')
             content = request.POST.get('content')
             tag_get = request.POST.get('tag')
-
+            post_Type = request.POST.get('post_Type')
+            
             # Check if tag is found
             if tag_get is None:
-                messages.info(request, 'Invalid options!')
+                messages.info(request, 'Invalid tag options!')
                 return HttpResponse('error')
 
             # Check tittle length
             if len(title) < 5:
-                messages.info(request, 'Title must be at least 5 characters!')
+                messages.info(request, 'Title is too short, Min title length is 5 characters')
+                return HttpResponse('error')
+
+            if len(title) > 200:
+                messages.info(request, 'Title is too long, Max title length is 200 characters')
                 return HttpResponse('error')
 
             # Check content length
@@ -234,12 +239,20 @@ def post_Create(request):
             tag = Tag.objects.get(name=tag_get)
 
             if tag is None:
-                messages.info(request, 'Invalid options!')
+                messages.info(request, 'Invalid tag options! No tag found!')
                 return HttpResponse('error')
-            
-            # Create a new post
-            post = Post(title=title, content=content, user=user, tag=tag)
-            post.save()
+
+            # Admin can choose between posting in forum or site
+            if post_Type is not None or post_Type != '':
+                if post_Type == 'web post':
+                    post = Post(title=title, content=content, user=user, tag=tag, post_Type=post_Type.lower())
+                    post.save()
+                else: # forum post
+                    post = Post(title=title, content=content, user=user, tag=tag)
+                    post.save()
+            else: # Create a new post
+                post = Post(title=title, content=content, user=user, tag=tag)
+                post.save()
 
             # Return the post id
             getPost = Post.objects.get(title=title, content=content, user=user)

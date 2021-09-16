@@ -21,10 +21,25 @@
         <div id="editor"></div>
         <p>Tag</p>
         <select name="tag" id="tag">
-            {% for tag in tags %}
-            <option value="{{ tag.name }}">{{ tag.name }}</option>
-            {% endfor %}
+            {% if user.is_superuser %}
+                {% for tag in tags %}
+                <option value="{{ tag.name }}">{{ tag.name }}</option>
+                {% endfor %}
+            {% else %}
+                {% for tag in tags %}
+                    {% if not tag.adminOnly %}
+                        <option value="{{ tag.name }}">{{ tag.name }}</option>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
         </select>
+        {% if user.is_superuser %}
+        <p>Post type: </p>
+        <input type="radio" id="web-post" value="web post" name="post-type">
+        <label for="web-post">Web Post</label>
+        <input type="radio" id="forum-post" value="forum" name="post-type">
+        <label for="forum-post">Forum Post</label>
+        {% endif %}
         <br>
         <input type="submit" value="Create" onclick="createPost()">
     </div>
@@ -48,17 +63,18 @@
                         'csrfmiddlewaretoken': csrf,
                         'title': title.trim(),
                         'content': content.trim(),
-                        'tag': tag
+                        'tag': tag,
+                        'post_Type': $('input[name=post-type]:checked').val()
                     },
                     success: function(data) {
                         // data returned on success is post id
-                        if (data != 'error' || data != 'limit') {
-                            window.location.href = '/post/' + data;
+                        if (data == 'error') {
+                            window.location.href = '/post/create';
                         } else
                         if (data == 'limit')  {
                             alert('Character length invalid!')
                         } else {
-                            window.location.href = '/post/create';
+                            window.location.href = '/post/' + data.toString();
                         }
                     }
                 });
@@ -73,9 +89,16 @@
 
             // Title min 5
             if (title.length < 5) {
-                alert("Title must be at least 5 characters");
+                alert("Title is too short, Min title length is 5 characters");
                 return false;
             }
+
+            // title max 200
+            if (title.length > 200) {
+                alert("Title is too long, Max title length is 200 characters");
+                return false;
+            }
+
             // Content min 25
             if (content.length < 25) {
                 alert("Content too short! Min content including formatting are 25 characters long");
@@ -84,6 +107,12 @@
             // content max 40k
             if (content.length > 40000) {
                 alert("Content too long! Max content including formatting are 40,000 characters long");
+                return false;
+            }
+            // get radio using jquery
+            var post_type = $('input[name=post-type]:checked').val();
+            if (post_type == undefined) {
+                alert("Please select post type");
                 return false;
             }
 
