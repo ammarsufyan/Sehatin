@@ -32,14 +32,10 @@ urlpatterns = [
     path('post/<str:id>/<str:title>/comment/<str:comment_id>/report', views.post_Comment_Report, name='post/comment/report'),
 
     # Profile
-    # path('/profile/<str:username>', views.profile, name='profile'),
-    # path('/profile/<str:username>/setting', views.profile, name='profile'),
-    # # path('/profile/<str:username>/notification/', views.profile, name='profile'),
-    # path('post/<str:id>/edit', views.post_Edit, name='post/edit'),
-    # path('report/post/<str:id>', views.post_Report, name='post/report'),
-    # path('post/<str:id>/comment', views.post_Comment, name='post/comment'),
-    # path('post/<str:id>/comment/<str:comment_id>/delete', views.post_Comment_Delete, name='post/comment/delete'),
-    # path('post/<str:id>/comment/<str:comment_id>/report', views.post_Comment_Report, name='post/comment/report'),
-    # path('post/<str:id>/comment/<str:comment_id>/edit', views.post_Comment_Edit, name='post/comment/edit'),
-    # path('post/<str:id>/comment/<str:comment_id>/reply', views.post_Comment_Reply, name='post/comment/reply'),
+    path('profile/<str:username>', views.profile, name='profile'),
+    path('profile/<str:username>/setting', views.profile_Setting, name='profile/setting'),
+    path('profile/<str:username>/notification', views.profile_Notification, name='profile/notification'),
+
+    # Reports
+    path('report', views.report, name='report'),
 ]

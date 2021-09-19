@@ -100,6 +100,11 @@ def register(request):
             else:
                 user = User.objects.create_user(first_name=first_name, last_name=last_name, username=username, email=email, password=password)
                 user.save()
+
+                # Create a new user profile
+                user_profile = UserProfile(user=user)
+                user_profile.save()
+
                 messages.info(request, 'You have been registered successfully, you can now log in to your account')
                 return redirect('/auth/login')
         else: # If password and password confirmation are not the same
@@ -684,3 +689,89 @@ def post_Comment_Report(request, id, title, comment_id):
             return HttpResponse(json.dumps(dataJson))
     else: # If no request, throw 404
         raise Http404
+
+def profile(request, username):
+    """See a user's profile"""
+    # get the user profile
+    user = User.objects.get(username=username)
+
+    # Check if user exists or not
+    if user:
+        user_profile = UserProfile.objects.get(user=user)
+        
+        # get the user posts
+        posts = Post.objects.filter(user=user)
+
+        # get the user comments
+        comments = Comment.objects.filter(user=user)
+
+        return render(request, 'profile/index.html', {'theUser': user, 'user_profile': user_profile, 'posts': posts, 'comments': comments})
+    else:
+        raise Http404
+
+def profile_Setting(request, username):
+    """User profile settings"""
+    if request.user.is_authenticated:
+        if username == request.user.username: # If user is logged in and username is the same
+            if request.method == 'POST': # If request is made using post
+                user = User.objects.get(username=request.user.username)
+                user.first_name = request.POST.get('firstName')
+                user.last_name = request.POST.get('lastName')
+                user.email = request.POST.get('email')
+
+                # Check email
+                regex = "[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                if not re.search(regex, user.email) or len(user.email) < 3:
+                    messages.info(request, 'Invalid email address!')
+                    return redirect('/auth/register')
+
+                # User profile
+                user_Profile = UserProfile.objects.get(user=user)
+                user_Profile.bio = request.POST.get('bio')
+                user_Profile.location = request.POST.get('location')
+
+                # Check bio limit 500 characters
+                if len(user_Profile.bio) > 500:
+                    messages.info(request, 'Bio to long! Max length is 500 characters')
+                    return redirect('/profile/' + user.username + '/setting')
+
+                # Check location limit 250 characters
+                if len(user_Profile.location) > 250:
+                    messages.info(request, 'Location too long! Max length is 250 characters')
+                    return redirect('/profile/' + user.username + '/setting')
+
+
+                # Save
+                user.save()
+                user_Profile.save()
+
+                messages.info(request, 'Profile updated successfully!')
+                return redirect('/profile/' + user.username + '/setting')
+            else: # If Open normally
+                return render(request, 'profile/setting.html', {'UserProfile': UserProfile.objects.get(user=request.user)})
+        else: # If not the user
+            raise PermissionDenied()
+    else: # If user is not logged in
+        messages.info(request, 'You have to be logged in first!')
+        return render(request, 'auth/login')
+
+def profile_Notification(request, username):
+    """User profile notification"""
+    if request.user.is_authenticated:
+        if username == request.user.username:
+            notifications = Notification.objects.filter(user=request.user)
+            return render(request, 'profile/notification.html', {'notifications': notifications})
+        else:
+            raise PermissionDenied()
+    else:
+        messages.info(request, 'You have to be logged in first!')
+        return render(request, 'auth/login')
+
+
+def report(request):
+    """Open reports view, admin only"""
+    if request.user.is_superuser:
+        reports = Report.objects.all()
+        return render(request, 'report.html', {'reports': reports})
+    else:
+        raise PermissionDenied()

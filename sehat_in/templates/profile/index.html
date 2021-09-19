@@ -5,32 +5,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% if user_ID %}
-    <title>{{ user_ID }}</title>
-    {% endif %}
+    <title>{{ theUser.username }}</title>
 
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 </head>
 <body>
     {% include 'templates/header.html' %}
 
-    {% if user.is_authenticated %}
-    {% if user_ID == user.id %}
+    <p>{{ theUser.username }} account!</p>
+    <p>Your full name is {{ theUser.first_name }} {{ theUser.last_name }}</p>
+    <p>Your staff status is {{ theUser.is_staff }}</p>
+    <p>Your date joined is {{ theUser.date_joined }}</p>
 
-    <p>Welcome {{ user.first_name }}!</p>
-    <p>Currently logged in as {{ user.username }}</p>
-    <p>Your email address is {{ user.email }}</p>
-    <p>Your full name is {{ user.first_name }} {{ user.last_name }}</p>
-    <p>Your user id is {{ user.id }}</p>
-    <p>Your staff status is {{ user.is_staff }}</p>
-    <p>Your perrmission is {{ user.get_user_permissions }}</p>
-    <p>Your date joined is {{ user.date_joined }}</p>
-    <p>Your last login is {{ user.last_login }}</p>
-    {% endif %}
-    {% if user_ID %}
-    The value in the url is {{ user_ID }}
-    {% else %}
-    How can you get here? - Should be 404
-    {% endif %}
+    {% include 'templates/footer.html' %}
 </body>
 </html>

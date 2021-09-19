@@ -64,8 +64,8 @@ class Notification(models.Model):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    bio = models.TextField(max_length=500, null=True)
-    location = models.CharField(max_length=50, null=True)
+    bio = models.TextField(max_length=500, blank=True, null=True)
+    location = models.CharField(max_length=250, blank=True, null=True)
     # cek post apa aja, if post.user.id == user.id
     # cek notif, if notif.user.id == user.id
 
