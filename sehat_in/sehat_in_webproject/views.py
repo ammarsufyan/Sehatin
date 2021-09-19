@@ -414,7 +414,6 @@ def post_Report(request, id, title):
             user = request.user
             post = Post.objects.get(id=id)
             reason = request.POST.get('reason')
-            reportType = request.POST.get('reportType')
 
             # Validate reason
             if len(reason) < 4:
@@ -430,14 +429,14 @@ def post_Report(request, id, title):
             # Check if user has already reported this post
             report = Report.objects.filter(user=user, post=post)
             if report.count() == 0:
-                report = Report(user=user, post=post, reason=reason, reportType=reportType)
+                report = Report(user=user, reportedUser=post.user, post=post, reason=reason, reportType='post')
                 report.save()
                 jsonData = {'status': 'success', 'message': 'Post has been reported successfully!'}
                 return HttpResponse(json.dumps(jsonData))
             else:
                 messages.info(request, 'You have already reported this post!')
                 jsonData = {'status': 'error', 'message': 'You have already reported this post!'}
-                return HttpResponse('error')
+                return HttpResponse(json.dumps(jsonData))
         else:
             messages.info(request, 'Need to login first!')
             jsonData = {'status': 'error', 'message': 'Need to login first!'}
@@ -656,7 +655,6 @@ def post_Comment_Report(request, id, title, comment_id):
             comment = Comment.objects.get(id=comment_id)
             user = request.user
             reason = request.POST.get('reason')
-            reportType = request.POST.get('reportType')
 
             # Validate reason
             if len(reason) < 4:
@@ -672,9 +670,9 @@ def post_Comment_Report(request, id, title, comment_id):
             # Check if user has already reported this comment
             report = Report.objects.filter(user=user, comment=comment)
             # If have not reported this comment
-            if report.count() == 0:
+            if report.count() == 0:                
                 # Report comment
-                report = Report(user=user, comment=comment, reason=reason, reportType=reportType)
+                report = Report(user=user, reportedUser=comment.user, post=comment.post, comment=comment, reason=reason, reportType='comment')
                 report.save()
 
                 # Get amount of reports
@@ -772,7 +770,11 @@ def profile_Notification(request, username):
 def report(request):
     """Open reports view, admin only"""
     if request.user.is_superuser:
-        reports = Report.objects.all()
-        return render(request, 'report.html', {'reports': reports})
+        # Get reqeuest split reports to 25 per page
+        paginator = Paginator(Report.objects.all(), 25)
+        page = request.GET.get('page')
+        reports = paginator.get_page(page)
+
+        return render(request, 'report.html', {'reportsPaged': reports})
     else:
         raise PermissionDenied()

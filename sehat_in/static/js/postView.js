@@ -158,8 +158,7 @@ function reportPost(logged_in, postid, title, csrf_token) {
         type: 'POST',
         data: {
             'csrfmiddlewaretoken': csrf_token,
-            'reason': reason,
-            'reportType': 'post'
+            'reason': reason
         },
         success: function (data) {
             dataJson = JSON.parse(data);
@@ -204,7 +203,6 @@ function reportComment(logged_in, postid, title, commentId, csrf_token) {
         data: {
             'csrfmiddlewaretoken': csrf_token,
             'reason': reason,
-            'reportType': 'comment'
         },
         success: function (data) {
             dataJson = JSON.parse(data);

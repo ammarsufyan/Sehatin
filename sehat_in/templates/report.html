@@ -7,6 +7,67 @@
     <title>Report</title>
 </head>
 <body>
-    aaaaa
+    {% include 'templates/header.html'%}
+
+    <div class="container">
+
+    <ul>
+        {% for report in reportsPaged %}
+        <li>
+            Type: {{ report.reportType }}<br>
+            Reason: {{ report.reason }}<br>
+            Reported by: {{ report.user }}<br>
+            Reported at: {{ report.created_at }}<br>
+            Report Information: <br> 
+            {% if report.reportType == 'post' %}
+                {% if report.post %}
+                    Post ID: {{ report.post.id }}<br>
+                    Post Title: {{ report.post.title }}<br>
+                    <a href="/post/{{ report.post.id }}">Link to the reported post</a>
+                {% else %}
+                    Post is already deleted
+                {% endif %}
+                {% if report.user %}
+                    <a href="/profile/{{ report.user.username }}">The user that make the post</a>
+                {% else %}
+                    User is already deleted
+                {% endif %}
+            {% elif report.reportType == 'comment' %}
+                {% if report.comment %}
+                    Comment ID: {{ report.comment.id }}<br>
+                    Content:<br>{% autoescape off %}{{ report.comment.content }}{% endautoescape %}
+    
+                    <a href="/post/{{ report.post.id }}/{{ report.post.title }}#comments-{{ report.comment.id }}">Link to the reported Comment</a>
+                {% else %}
+                    Comment is already deleted
+                {% endif %}
+                {% if report.user %}
+                    <a href="/profile/{{ report.user.username }}">The user that make the comment</a>
+                {% else %}
+                    User is already deleted
+                {% endif %}
+            {% elif report.reportType == 'user' %}
+                {% if report.user %}
+                    <a href="/profile/{{ report.user.username }}">{{ report.user.username }}'s profile</a>
+                {% else %}
+                    User is already deleted
+                {% endif %}
+            {% endif %}
+        </li>
+        {% endfor %}
+    </ul>
+
+    </div>
+
+    {% if reportsPaged.has_previous %}
+        <a href="?page=1">&laquo First</a>
+        <a href="?page={{ reportsPaged.previous_page_number }}">Previous</a>
+    {% endif %}
+    {% if reportsPaged.has_next %}
+        <a href="?page={{ reportsPaged.next_page_number }}">Next</a>
+        <a href="?page={{ reportsPaged.paginator.num_pages }}">Last &raquo</a>
+    {% endif %}
+
+    {% include 'templates/footer.html' %}
 </body>
 </html>

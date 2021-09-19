@@ -77,5 +77,5 @@ class Report(models.Model):
     comment = models.ForeignKey(Comment, on_delete=models.SET_NULL, null=True) # If reporting a comment
     reason = models.CharField(max_length=200)
     reportType = models.CharField(max_length=50)
+    isResolved = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
