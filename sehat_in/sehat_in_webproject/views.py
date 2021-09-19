@@ -216,6 +216,7 @@ def post_Create(request):
             content = request.POST.get('content')
             tag_get = request.POST.get('tag')
             post_Type = request.POST.get('post_Type')
+            thumbnail_url = request.POST.get('thumbnail_url')
             
             # Check if tag is found
             if tag_get is None:
@@ -236,6 +237,12 @@ def post_Create(request):
                 messages.info(request, 'Content must be at least 25 characters!')
                 return HttpResponse('limit')
 
+            # check img url with regex
+            if thumbnail_url is not None:
+                if not re.match(r'^https?://(?:[a-z0-9\-]+\.)+[a-z]{2,6}(?:/[^/#?]+)+\.(?:jpg|gif|png|jpeg|webp)$', thumbnail_url):
+                    messages.info(request, 'Invalid thumbnail url!')
+                    return HttpResponse('error')
+
             # Max 40k
             if len(content) > 40000:
                 messages.info(request, 'Invalid content length! Max allowed are 40k including formatting')
@@ -251,10 +258,10 @@ def post_Create(request):
             # Admin can choose between posting in forum or site
             if post_Type is not None or post_Type != '':
                 if post_Type == 'web post':
-                    post = Post(title=title, content=content, user=user, tag=tag, post_Type=post_Type.lower())
+                    post = Post(title=title, content=content, user=user, tag=tag, post_Type=post_Type.lower(), thumbnail_url=thumbnail_url)
                     post.save()
                 else: # forum post
-                    post = Post(title=title, content=content, user=user, tag=tag)
+                    post = Post(title=title, content=content, user=user, tag=tag, thumbnail_url=thumbnail_url)
                     post.save()
             else: # Create a new post
                 post = Post(title=title, content=content, user=user, tag=tag)

@@ -10,6 +10,7 @@ class Post(models.Model): # Post
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=200)
     content = models.TextField()
+    thumbnail_url = models.CharField(max_length=200, blank=True, null=True)
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
