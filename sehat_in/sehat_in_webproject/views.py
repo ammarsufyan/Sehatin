@@ -778,3 +778,26 @@ def report(request):
         return render(request, 'report.html', {'reportsPaged': reports})
     else:
         raise PermissionDenied()
+
+def report_Resolve(request, id):
+    """Resolve report, admin only"""
+    if request.method == 'POST':
+        if request.user.is_superuser:
+            # Get report
+            report = Report.objects.get(id=id)
+
+            # Check if already resolved or not, if not resolved make resolved, if resolved make unresolved
+            if report.isResolved == False:
+                report.isResolved = True
+                report.save()
+                dataJson = {'status': 'success', 'isResolved': True}
+                return HttpResponse(json.dumps(dataJson))
+            else:
+                report.isResolved = False
+                report.save()
+                dataJson = {'status': 'success', 'isResolved': False}
+                return HttpResponse(json.dumps(dataJson))
+        else:
+            raise PermissionDenied()
+    else:
+        raise Http404
