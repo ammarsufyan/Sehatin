@@ -740,8 +740,7 @@ def profile_Settings(request, username):
                 # Check location limit 250 characters
                 if len(user_Profile.location) > 250:
                     messages.info(request, 'Location too long! Max length is 250 characters')
-                    return redirect('/profile/' + user.username + '/settings')
-
+                    return redirect('/profile/' + user.username + '/settings')  
 
                 # Save
                 user.save()
