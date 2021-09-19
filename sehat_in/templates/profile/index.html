@@ -5,17 +5,49 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ theUser.username }}</title>
+    <title>{{ user.username }}'s Profile</title>
 
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 </head>
 <body>
     {% include 'templates/header.html' %}
+    <p>{{ theUser.username }}'s Profile</p>
+    <a class="button history-test" href="/profile/{{ user.username }}/history">History</a>
+    <a class="button settings" href="/profile/{{ user.username }}/settings">Settings</a>
+    <p>First Name: {{ theUser.first_name }}</p> 
+    <p>Last Name: {{ theUser.last_name }}</p>
+    <p>Bio: 
+        {% if user_profile.bio is None %}
+            -
+        {% else %}
+            {{ user_profile.bio }}
+        {% endif %}
+    </p>
+    <p>Location: 
+        {% if user_profile.location is None %}
+            -
+        {% else %}
+            {{ user_profile.location }}
+        {% endif %}
+    </p>
+    <p>Role: 
+        {% if theUser.is_staff %}
+            Dokter
+        {% else %}
+            User
+        {% endif %}
+    </p>
 
-    <p>{{ theUser.username }} account!</p>
-    <p>Your full name is {{ theUser.first_name }} {{ theUser.last_name }}</p>
-    <p>Your staff status is {{ theUser.is_staff }}</p>
-    <p>Your date joined is {{ theUser.date_joined }}</p>
+    {% for post in posts %}
+    <div class="post-lists" id="post-id-{{ post.id }}">
+        <h1><a href="/post/{{ post.id }}">{{ post.title }}</a></h1>
+        <p>Tag: <a href="/post/tag/{{ post.tag.name }}">{{ post.tag.name }}</a></p>
+        {% autoescape off %}
+        <p>{{ post.content }}</p>
+        {% endautoescape %}
+        <p>Created at {{ post.created_at }} - last updated at {{ post.updated_at }}</p>
+    </div>
+    {% endfor %}
 
     {% include 'templates/footer.html' %}
 </body>

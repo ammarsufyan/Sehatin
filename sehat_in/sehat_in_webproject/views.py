@@ -251,12 +251,8 @@ def post_Create(request):
             # Admin can choose between posting in forum or site
             if post_Type is not None or post_Type != '':
                 if post_Type == 'web post':
-                    # Check if user is admin
-                    if user.is_staff:
-                        post = Post(title=title, content=content, user=user, tag=tag, post_Type=post_Type.lower())
-                        post.save()
-                    else:
-                        return HttpResponse('error')
+                    post = Post(title=title, content=content, user=user, tag=tag, post_Type=post_Type.lower())
+                    post.save()
                 else: # forum post
                     post = Post(title=title, content=content, user=user, tag=tag)
                     post.save()
@@ -714,7 +710,8 @@ def profile(request, username):
     else:
         raise Http404
 
-def profile_Setting(request, username):
+
+def profile_Settings(request, username):
     """User profile settings"""
     if request.user.is_authenticated:
         if username == request.user.username: # If user is logged in and username is the same
@@ -738,12 +735,12 @@ def profile_Setting(request, username):
                 # Check bio limit 500 characters
                 if len(user_Profile.bio) > 500:
                     messages.info(request, 'Bio to long! Max length is 500 characters')
-                    return redirect('/profile/' + user.username + '/setting')
+                    return redirect('/profile/' + user.username + '/settings')
 
                 # Check location limit 250 characters
                 if len(user_Profile.location) > 250:
                     messages.info(request, 'Location too long! Max length is 250 characters')
-                    return redirect('/profile/' + user.username + '/setting')
+                    return redirect('/profile/' + user.username + '/settings')
 
 
                 # Save
@@ -751,9 +748,9 @@ def profile_Setting(request, username):
                 user_Profile.save()
 
                 messages.info(request, 'Profile updated successfully!')
-                return redirect('/profile/' + user.username + '/setting')
+                return redirect('/profile/' + user.username + '/settings')
             else: # If Open normally
-                return render(request, 'profile/setting.html', {'UserProfile': UserProfile.objects.get(user=request.user)})
+                return render(request, 'profile/settings.html', {'UserProfile': UserProfile.objects.get(user=request.user)})
         else: # If not the user
             raise PermissionDenied()
     else: # If user is not logged in
@@ -776,10 +773,6 @@ def profile_Notification(request, username):
 def report(request):
     """Open reports view, admin only"""
     if request.user.is_superuser:
-        # Get reqeuest split reports to 25 per page
-        paginator = Paginator(Report.objects.all(), 25)
-
-
         reports = Report.objects.all()
         return render(request, 'report.html', {'reports': reports})
     else:

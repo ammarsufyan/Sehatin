@@ -45,6 +45,44 @@
     </div>
 
     <script>
+        function validateForm() {
+                    /* Validate form */
+                    // get value from quill
+                    var content = document.getElementById("editor").children[0].innerHTML;
+                    var title = document.getElementsByName('title')[0].value;
+
+                    // Title min 5
+                    if (title.length < 5) {
+                        alert("Title is too short, Min title length is 5 characters");
+                        return false;
+                    }
+
+                    // title max 200
+                    if (title.length > 200) {
+                        alert("Title is too long, Max title length is 200 characters");
+                        return false;
+                    }
+
+                    // Content min 25
+                    if (content.length < 25) {
+                        alert("Content too short! Min content including formatting are 25 characters long");
+                        return false;
+                    }
+                    // content max 40k
+                    if (content.length > 40000) {
+                        alert("Content too long! Max content including formatting are 40,000 characters long");
+                        return false;
+                    }
+                    // get radio using jquery
+                    var post_type = $('input[name=post-type]:checked').val();
+                    if (post_type == undefined) {
+                        alert("Please select post type");
+                        return false;
+                    }
+
+                    return true;
+                }
+    
         function createPost() {
             /* send ajax, if sucess go to the post, if fail reload the page */
             if (!validateForm()){
@@ -79,44 +117,6 @@
                     }
                 });
             }
-        }
-
-        function validateForm() {
-            /* Validate form */
-            // get value from quill
-            var content = document.getElementById("editor").children[0].innerHTML;
-            var title = document.getElementsByName('title')[0].value;
-
-            // Title min 5
-            if (title.length < 5) {
-                alert("Title is too short, Min title length is 5 characters");
-                return false;
-            }
-
-            // title max 200
-            if (title.length > 200) {
-                alert("Title is too long, Max title length is 200 characters");
-                return false;
-            }
-
-            // Content min 25
-            if (content.length < 25) {
-                alert("Content too short! Min content including formatting are 25 characters long");
-                return false;
-            }
-            // content max 40k
-            if (content.length > 40000) {
-                alert("Content too long! Max content including formatting are 40,000 characters long");
-                return false;
-            }
-            // get radio using jquery
-            var post_type = $('input[name=post-type]:checked').val();
-            if (post_type == undefined) {
-                alert("Please select post type");
-                return false;
-            }
-
-            return true;
         }
     </script>
 

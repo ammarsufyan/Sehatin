@@ -33,7 +33,7 @@ urlpatterns = [
 
     # Profile
     path('profile/<str:username>', views.profile, name='profile'),
-    path('profile/<str:username>/setting', views.profile_Setting, name='profile/setting'),
+    path('profile/<str:username>/settings', views.profile_Settings, name='profile/settings'),
     path('profile/<str:username>/notification', views.profile_Notification, name='profile/notification'),
 
     # Reports
