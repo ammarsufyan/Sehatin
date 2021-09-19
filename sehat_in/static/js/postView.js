@@ -39,7 +39,7 @@ function editPost(logged_in, id, title) {
 }
 
 function likePost(logged_in, id, title, csrf_token) {
-    /* like post, if sucess edit likes and liker, if fail alert fail */
+    /* like post, if success edit likes and liker, if fail alert fail */
     if (logged_in == "False") {
         alert('You must be logged in to like a post');
         return;
@@ -64,7 +64,7 @@ function likePost(logged_in, id, title, csrf_token) {
 }
 
 function deletePost(logged_in, postid, title, csrf_token, mode) {
-    /* delete comment, ... */
+    /* delete post, alert post has been deleted successfully and redirect to post lists on success, alert fail otherwise */
     if (logged_in == "False") {
         alert('You must be logged in to delete a comment');
         return;
@@ -118,7 +118,7 @@ function deletePost(logged_in, postid, title, csrf_token, mode) {
         success: function (data) {
             dataJson = JSON.parse(data);
             if (dataJson.status == 'success') {
-                alert("Post has been deleted Sucessfully!");
+                alert("Post has been deleted successfully!");
                 window.location.href = '/post';
             } else {
                 alert("Error! Fail to delete post!" + dataJson.message);
@@ -128,7 +128,7 @@ function deletePost(logged_in, postid, title, csrf_token, mode) {
 }
 
 function reportPost(logged_in, postid, title, csrf_token) {
-    /* report comment, ... */
+    /* report post, alert success on success, alert fail on failure */
     if (logged_in == "False") {
         alert('You need to login to report a post');
         return;
@@ -164,7 +164,7 @@ function reportPost(logged_in, postid, title, csrf_token) {
         success: function (data) {
             dataJson = JSON.parse(data);
             if (dataJson.status == 'success') {
-                alert("Post has been Reported Sucessfully! Thanks for trying to make the site a better place!");
+                alert("Post has been Reported successfully! Thanks for trying to make the site a better place!");
             } else {
                 alert("Error! Fail to report post! " + dataJson.message);
             }
@@ -173,7 +173,7 @@ function reportPost(logged_in, postid, title, csrf_token) {
 }
 
 function reportComment(logged_in, postid, title, commentId, csrf_token) {
-    /* report comment, ... */
+    /* report comment, alert success on success, alert fail on failure */
     if (logged_in == "False") {
         alert('You need to login to report a comment');
         return;
@@ -209,7 +209,7 @@ function reportComment(logged_in, postid, title, commentId, csrf_token) {
         success: function (data) {
             dataJson = JSON.parse(data);
             if (dataJson.status == 'success') {
-                alert("Comment Has Been Reported Sucessfully! Thanks for trying to make the site a better place!");
+                alert("Comment Has Been Reported successfully! Thanks for trying to make the site a better place!");
             } else {
                 alert("Error! Fail to report comment! " + dataJson.message);
             }
@@ -218,7 +218,7 @@ function reportComment(logged_in, postid, title, commentId, csrf_token) {
 }
 
 function deleteComment(logged_in, postid, title, commentId, csrf_token, mode) {
-    /* delete comment, ... */
+    /* delete comment, change comment counter and delete the comment on success, alert onfail */
     if (logged_in == "False") {
         alert('You must be logged in to delete a comment');
         return;
@@ -292,13 +292,14 @@ function deleteComment(logged_in, postid, title, commentId, csrf_token, mode) {
 isOpen = false;
 
 function editComment(logged_in, id, title, comment_id, csrf_token) {
-    /* edit comment, on sucess comment will be updated on database, and client side page. On fail show alert popup -> shouldn't have failed in the first place but just in case */
+    /* edit comment, on success comment will be updated on database, and client side page. On fail show alert popup -> shouldn't have failed in the first place but just in case */
     if (logged_in == "False") {
         alert('You must be logged in to edit a comment');
         return;
     }
 
     if(isOpen == true) {
+        alert("You can only edit one comment at a time!");
         return;
     }
 
@@ -402,7 +403,7 @@ function editComment(logged_in, id, title, comment_id, csrf_token) {
 
 
 function likeComment(logged_in, post_id, title, comment_id, csrf_token) {
-    /* like comment, if sucess edit likes count, if fail alert fail */
+    /* like comment, if success edit likes count, if fail alert fail */
     if (logged_in == "False") {
         alert('You must be logged in to like a comment');
         return;
@@ -426,7 +427,7 @@ function likeComment(logged_in, post_id, title, comment_id, csrf_token) {
 }
 
 function comment(logged_in, id, title, csrf_token) {
-    /* comment, if sucess refresh page, if fail alert fail */
+    /* comment, if success refresh page, if fail alert fail */
     if (logged_in == "False") {
         alert('You must be logged in to comment on a post');
         return;

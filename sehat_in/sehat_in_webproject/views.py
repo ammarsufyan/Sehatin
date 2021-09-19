@@ -603,8 +603,9 @@ def post_Comment_Delete(request, id, title, comment_id):
             user = request.user
             mode = request.POST.get('mode')
 
+            # Verify if the user is the comment owner
             if not user.is_superuser:
-                if user != Post.user:
+                if user != comment.user:
                     raise PermissionDenied()
 
             # If delete mode admin send notification to the user
