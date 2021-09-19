@@ -7,6 +7,7 @@ from django.core.exceptions import PermissionDenied
 from django.http import Http404
 import json
 import re
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 # Views of each URL
 # Assigning the function to each url
@@ -250,8 +251,12 @@ def post_Create(request):
             # Admin can choose between posting in forum or site
             if post_Type is not None or post_Type != '':
                 if post_Type == 'web post':
-                    post = Post(title=title, content=content, user=user, tag=tag, post_Type=post_Type.lower())
-                    post.save()
+                    # Check if user is admin
+                    if user.is_staff:
+                        post = Post(title=title, content=content, user=user, tag=tag, post_Type=post_Type.lower())
+                        post.save()
+                    else:
+                        return HttpResponse('error')
                 else: # forum post
                     post = Post(title=title, content=content, user=user, tag=tag)
                     post.save()
@@ -771,6 +776,10 @@ def profile_Notification(request, username):
 def report(request):
     """Open reports view, admin only"""
     if request.user.is_superuser:
+        # Get reqeuest split reports to 25 per page
+        paginator = Paginator(Report.objects.all(), 25)
+
+
         reports = Report.objects.all()
         return render(request, 'report.html', {'reports': reports})
     else:
