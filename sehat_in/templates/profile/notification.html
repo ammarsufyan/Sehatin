@@ -1,11 +1,41 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load static %}
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>{{ user.username }}'s Notification</title>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
 </head>
 <body>
+    {% include 'templates/header.html'%}
+
+    <div class="notification">
+        <ul>
+            {% for notif in notifications %}
+            {% if notif.read %}
+                <li style="background-color:white;">
+            {% else %}
+                <li style="background-color:yellow;">
+            {% endif %}
+            {% if notif.post %}
+                Type: Post<br>
+                <a href="/post/{{ notif.post.id }}">{{ notif.notification_Content }}</a>
+            {% elif notif.comment %}
+                Type: Comment<br>
+                <a href="/post/{{ notif.post.id }}/{{ notif.post.title }}#comments-">{{ notif.notification_Content }}</a>
+            {% else %}
+                {{ notif.notification_Content }}
+            {% endif %}
+                <br>
+                <button>Mark read</button>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    {% include 'templates/footer.html'%}
 </body>
 </html>

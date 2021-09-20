@@ -487,7 +487,7 @@ def post_Comment(request, id, title):
             # send notification to post owner
             if post.user != user:
                 if post.user != None: # Check if post user's account still exist
-                    notification = Notification(user=post.user, post=post, notification_Content=user.username + 'posted a comment on your post')
+                    notification = Notification(user=post.user, post=post, comment=comment, notification_Content=user.username + 'posted a comment on your post')
                     notification.save()
 
             # Send notification to mentioned users @
@@ -505,7 +505,7 @@ def post_Comment(request, id, title):
                         # Get the comment object
                         mentionedComment = Comment.objects.get(user=user, post=post, content=commentGet)
                     
-                        notification = Notification(user=mentionedUserObject, comment=mentionedComment,  post=post, notification_Content=user.username + ' mentioned you in a comment')
+                        notification = Notification(user=mentionedUserObject, comment=mentionedComment, post=post, notification_Content=user.username + ' mentioned you in a comment')
                         notification.save()
                     except:
                         continue
@@ -765,7 +765,10 @@ def profile_Notification(request, username):
     """User profile notification"""
     if request.user.is_authenticated:
         if username == request.user.username:
-            notifications = Notification.objects.filter(user=request.user)
+            # Get reqeuest split notifications to 25 per page
+            paginator = Paginator(Notification.objects.filter(user=request.user).order_by('-created_at'), 25)
+            page = request.GET.get('page')
+            notifications = paginator.get_page(page)
             return render(request, 'profile/notification.html', {'notifications': notifications})
         else:
             raise PermissionDenied()
@@ -773,12 +776,28 @@ def profile_Notification(request, username):
         messages.info(request, 'You have to be logged in first!')
         return render(request, 'auth/login')
 
+def profile_Notification_Read(request, username, notification_id):
+    """User profile notification read"""
+    if request.method == 'POST':
+        if username == request.user.username:
+            # Get the notification
+            notification = Notification.objects.get(id=notification_id)
+
+            # Mark as read
+            notification.read = True
+            notification.save()
+
+            return HttpResponse(json.dumps({'status': 'success'}))
+        else:
+            raise PermissionDenied()
+    else:
+        raise Http404
 
 def report(request):
     """Open reports view, admin only"""
     if request.user.is_superuser:
         # Get reqeuest split reports to 25 per page
-        paginator = Paginator(Report.objects.all(), 25)
+        paginator = Paginator(Report.objects.all().order_by('-created_at'), 25)
         page = request.GET.get('page')
         reports = paginator.get_page(page)
 
