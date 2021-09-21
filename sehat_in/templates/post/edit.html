@@ -17,6 +17,8 @@
         {% csrf_token %}
         <p>Title</p>
         <input type="text" name="title" placeholder="{{post.title}}" readonly>
+        <p>Thumbnail URL *Can be left blank</p>
+        <input type="text" name="thumbnail" placeholder="Thumbnail URL" value="{{ post.thumbnail_url }}" autocomplete="off">
         <p>Content</p>
         <div id="editor"></div>
         <p>Tag</p>
@@ -45,6 +47,7 @@
                 var content = document.getElementById('editor').children[0].innerHTML;
                 var tag = $('#tag').val();
                 var csrf = $('input[name=csrfmiddlewaretoken]').val();
+                var thumbnail = document.getElementsByName('thumbnail')[0].value;
                 var title = "{{ post.title }}";
                 var id = "{{ post.id }}";
                 $.ajax({
@@ -52,6 +55,7 @@
                     type: 'POST',
                     data: {
                         'csrfmiddlewaretoken': csrf,
+                        'thumbnail_url': thumbnail.trim(),
                         'content': content.trim(),
                         'tag': tag
                     },
@@ -73,6 +77,7 @@
         function validateForm() {
             // get value from quill
             var content = document.getElementById("editor").children[0].innerHTML;
+            var thumbnail = document.getElementsByName('thumbnail')[0].value;
 
             // Content min 25
             if (content.length < 25) {
@@ -83,6 +88,15 @@
             if (content.length > 40000) {
                 alert("Content too long! Max content including formatting are 40,000 characters long");
                 return false;
+            }
+            // verify thumbnail url
+            if (thumbnail.length > 0) {
+                // check regex
+                var regex = /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+                if (!regex.test(thumbnail)) {
+                    alert("Invalid thumbnail url");
+                    return false;
+                }
             }
 
             return true;

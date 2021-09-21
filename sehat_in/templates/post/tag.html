@@ -13,7 +13,8 @@
 <body>
     {% include 'templates/header.html' %}
 
-    List of posts... with the tag "{{ tag.name }}"
+    List of posts... with the tag "{{ tag.name }}"<br>
+    go back <a href="/post">Home</a>
 
     <br>
     {% if user.is_authenticated %}
@@ -24,6 +25,9 @@
     {% for post in posts %}
     <div class="post-lists" id="post-id-{{ post.id }}">
         <h1><a href="/post/{{ post.id }}">{{ post.title }}</a></h1>
+        <div id="post-thumbnail">
+            <img src="{% if post.thumbnail_url %}{{post.thumbnail_url}}{% else %}/static/img/no_image.png{% endif %}" onerror="this.onerror=null; this.src='/static/img/no_image.png'" alt="{{ post.title }}">
+        </div>
         <p>Tag: <a href="/post/tag/{{ post.tag.name }}">{{ post.tag.name }}</a></p>
         {% autoescape off %}
         <p>{{ post.content }}</p>

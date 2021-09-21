@@ -238,8 +238,8 @@ def post_Create(request):
                 return HttpResponse('limit')
 
             # check img url with regex
-            if thumbnail_url is not None:
-                if not re.match(r'^https?://(?:[a-z0-9\-]+\.)+[a-z]{2,6}(?:/[^/#?]+)+\.(?:jpg|gif|png|jpeg|webp)$', thumbnail_url):
+            if len(thumbnail_url) > 0:
+                if not re.match(r'^(http|https)://(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(/|/([\w#!:.?+=&%@!-/]))?', thumbnail_url):
                     messages.info(request, 'Invalid thumbnail url!')
                     return HttpResponse('error')
 
@@ -264,7 +264,7 @@ def post_Create(request):
                     post = Post(title=title, content=content, user=user, tag=tag, thumbnail_url=thumbnail_url)
                     post.save()
             else: # Create a new post
-                post = Post(title=title, content=content, user=user, tag=tag)
+                post = Post(title=title, content=content, user=user, tag=tag, thumbnail_url=thumbnail_url)
                 post.save()
 
             # Return the post id
@@ -292,6 +292,7 @@ def post_Edit(request, id, title):
             # Can't change title
             content = request.POST.get('content') # content change
             tag_name = request.POST.get('tag') # if user change the tag, it will be changed
+            thumbnail_url = request.POST.get('thumbnail_url')
 
             if len(content) < 25:
                 messages.info(request, 'Content must be at least 25 characters!')
@@ -302,6 +303,11 @@ def post_Edit(request, id, title):
                 messages.info(request, 'Invalid content length! Max allowed are 40k including formatting')
                 return HttpResponse('limit')
 
+            # check img url with regex
+            if len(thumbnail_url) > 0:
+                if not re.match(r'^(http|https)://(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(/|/([\w#!:.?+=&%@!-/]))?', thumbnail_url):
+                    messages.info(request, 'Invalid thumbnail url!')
+                    return HttpResponse('error')
             
             # Get the post and tag object
             post = Post.objects.get(id=id)
@@ -310,6 +316,7 @@ def post_Edit(request, id, title):
             # Change the stuff
             post.content = content
             post.tag = tag
+            post.thumbnail_url = thumbnail_url
 
             # Save
             post.save()

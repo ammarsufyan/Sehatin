@@ -17,6 +17,8 @@
         {% csrf_token %}
         <p>Title</p>
         <input type="text" name="title" placeholder="Title" autocomplete="off">
+        <p>Thumbnail URL *Can be left blank</p>
+        <input type="text" name="thumbnail" placeholder="Thumbnail URL" autocomplete="off">
         <p>Content</p>
         <div id="editor"></div>
         <p>Tag</p>
@@ -46,42 +48,53 @@
 
     <script>
         function validateForm() {
-                    /* Validate form */
-                    // get value from quill
-                    var content = document.getElementById("editor").children[0].innerHTML;
-                    var title = document.getElementsByName('title')[0].value;
+            /* Validate form */
+            // get value from quill
+            var content = document.getElementById("editor").children[0].innerHTML;
+            var title = document.getElementsByName('title')[0].value;
+            var thumbnail = document.getElementsByName('thumbnail')[0].value;
 
-                    // Title min 5
-                    if (title.length < 5) {
-                        alert("Title is too short, Min title length is 5 characters");
-                        return false;
-                    }
+            // Title min 5
+            if (title.length < 5) {
+                alert("Title is too short, Min title length is 5 characters");
+                return false;
+            }
 
-                    // title max 200
-                    if (title.length > 200) {
-                        alert("Title is too long, Max title length is 200 characters");
-                        return false;
-                    }
+            // title max 200
+            if (title.length > 200) {
+                alert("Title is too long, Max title length is 200 characters");
+                return false;
+            }
 
-                    // Content min 25
-                    if (content.length < 25) {
-                        alert("Content too short! Min content including formatting are 25 characters long");
-                        return false;
-                    }
-                    // content max 40k
-                    if (content.length > 40000) {
-                        alert("Content too long! Max content including formatting are 40,000 characters long");
-                        return false;
-                    }
-                    // get radio using jquery
-                    var post_type = $('input[name=post-type]:checked').val();
-                    if (post_type == undefined) {
-                        alert("Please select post type");
-                        return false;
-                    }
+            // Content min 25
+            if (content.length < 25) {
+                alert("Content too short! Min content including formatting are 25 characters long");
+                return false;
+            }
+            // content max 40k
+            if (content.length > 40000) {
+                alert("Content too long! Max content including formatting are 40,000 characters long");
+                return false;
+            }
+            // get radio using jquery
+            var post_type = $('input[name=post-type]:checked').val();
+            if (post_type == undefined) {
+                alert("Please select post type");
+                return false;
+            }
 
-                    return true;
+            // verify thumbnail url
+            if (thumbnail.length > 0) {
+                // check regex
+                var regex = /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+                if (!regex.test(thumbnail)) {
+                    alert("Invalid thumbnail url");
+                    return false;
                 }
+            }
+
+            return true;
+        }
     
         function createPost() {
             /* send ajax, if sucess go to the post, if fail reload the page */
@@ -92,6 +105,7 @@
             if (confirm("Are you sure?")) {
                 var content = document.getElementById('editor').children[0].innerHTML;
                 var title = document.getElementsByName('title')[0].value;
+                var thumbnail = document.getElementsByName('thumbnail')[0].value;
                 var tag = $('#tag').val();
                 var csrf = $('input[name=csrfmiddlewaretoken]').val();
                 $.ajax({
@@ -100,6 +114,7 @@
                     data: {
                         'csrfmiddlewaretoken': csrf,
                         'title': title.trim(),
+                        'thumbnail_url': thumbnail.trim(),
                         'content': content.trim(),
                         'tag': tag,
                         'post_Type': $('input[name=post-type]:checked').val()

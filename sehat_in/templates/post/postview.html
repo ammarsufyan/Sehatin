@@ -17,6 +17,9 @@
 
     <div class="post">
         <h1>{{ post.title }}</a></h1>
+        <div id="post-thumbnail">
+            <img src="{{ post.thumbnail_url }}" onerror="this.onerror=null; this.src='/static/img/no_image.png'" alt="{{ post.title }}">
+        </div>
         <p>Tag: <a href="/post/tag/{{ post.tag.name }}">{{ post.tag.name }}</a></p>
         {% autoescape off %}
         {{ post.content }}
