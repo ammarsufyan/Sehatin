@@ -21,11 +21,11 @@
                 <li style="background-color:yellow;">
             {% endif %}
             {% if notif.post %}
-                Type: Post<br>
-                <a href="/post/{{ notif.post.id }}">{{ notif.notification_Content }}</a>
+                Type: Post-Comment<br>
+                <a href="/post/{{ notif.post.id }}/{{ notif.post.title }}#comments-{{ notif.comment.id }}">{{ notif.notification_Content }}</a>
             {% elif notif.comment %}
-                Type: Comment<br>
-                <a href="/post/{{ notif.post.id }}/{{ notif.post.title }}#comments-">{{ notif.notification_Content }}</a>
+                Type: Comment-Mention<br>
+                <a href="/post/{{ notif.post.id }}/{{ notif.post.title }}#comments-{{ notif.comment.id }}">{{ notif.notification_Content }}</a>
             {% else %}
                 {{ notif.notification_Content }}
             {% endif %}
@@ -35,6 +35,17 @@
             {% endfor %}
         </ul>
     </div>
+
+    Page {{ notifications.number }} of {{ notifications.paginator.num_pages }}<br>
+
+    {% if notifications.has_previous %}
+        <a href="?page=1">&laquo First</a>
+        <a href="?page={{ notifications.previous_page_number }}">Previous</a>
+    {% endif %}
+    {% if notifications.has_next %}
+        <a href="?page={{ notifications.next_page_number }}">Next</a>
+        <a href="?page={{ notifications.paginator.num_pages }}">Last &raquo</a>
+    {% endif %}
 
     {% include 'templates/footer.html'%}
 </body>

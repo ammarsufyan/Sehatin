@@ -82,6 +82,8 @@
         </ul>
     </div>
 
+    Page {{ reportsPaged.number }} of {{ reportsPaged.paginator.num_pages }}<br>
+
     {% if reportsPaged.has_previous %}
         <a href="?page=1">&laquo First</a>
         <a href="?page={{ reportsPaged.previous_page_number }}">Previous</a>

@@ -189,17 +189,21 @@ def post_Content(request, id):
 
 def post(request):
     """See all post"""
-    posts = Post.objects.all()
     tags = Tag.objects.all()
+    paginator = Paginator(Post.objects.all().order_by('-created_at'), 25)
+    page = request.GET.get('page')
+    posts = paginator.get_page(page)
 
-    return render(request, 'post/index.html', {'posts': posts.order_by('-created_at'), 'tags': tags})
+    return render(request, 'post/index.html', {'posts': posts, 'tags': tags})
 
 def post_Tag(request, tagName):
     """See post by tag"""
     tag = Tag.objects.get(name=tagName.replace('-', ' '))
     if tag is not None:
-        posts = Post.objects.filter(tag=tag)
-        return render(request, 'post/tag.html', {'posts': posts.order_by('-created_at'), 'tag': tag})
+        paginator = Paginator(Post.objects.filter(tag=tag).order_by('-created_at'), 25)
+        page = request.GET.get('page')
+        posts = paginator.get_page(page)
+        return render(request, 'post/tag.html', {'posts': posts, 'tag': tag})
     else:
         raise Http404
 
@@ -494,13 +498,15 @@ def post_Comment(request, id, title):
             # send notification to post owner
             if post.user != user:
                 if post.user != None: # Check if post user's account still exist
-                    notification = Notification(user=post.user, post=post, comment=comment, notification_Content=user.username + 'posted a comment on your post')
+                    notification = Notification(user=post.user, post=post, comment=comment, notification_Content=user.username + ' posted a comment on your post')
                     notification.save()
 
             # Send notification to mentioned users @
             mentioned = re.findall(r'@\w+', commentGet)
+            print(mentioned)
             # Remove dupe
             mentionedNoDupe = list(dict.fromkeys(mentioned))
+            print(mentionedNoDupe)
             # Loop
             for mentionedUser in mentionedNoDupe:
                 mentionedUser = mentionedUser[1:] # Remove @
