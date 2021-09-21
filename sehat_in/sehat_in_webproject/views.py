@@ -879,9 +879,7 @@ def test_SehatMental_Result(request):
     if request.method == 'POST':
         # Get score
         score = int(request.POST.get('score'))
-        username = request.POST.get('username')
-
-        print(score)
+        user = request.user
 
         if score > 100:
             result = 'kasian ga pernah mental seumur hidup'
@@ -890,9 +888,6 @@ def test_SehatMental_Result(request):
 
         # Save to history if user is logged in
         if request.user.is_authenticated:
-            # Get user profile
-            user = User.objects.get(username=username)
-
             # Save to history
             history = TestHistory(user=user, quiz_type='Test Kesehatan Mental', result=result)
             history.save()

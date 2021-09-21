@@ -187,7 +187,6 @@ getNewQuestion = () => {
     if(availableQuestions.length === 0 || questionCounter > MAX_QUESTIONS) {
         var form = $('<form action="/tests/result" method="post">' +
           '<input type="hidden" name="csrfmiddlewaretoken" value="' + csrftoken + '">' +
-          '<input type="hidden" name="username" value="' + username + '">' +
           '<input type="hidden" name="score" value="' + score + '" />' +
           '</form>');
         $('body').append(form);
