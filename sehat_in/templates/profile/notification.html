@@ -8,17 +8,19 @@
     <title>{{ user.username }}'s Notification</title>
 
     <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
 </head>
 <body>
     {% include 'templates/header.html'%}
 
     <div class="notification">
+        <button onclick="readAll('{{ user.username }}' ,'{{ csrf_token }}')">Read all</button>
         <ul>
             {% for notif in notifications %}
             {% if notif.read %}
-                <li style="background-color:white;">
+            <li style="background-color:white;" name="notif-id" id="notif-{{ notif.id }}">
             {% else %}
-                <li style="background-color:yellow;">
+            <li style="background-color:yellow;" name="notif-id" id="notif-{{ notif.id }}">
             {% endif %}
             {% if notif.post %}
                 Type: Post-Comment<br>
@@ -30,7 +32,9 @@
                 {{ notif.notification_Content }}
             {% endif %}
                 <br>
-                <button>Mark read</button>
+            {% if not notif.read %}
+                <button name="btn-notif-id" id="btn-notif-{{ notif.id }}" onclick="markRead('{{ notif.id }}', '{{ user.username }}' ,'{{ csrf_token }}')">Mark read</button>
+            {% endif %}
             </li>
             {% endfor %}
         </ul>
@@ -46,6 +50,46 @@
         <a href="?page={{ notifications.next_page_number }}">Next</a>
         <a href="?page={{ notifications.paginator.num_pages }}">Last &raquo</a>
     {% endif %}
+
+    <script>
+        function markRead(notification_id, username, csrf_token) {
+            $.ajax({
+                url: "/profile/" + username + "/notification/read/" + notification_id,
+                type: "POST",
+                data: {csrfmiddlewaretoken: csrf_token},
+                success: function(data) {
+                    dataJson = JSON.parse(data);
+                    if (dataJson.status == 'success') { 
+                        $('#notif-' + notification_id).css('background-color', 'white');
+                        $('#btn-notif-' + notification_id).remove();
+                    } else {
+                        alert("Error, failed to mark notification as read: ");
+                    }
+                }
+            });
+        }
+
+        function readAll(username, csrf_token) {
+            // ask for confirmation
+
+            if (confirm('Are you sure you want to mark all notifications as read?')) {
+                $.ajax({
+                    url: "/profile/" + username + "/notification/readall",
+                    type: "POST",
+                    data: {csrfmiddlewaretoken: csrf_token},
+                    success: function(data) {
+                        dataJson = JSON.parse(data);
+                        if (dataJson.status == 'success') {
+                            $('li[name*=\'notif-id\']').css('background-color', 'white');
+                            $('button[name*=\'btn-notif-id\']').remove();
+                        } else {
+                            alert("Error, failed to mark all notifications as read: ");
+                        }
+                    }
+                });
+            }
+        }
+    </script>
 
     {% include 'templates/footer.html'%}
 </body>

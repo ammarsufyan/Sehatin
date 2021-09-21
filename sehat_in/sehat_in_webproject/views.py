@@ -806,6 +806,19 @@ def profile_Notification_Read(request, username, notification_id):
     else:
         raise Http404
 
+def profile_Notification_Readall(request, username):
+    """User profile notification read all"""
+    if request.method == 'POST':
+        if username == request.user.username:
+            # Mark all notifications as read
+            Notification.objects.filter(user=request.user).update(read=True)
+
+            return HttpResponse(json.dumps({'status': 'success'}))
+        else:
+            raise PermissionDenied()
+    else:
+        raise Http404
+
 def report(request):
     """Open reports view, admin only"""
     if request.user.is_superuser:
