@@ -662,7 +662,6 @@ def post_Comment_Delete(request, id, title, comment_id):
     else: # If no request, throw 404
         raise Http404
 
-# Reports a comment
 def post_Comment_Report(request, id, title, comment_id):
     """Report a comment, if no request throw 404. Request are made using jquery ajax
     
@@ -709,6 +708,8 @@ def post_Comment_Report(request, id, title, comment_id):
     else: # If no request, throw 404
         raise Http404
 
+# ----------------------------------------------------------------
+# Profile
 def profile(request, username):
     """See a user's profile"""
     # get the user profile
@@ -819,6 +820,8 @@ def profile_Notification_Readall(request, username):
     else:
         raise Http404
 
+# ----------------------------------------------------------------
+# Report
 def report(request):
     """Open reports view, admin only"""
     if request.user.is_superuser:
@@ -853,3 +856,50 @@ def report_Resolve(request, id):
             raise PermissionDenied()
     else:
         raise Http404
+
+# ----------------------------------------------------------------
+# Tests menu
+def tests(request):
+    """Tests menu"""
+    return render(request, 'tests/index.html')
+
+# ------------------------------
+# Test Kesehatan mental
+def test_SehatMental(request):
+    """Test kesehatan mental"""
+    return render(request, 'tests/health/kesehatan-mental/index.html')
+
+def test_SehatMental_Question(request):
+    """Halaman pertanyaan test kesehatan mental"""
+    return render(request, 'tests/health/kesehatan-mental/question.html')
+
+def test_SehatMental_Result(request):
+    """Halaman hasil test kesehatan mental"""
+    # Check if there is post request
+    if request.method == 'POST':
+        # Get score
+        score = int(request.POST.get('score'))
+        username = request.POST.get('username')
+
+        print(score)
+
+        if score > 100:
+            result = 'kasian ga pernah mental seumur hidup'
+        else:
+            result = 'mampus mental terus ga turun-turun'
+
+        # Save to history if user is logged in
+        if request.user.is_authenticated:
+            # Get user profile
+            user = User.objects.get(username=username)
+
+            # Save to history
+            history = TestHistory(user=user, quiz_type='Test Kesehatan Mental', result=result)
+            history.save()
+
+        # Nanti bisa di return banyak, style json -> title, hasil text, apa2 lah
+
+        return render(request, 'tests/result.html', {'result': result})
+    else:
+        messages.info(request, 'You have to take the test first!')
+        return redirect('/tests/health/kesehatan-mental')

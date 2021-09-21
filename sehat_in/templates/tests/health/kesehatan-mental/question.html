@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+
+    <title>Test MENTAL</title>
+</head>
+<body>
+    {% include 'templates/header.html' %}
+
+    <main>
+        <div class="container-wrapper">
+            <div class="question-container">
+                <h2 id="question">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Beatae, aut.</h2>
+                <div class="choice-container">
+                    <p class="choice-text" data-number="1">Choice 1</p>
+                </div>
+                <div class="choice-container">
+                    <p class="choice-text" data-number="2">Choice 2</p>
+                </div>
+                <div class="choice-container">
+                    <p class="choice-text" data-number="3">Choice 3</p>
+                </div>
+                <div class="choice-container">
+                    <p class="choice-text" data-number="4">Choice 4</p>
+                </div>
+
+                <div id="hud">
+                    <div class="hud-item">
+                        <p id="progressText" class="hud-prefix">
+                            Question
+                        </p>
+                        <div id="progressBar">
+                            <div id="progressBarFull"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    {% include 'templates/footer.html' %}
+    {% csrf_token %}
+    
+    <script>
+        var csrftoken = '{{ csrf_token }}';
+        var username = '{{ user.username }}';
+    </script>
+    <script src="{% static 'js/tests/kesehatan-mental/questions.js' %}"></script>
+</body>
+</html>

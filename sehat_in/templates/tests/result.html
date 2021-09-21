@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+    <title>Test MENTAL RESULT</title>
+</head>
+<body>
+    {% include 'templates/header.html' %}
+
+    {% comment %} untuk result hasilnya semua dari backend jadi bisa satu halaman aja {% endcomment %}
+
+    <main>
+        <div class="container-wrapper">
+            Hasil test: <br>
+            {{ result }}
+        </div>
+    </main>
+    
+    {% include 'templates/footer.html' %}
+</body>
+</html>

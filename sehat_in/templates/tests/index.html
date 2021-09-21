@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% comment %} <link rel="stylesheet" href="assets/css/style.css"> {% endcomment %}
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+
+    <link rel="icon" type="image/png" href="assets/img/favicon.ico" />
+    <title>Ruangtumbuh</title>
+</head>
+
+<body>
+    {% include 'templates/header.html' %}
+
+    <main class="main">
+
+        <div class="text-main">
+            <h2 class="title">Tes Kesehatan</h2>
+            <p>Cek kesehatan anda dengan scam test ini</p>
+        </div>
+
+        <div class="rectangle-wrapper">
+            <div class="rectangle">
+                <div class="parent-img">
+                    <img src="" alt="">
+                </div>
+                <div class="rectangle-content">
+                    <h4>Tes Kesehatan mental</h4>
+                    <p>Mental itu penting, tapi jangan lupa mendarat</p>
+                    <a href="/tests/health/kesehatan-mental">
+                        <button class="button-test">
+                            <p>Test Sekarang</p>
+                            <i class="uil uil-arrow-right button-arrow"></i>
+                        </button>
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    {% include 'templates/footer.html' %}
+
+    {% comment %} <script src="assets/js/app.js"></script> {% endcomment %}
+</body>
+
+</html>

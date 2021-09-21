@@ -41,4 +41,12 @@ urlpatterns = [
     # Reports
     path('report', views.report, name='report'),
     path('report/<str:id>/resolve', views.report_Resolve, name='report/resolve'),
+
+    # Tests
+    path('tests', views.tests, name='tests'),
+    path('tests/health/kesehatan-mental', views.test_SehatMental, name='tests/health/kesehatan-mental'),
+    path('tests/health/kesehatan-mental/question', views.test_SehatMental_Question, name='tests/health/kesehatan-mental/question'),
+
+    # Hasil test, data ditentukan dari backend
+    path('tests/result', views.test_SehatMental_Result, name='tests/health/kesehatan-mental/result'),
 ]
