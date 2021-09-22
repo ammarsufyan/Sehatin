@@ -729,9 +729,43 @@ def profile(request, username):
     else:
         raise Http404
 
+def profile_Posts(request, username):
+    """Get all posts of a user"""
+    # get the user profile
+    user = User.objects.get(username=username)
+
+    # Check if user exists or not
+    if user:
+        # get the user posts 25 per page
+        paginator = Paginator(Post.objects.filter(user=user).order_by('-created_at'), 25)
+        page = request.GET.get('page')
+        posts = paginator.get_page(page)
+
+        return render(request, 'profile/posts.html', {'theUser': user, 'posts': posts})
+    else:
+        raise Http404
+
+def profile_Comments(request, username):
+    """Get all comments of a user"""
+    # get the user profile
+    user = User.objects.get(username=username)
+
+    # Check if user exists or not
+    if user:
+        # get the user comments 25 per page
+        paginator = Paginator(Comment.objects.filter(user=user).order_by('-created_at'), 25)
+        page = request.GET.get('page')
+        comments = paginator.get_page(page)
+
+        return render(request, 'profile/comments.html', {'theUser': user, 'comments': comments})
+    else:
+        raise Http404
+
 
 def profile_Settings(request, username):
-    """User profile settings"""
+    """User profile settings
+    if a posts request is made, it means that the user is trying to update his profile
+    """
     if request.user.is_authenticated:
         if username == request.user.username: # If user is logged in and username is the same
             if request.method == 'POST': # If request is made using post
@@ -791,7 +825,11 @@ def profile_Notification(request, username):
         return render(request, 'auth/login')
 
 def profile_Notification_Read(request, username, notification_id):
-    """User profile notification read"""
+    """User profile notification read
+    
+    onsuccess: Mark comment as read
+    onfail: Alert fail
+    """
     if request.method == 'POST':
         if username == request.user.username:
             # Get the notification
@@ -808,7 +846,11 @@ def profile_Notification_Read(request, username, notification_id):
         raise Http404
 
 def profile_Notification_Readall(request, username):
-    """User profile notification read all"""
+    """User profile notification read all
+    
+    onsuccess: Mark all comment as read
+    onfail: Alert fail
+    """
     if request.method == 'POST':
         if username == request.user.username:
             # Mark all notifications as read

@@ -41,6 +41,8 @@
         {% endif %}
     </p>
 
+    <a href="/profile/{{ theUser.username }}/posts">{{ theUser.username }}'s posts</a> <a href="/profile/{{ theUser.username }}/comments">{{ theUser.username }}'s comments</a> 
+
     {% for post in posts %}
     <div class="post-lists" id="post-id-{{ post.id }}">
         <h1><a href="/post/{{ post.id }}">{{ post.title }}</a></h1>
