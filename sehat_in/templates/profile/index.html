@@ -20,22 +20,22 @@
     <p>First Name: {{ theUser.first_name }}</p> 
     <p>Last Name: {{ theUser.last_name }}</p>
     <p>Bio: 
-        {% if user_profile.bio is None %}
+        {% if user_profile.bio is None or user_profile.bio == '' %}
             -
         {% else %}
             {{ user_profile.bio }}
         {% endif %}
     </p>
     <p>Location: 
-        {% if user_profile.location is None %}
+        {% if user_profile.location is None or user_profile.location == '' %}
             -
         {% else %}
             {{ user_profile.location }}
         {% endif %}
     </p>
     <p>Role: 
-        {% if theUser.is_staff %}
-            Dokter
+        {% if user_profile.role %}
+            {{ user_profile.role }}
         {% else %}
             User
         {% endif %}
