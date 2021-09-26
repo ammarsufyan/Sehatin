@@ -920,13 +920,71 @@ def test_SehatMental_Result(request):
     # Check if there is post request
     if request.method == 'POST':
         # Get score
-        score = int(request.POST.get('score'))
+        score_Kesepian = int(request.POST.get('score_kesepian'))
+        score_Sosial = int(request.POST.get('score_sosial'))
         user = request.user
 
-        if score > 100:
-            result = 'kasian ga pernah mental seumur hidup'
+        # Kesepian
+        kesepian = 0
+        # 1 = tidak kesepian
+        # 2 = kesepian
+        # 3 = sangat kesepian
+
+        if 12 <= score_Kesepian <= 24:
+            kesepian = 1
+        elif 25 <= score_Kesepian <= 36:
+            kesepian = 2
+        elif 37 <= score_Kesepian <= 48:
+            kesepian = 3
+        
+        # Sosial
+        sosial = 0
+        # 1 = penuh dukungan sosial
+        # 2 = kurang dukungan sosial
+        # 3 = sangat kurang dukungan sosial
+
+        if 13 <= score_Sosial <= 25:
+            sosial = 1
+        elif 26 <= score_Sosial <= 37:
+            sosial = 2
+        elif 38 <= score_Sosial <= 49:
+            sosial = 3
+        
+        # Result
+        if (kesepian == 1 and sosial == 1): # 1 1 
+            resultKey = 1
+        elif (kesepian == 1 and sosial == 2) or (kesepian == 1 and sosial == 3): # 1 2 - 1 3
+            resultKey = 2
+        elif (kesepian == 2 and sosial == 1) or (kesepian == 3 and sosial == 1): # 2 1 - 3 1
+            resultKey = 3
+        elif (kesepian == 2 and sosial == 2): # 2 2
+            resultKey = 4
+        elif (kesepian == 3 and sosial == 3): # 3 3
+            resultKey = 5
         else:
-            result = 'mampus mental terus ga turun-turun'
+            resultKey = 0
+        
+        # print(kesepian, sosial, resultKey)
+        # 3 2
+        # 2 3
+        # yang belum ada, kesepian 3 -> sangat kesepian dan sosial 2 ->  kurang sosial
+        # kesepian 2 -> kesepian dan sosial 3 -> sangat kurang
+
+        result_data = {
+            0: "Error, harap coba lagi! Jika masih error harap hubungi admin",
+            # Tidak kesepian, penuh dukungan sosial
+            1: "Berdasarkan jawaban Kamu, dapat disimpulkan bahwa untuk saat ini Kamu tidak mengalami kesepian dan juga mendapat dukungan sosial yang penuh. Untuk itu, tetap pertahankan ya! Masih banyak lingkungan pertemanan yang belum Kamu explore dan juga masih banyak lagi dukungan sosial yang akan Kamu dapatkan kedepannya. Semangat!",
+            # Tidak kesepian, kurang dukungan sosial atau sangat kurang dukungan sosial
+            2: "Berdasarkan jawaban Kamu, dapat disimpulkan bahwa untuk saat ini Kamu tidak mengalami kesepian namun (kurang/sangat kurang) akan dukungan sosial. Untuk itu, cobalah untuk percaya kepada teman-teman mu sehingga temanmu juga akan begitu, yang nantinya kalian akan bisa bersama-sama saling memberi dukungan. Sehingga, dengan adanya dukungan sosial yang penuh, bisa menjadikan kamu tidak akan pernah merasa kesepian dikarenakan kasih sayang dan perhatian yang Kamu dapatkan dari mereka. Jadi, teruslah semangat ya!",
+            # Kesepian atau sangat kesepian, penuh dukungan sosial
+            3: "Berdasarkan jawaban Kamu, dapat disimpulkan bahwa untuk saat ini Kamu mengalami (kesepian/sangat kesepian) namun penuh akan dukungan sosial. Untuk itu, cobalah renungkan apa yang menjadi penyebab utama kesepian mu saat ini. Dengan begitu, kamu akan tahu sendiri bagaimana cara mengatasi kesepian yang kamu hadapi dengan cara dan versi mu sendiri. Sehingga diharapkan, dengan adanya dukungan sosial yang penuh, bisa menjadikan kamu tidak merasa kesepian lagi karena masih banyak orang yang sayang dan perhatian kepadamu, tapi mungkin Kamu belum menyadari hal itu. Jadi, tetap semangat ya!",
+            # kesepian dan kurang dukungan sosial
+            4: "Berdasarkan jawaban Kamu, dapat disimpulkan bahwa untuk saat ini Kamu sedang mengalami kesepian dan juga kurang akan dukungan sosial. Untuk itu, cobalah membuka diri untuk beradaptasi dan berinteraksi pada lingkungan pertemanan mu dan juga coba untuk percaya kepada teman-teman mu sehingga temanmu juga akan begitu, yang nantinya kalian akan bisa bersama-sama saling memberi dukungan. Jadi, apapun keadaanmu sekarang jangan sampai membuat mu putus asa akan kehidupan ya. Masih ada waktu untuk mu memperbaiki keadaan. Semangat!",
+            # sanat kesepian dan sangat kurang dukungan sosial
+            5: "Berdasarkan jawaban Kamu, dapat disimpulkan bahwa untuk saat ini Kamu sangat kesepian dan juga sangat kurang akan dukungan sosial. Untuk itu, cobalah untuk membuka diri, beradaptasi, dan berinteraksi pada lingkungan pertemanan mu dan juga coba untuk percaya kepada teman-teman mu sehingga temanmu juga akan begitu, yang nantinya kalian akan bisa bersama-sama saling memberi dukungan. Jadi, apapun keadaanmu sekarang jangan sampai membuat mu putus asa akan kehidupan ya. Masih ada waktu untuk mu memperbaiki keadaan. Kami tahu ini bukanlah hal yang mudah, tapi Kami juga yakin Kamu pasti bisa. Semangat!"
+        }
+
+        result = result_data[resultKey]
 
         # Save to history if user is logged in
         if request.user.is_authenticated:

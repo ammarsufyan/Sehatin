@@ -1,0 +1,131 @@
+{
+    "questions":
+    [
+        { 
+            "id": 1,
+            "q": "Saya adalah orang yang canggung dan akhirnya menyendiri ketika berinteraksi dengan orang lain",
+            "type": "kesepian"
+        },
+        {
+            "id": 2,
+            "q": "Saya kurang menikmati hari-hari kuliah saya",
+            "type": "kesepian"
+        },
+        {
+            "id": 3,
+            "q": "Seberat apapun tantangan sebagai mahasiswa, saya merasa kurang mampu jika menghadapinya sendiri",
+            "type": "kesepian"
+        },
+        {
+            "id": 4,
+            "q": "Saya merasa kurang banyak memiliki lingkungan pertemanan (circle pertemanan)",
+            "type": "kesepian"
+        },
+        {
+            "id": 5,
+            "q": "Saya banyak bergantung pada bantuan orang lain untuk melakukan sesuatu",
+            "type": "kesepian"
+        },
+        {
+            "id": 6,
+            "q": "Saya kurang menikmati keterlibatan dan pertemanan di kegiatan-kegiatan yang saya ikuti",
+            "type": "kesepian"
+        },
+        {
+            "id": 7,
+            "q": "Teman-teman kurang suka bergaul dengan saya",
+            "type": "kesepian"
+        },
+        {
+            "id": 8,
+            "q": "Saya memiliki hubungan yang kurang akrab dengan banyak teman",
+            "type": "kesepian"
+        },
+        {
+            "id": 9,
+            "q": "Saya merasa terasingkan di antara teman-teman saya",
+            "type": "kesepian"
+        },
+        {
+            "id": 10,
+            "q": "Dalam banyak kesempatan, saya lebih suka menyendiri dibanding berkumpul dengan teman-teman",
+            "type": "kesepian"
+        },
+        {
+            "id": 11,
+            "q": "Keberadaan saya kurang berarti bagi orang lain",
+            "type": "kesepian"
+        },
+        {
+            "id": 12,
+            "q": "Saya merasa harus memiliki seseorang yang spesial agar saya merasa lebih bahagia",
+            "type": "sosial"
+        },
+        {
+            "id": 13,
+            "q": "Saya tidak memiliki teman untuk berbagi hobi",
+            "type": "sosial"
+        },
+        {
+            "id": 14,
+            "q": "Tidak ada yang memperhatikan saya saat saya sedang memiliki masalah",
+            "type": "sosial"
+        },
+        {
+            "id": 15,
+            "q": "Teman-teman tidak pernah memberi nasihat kepada saya saat saya mengalami kesulitan",
+            "type": "sosial"
+        },
+        {
+            "id": 16,
+            "q": "Teman-teman tidak ada saat saya ingin berbagi suka duka",
+            "type": "sosial"
+        },
+        {
+            "id": 17,
+            "q": "Saat berdiskusi, saran saya selalu diabaikan oleh teman-teman",
+            "type": "sosial"
+        },
+        {
+            "id": 18,
+            "q": "Saat berkelompok, teman-teman sering mengabaikan keberadaan saya",
+            "type": "sosial"
+        },
+        {
+            "id": 19,
+            "q": "Saat mengalami kegagalan, tidak ada teman-teman yang mendukung saya",
+            "type": "sosial"
+        },
+        {
+            "id": 20,
+            "q": "Teman-teman tidak peduli saat saya jatuh sakit",
+            "type": "sosial"
+        },
+        {
+            "id": 21,
+            "q": "Teman-teman sering mengejek kelamahan saya",
+            "type": "sosial"
+        },
+        {
+            "id": 22,
+            "q": "Orangtua suka membanding-bandingkan saya dengan orang lain yang lebih baik",
+            "type": "sosial"
+        },
+        {
+            "id": 23,
+            "q":"Orangtua menghargai keputusan-keputusan yang saya ambil sendiri",
+            "type": "sosial"
+        },
+        {
+            "id": 24,
+            "q": "Orangtua tidak pernah menyatakan kebanggaan mereka atas apapun yang sudah saya capai selama ini",
+            "type": "sosial"
+        },
+        {
+            "id": 25,
+            "q": "Keluarga jarang mengingatkan saya untuk menjaga kesehatan",
+            "type": "sosial"
+        }
+    ],
+    "choices": [ "Sangat sesuai", "Sesuai", "Tidak sesuai", "Sangat tidak sesuai"]
+}
