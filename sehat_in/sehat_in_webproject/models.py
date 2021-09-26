@@ -32,6 +32,7 @@ class Like(models.Model): # Post/comment like
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
 
 # class Message(models.Model): # The message of the chat
 #     id = models.AutoField(primary_key=True)

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ theUser.username }}'s Liked/Commented posts</title>
+</head>
+<body>
+    {% include 'templates/header.html' %}
+    <ul>
+    {% for liked_Commented_Post in liked_Commented_Posts %}
+        <li>
+            {% if liked_Commented_Post.content %}
+                Commented on <a href="/post/{{ liked_Commented_Post.post.id }}">{{ liked_Commented_Post.post.title }}</a>
+            {% else %}
+                Liked <a href="/post/{{ liked_Commented_Post.post.id }}">{{ liked_Commented_Post.post.title }}</a>
+            {% endif %}
+            at {{ liked_Commented_Post.created_at }}
+        </li>
+    {% endfor %}
+    </ul>
+
+    Page {{ liked_Commented_Posts.number }} of {{ liked_Commented_Posts.paginator.num_pages }}<br>
+
+    {% if liked_Commented_Posts.has_previous %}
+        <a href="?page=1">&laquo First</a>
+        <a href="?page={{ liked_Commented_Posts.previous_page_number }}">Previous</a>
+    {% endif %}
+    {% if comments.has_next %}
+        <a href="?page={{ liked_Commented_Posts.next_page_number }}">Next</a>
+        <a href="?page={{ liked_Commented_Posts.paginator.num_pages }}">Last &raquo</a>
+    {% endif %}
+
+    {% include 'templates/footer.html' %}
+</body>
+</html>

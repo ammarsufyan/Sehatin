@@ -8,6 +8,7 @@ from django.http import Http404
 import json
 import re
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from itertools import chain
 
 # Views of each URL
 # Assigning the function to each url
@@ -758,6 +759,43 @@ def profile_Comments(request, username):
         comments = paginator.get_page(page)
 
         return render(request, 'profile/comments.html', {'theUser': user, 'comments': comments})
+    else:
+        raise Http404
+
+def profile_Liked_Commented_Posts(request, username):
+    """Get all liked and commented posts of a user"""
+    # get the user profile
+    user = User.objects.get(username=username)
+
+    # Check if user exists or not
+    if user:
+        # get the user liked posts 25 per page
+        # paginator = Paginator(Post.objects.filter(likes__user=user).order_by('-created_at'), 25)
+        # page = request.GET.get('page')
+        # liked_posts = paginator.get_page(page)
+
+        # # get the user commented posts 25 per page
+        # paginator = Paginator(Comment.objects.filter(user=user).order_by('-created_at'), 25)
+        # page = request.GET.get('page')
+        # commented_posts = paginator.get_page(page)
+
+        # Get user liked or commented posts
+        liked_posts = Like.objects.filter(user=user).order_by('-created_at')
+        commented_posts = Comment.objects.filter(user=user).order_by('-created_at')
+        combined_Liked_Commented_Posts = list(chain(liked_posts, commented_posts))
+
+        # 
+        paginator = Paginator(combined_Liked_Commented_Posts, 25)
+        page = request.GET.get('page')
+        liked_Commented_Posts = paginator.get_page(page)
+
+        return render(request, 'profile/liked-commented-posts.html', {'theUser': user, 'liked_Commented_Posts': liked_Commented_Posts, 'test': combined_Liked_Commented_Posts})
+
+
+        # Combine them both into one object
+        
+
+        # return render(request, 'profile/liked_commented_posts.html', {'theUser': user, 'liked_posts': liked_posts, 'commented_posts': commented_posts})
     else:
         raise Http404
 

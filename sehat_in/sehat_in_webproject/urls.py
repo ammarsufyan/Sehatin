@@ -36,6 +36,7 @@ urlpatterns = [
     path('profile/<str:username>/settings', views.profile_Settings, name='profile/settings'),
     path('profile/<str:username>/posts', views.profile_Posts, name='profile/posts'),
     path('profile/<str:username>/comments', views.profile_Comments, name='profile/comments'),
+    path('profile/<str:username>/likes', views.profile_Liked_Commented_Posts, name='profile/likes'),
     path('profile/<str:username>/notification', views.profile_Notification, name='profile/notification'),
     path('profile/<str:username>/notification/read/<str:notification_id>', views.profile_Notification_Read, name='profile/notification/read'),
     path('profile/<str:username>/notification/readall', views.profile_Notification_Readall, name='profile/notification/readall'),
