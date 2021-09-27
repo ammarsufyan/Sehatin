@@ -769,16 +769,6 @@ def profile_Liked_Commented_Posts(request, username):
 
     # Check if user exists or not
     if user:
-        # get the user liked posts 25 per page
-        # paginator = Paginator(Post.objects.filter(likes__user=user).order_by('-created_at'), 25)
-        # page = request.GET.get('page')
-        # liked_posts = paginator.get_page(page)
-
-        # # get the user commented posts 25 per page
-        # paginator = Paginator(Comment.objects.filter(user=user).order_by('-created_at'), 25)
-        # page = request.GET.get('page')
-        # commented_posts = paginator.get_page(page)
-
         # Get user liked or commented posts
         liked_posts = Like.objects.filter(user=user).order_by('-created_at')
         commented_posts = Comment.objects.filter(user=user).order_by('-created_at')
@@ -989,24 +979,40 @@ def test_SehatMental_Result(request):
             sosial = 3
         
         # Result
+        # 1 2 == 1 3
+        # 2 1 == 3 1
+        # 2 2 == 2 3
+        # 3 2 == 3 3 
         if (kesepian == 1 and sosial == 1): # 1 1 
             resultKey = 1
-        elif (kesepian == 1 and sosial == 2) or (kesepian == 1 and sosial == 3): # 1 2 - 1 3
+            resultType = "Tidak mengalami kesepian dan Penuh dukungan sosial"
+        elif (kesepian == 1 and sosial == 2): # 1 2
             resultKey = 2
-        elif (kesepian == 2 and sosial == 1) or (kesepian == 3 and sosial == 1): # 2 1 - 3 1
+            resultType = "Tidak mengalami kesepian. Namun, Kurang dukungan sosial"
+        elif (kesepian == 1 and sosial == 3): # 1 3
+            resultKey = 2
+            resultType = "Tidak mengalami kesepian. Namun, Sangat kurang dukungan sosial"
+        elif (kesepian == 2 and sosial == 1): # 2 1
             resultKey = 3
+            resultType = "Penuh dukungan sosial. Namun, Kesepian"
         elif (kesepian == 2 and sosial == 2): # 2 2
             resultKey = 4
+            resultType = "Kesepian dan Kurang dukungan sosial"
+        elif (kesepian == 2 and sosial == 3): # 2 3
+            resultKey = 4
+            resultType = "Kesepian dan Sangat kurang dukungan sosial"
+        elif (kesepian == 3 and sosial == 1): # 3 1
+            resultKey = 3
+            resultType = "Penuh dukungan sosial. Nammun, Sangat kesepian"
+        elif (kesepian == 3 and sosial == 2): # 3 2
+            resultKey = 5
+            resultType = "Sangat kesepian dan Kurang dukungan sosial"
         elif (kesepian == 3 and sosial == 3): # 3 3
             resultKey = 5
+            resultType = "Sangat kesepian dan Sangat kurang dukungan sosial"
         else:
             resultKey = 0
-        
-        # print(kesepian, sosial, resultKey)
-        # 3 2
-        # 2 3
-        # yang belum ada, kesepian 3 -> sangat kesepian dan sosial 2 ->  kurang sosial
-        # kesepian 2 -> kesepian dan sosial 3 -> sangat kurang
+            resultType = "Error!"
 
         result_data = {
             0: "Error, harap coba lagi! Jika masih error harap hubungi admin",
@@ -1022,7 +1028,7 @@ def test_SehatMental_Result(request):
             5: "Berdasarkan jawaban Kamu, dapat disimpulkan bahwa untuk saat ini Kamu sangat kesepian dan juga sangat kurang akan dukungan sosial. Untuk itu, cobalah untuk membuka diri, beradaptasi, dan berinteraksi pada lingkungan pertemanan mu dan juga coba untuk percaya kepada teman-teman mu sehingga temanmu juga akan begitu, yang nantinya kalian akan bisa bersama-sama saling memberi dukungan. Jadi, apapun keadaanmu sekarang jangan sampai membuat mu putus asa akan kehidupan ya. Masih ada waktu untuk mu memperbaiki keadaan. Kami tahu ini bukanlah hal yang mudah, tapi Kami juga yakin Kamu pasti bisa. Semangat!"
         }
 
-        result = result_data[resultKey]
+        result = {"res_type": resultType, "res_data": result_data[resultKey]}
 
         # Save to history if user is logged in
         if request.user.is_authenticated:
