@@ -4,9 +4,10 @@ from django.contrib.auth.models import User, auth
 from django.contrib import messages
 from .models import *
 from django.core.exceptions import PermissionDenied
-from django.http import Http404
+from django.http import Http404, JsonResponse
 import json
 import re
+from django.core import serializers
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from itertools import chain
 
@@ -890,6 +891,29 @@ def profile_Notification_Readall(request, username):
     else:
         raise Http404
 
+def profile_history(request, username):
+    """User History"""
+    user = User.objects.get(username=username)
+
+    if user:
+        history = History.objects.filter(user=user)
+
+        test_result = history.values("result")
+        list_result = [entry for entry in test_result]
+        print(list_result)
+
+        result_dict = json.loads(json.dumps(history.values_list('result', flat = True)))
+        res_type = result_dict.get("res_type")
+        res_data = result_dict.get("res_data")
+
+        paginator = Paginator(history.order_by('created_at'), 10)
+        get_history = paginator.get_page(request.GET.get('page')) 
+        return render(request, 'profile/history.html', {'theUser': user, 'history': get_history, 'res_type': res_type, 'res_data': res_data})
+    else:
+        messages.info(request, 'You have to be logged in first!')
+        return render(request, 'auth/login')
+
+
 # ----------------------------------------------------------------
 # Report
 def report(request):
@@ -1024,7 +1048,7 @@ def test_SehatMental_Result(request):
             3: "Berdasarkan jawaban Kamu, dapat disimpulkan bahwa untuk saat ini Kamu mengalami (kesepian/sangat kesepian) namun penuh akan dukungan sosial. Untuk itu, cobalah renungkan apa yang menjadi penyebab utama kesepian mu saat ini. Dengan begitu, kamu akan tahu sendiri bagaimana cara mengatasi kesepian yang kamu hadapi dengan cara dan versi mu sendiri. Sehingga diharapkan, dengan adanya dukungan sosial yang penuh, bisa menjadikan kamu tidak merasa kesepian lagi karena masih banyak orang yang sayang dan perhatian kepadamu, tapi mungkin Kamu belum menyadari hal itu. Jadi, tetap semangat ya!",
             # kesepian dan kurang dukungan sosial
             4: "Berdasarkan jawaban Kamu, dapat disimpulkan bahwa untuk saat ini Kamu sedang mengalami kesepian dan juga kurang akan dukungan sosial. Untuk itu, cobalah membuka diri untuk beradaptasi dan berinteraksi pada lingkungan pertemanan mu dan juga coba untuk percaya kepada teman-teman mu sehingga temanmu juga akan begitu, yang nantinya kalian akan bisa bersama-sama saling memberi dukungan. Jadi, apapun keadaanmu sekarang jangan sampai membuat mu putus asa akan kehidupan ya. Masih ada waktu untuk mu memperbaiki keadaan. Semangat!",
-            # sanat kesepian dan sangat kurang dukungan sosial
+            # sangat kesepian dan sangat kurang dukungan sosial
             5: "Berdasarkan jawaban Kamu, dapat disimpulkan bahwa untuk saat ini Kamu sangat kesepian dan juga sangat kurang akan dukungan sosial. Untuk itu, cobalah untuk membuka diri, beradaptasi, dan berinteraksi pada lingkungan pertemanan mu dan juga coba untuk percaya kepada teman-teman mu sehingga temanmu juga akan begitu, yang nantinya kalian akan bisa bersama-sama saling memberi dukungan. Jadi, apapun keadaanmu sekarang jangan sampai membuat mu putus asa akan kehidupan ya. Masih ada waktu untuk mu memperbaiki keadaan. Kami tahu ini bukanlah hal yang mudah, tapi Kami juga yakin Kamu pasti bisa. Semangat!"
         }
 
@@ -1033,11 +1057,10 @@ def test_SehatMental_Result(request):
         # Save to history if user is logged in
         if request.user.is_authenticated:
             # Save to history
-            history = TestHistory(user=user, quiz_type='Test Kesehatan Mental', result=result)
+            history = History(user=user, quiz_type='Test Kesehatan Mental', result=result)
             history.save()
 
         # Nanti bisa di return banyak, style json -> title, hasil text, apa2 lah
-
         return render(request, 'tests/result.html', {'result': result})
     else:
         messages.info(request, 'You have to take the test first!')

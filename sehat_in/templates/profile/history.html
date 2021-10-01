@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ theUser.username }}'s History</title>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+<body>
+    {% include 'templates/header.html' %}
+
+    <p> {{ theUser.username }}'s History </p>
+    <p id = "{{ theUser.username }}"></p>
+
+    {% for history in history %}
+        <li>
+            Tipe: {{ history.quiz_type }} <br> 
+            Hasil: {{ res_type }} <br>
+            Deskripsi: {{ res_data }} <br>
+            Dibuat pada tanggal {{ history.created_at }} <br>
+        </li>
+    {% endfor %}
+
+    {% if history.has_previous %}
+        <a href="?page=1">&laquo First</a>
+        <a href="?page={{ history.previous_page_number }}">Previous</a>
+    {% endif %}
+    {% if history.has_next %}
+        <a href="?page={{ history.next_page_number }}">Next</a>
+        <a href="?page={{ history.paginator.num_pages }}">Last &raquo</a>
+    {% endif %}
+
+    {% include 'templates/footer.html' %}
+</body>
+</html>

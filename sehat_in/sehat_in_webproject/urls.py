@@ -40,6 +40,7 @@ urlpatterns = [
     path('profile/<str:username>/notification', views.profile_Notification, name='profile/notification'),
     path('profile/<str:username>/notification/read/<str:notification_id>', views.profile_Notification_Read, name='profile/notification/read'),
     path('profile/<str:username>/notification/readall', views.profile_Notification_Readall, name='profile/notification/readall'),
+    path('profile/<str:username>/history', views.profile_history, name='profile/history'),
 
     # Reports
     path('report', views.report, name='report'),
