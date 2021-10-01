@@ -505,10 +505,8 @@ def post_Comment(request, id, title):
 
             # Send notification to mentioned users @
             mentioned = re.findall(r'@\w+', commentGet)
-            print(mentioned)
             # Remove dupe
             mentionedNoDupe = list(dict.fromkeys(mentioned))
-            print(mentionedNoDupe)
             # Loop
             for mentionedUser in mentionedNoDupe:
                 mentionedUser = mentionedUser[1:] # Remove @
