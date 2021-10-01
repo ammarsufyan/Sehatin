@@ -17,9 +17,9 @@
 
     {% for history in history %}
         <li>
-            Tipe: {{ history.quiz_type }} <br> 
-            Hasil: {{ res_type }} <br>
-            Deskripsi: {{ res_data }} <br>
+            Tipe: {{ history.quiz_type }} <br>
+            Hasil: {{ history.res_type }} <br>
+            Deskripsi: {{ history.res_data }} <br>
             Dibuat pada tanggal {{ history.created_at }} <br>
         </li>
     {% endfor %}

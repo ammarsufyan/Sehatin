@@ -893,26 +893,15 @@ def profile_Notification_Readall(request, username):
 
 def profile_history(request, username):
     """User History"""
-    user = User.objects.get(username=username)
-
-    if user:
+    if username == request.user.username:
+        user = User.objects.get(username=username)
         history = History.objects.filter(user=user)
-
-        test_result = history.values("result")
-        list_result = [entry for entry in test_result]
-        print(list_result)
-
-        result_dict = json.loads(json.dumps(history.values_list('result', flat = True)))
-        res_type = result_dict.get("res_type")
-        res_data = result_dict.get("res_data")
-
         paginator = Paginator(history.order_by('created_at'), 10)
         get_history = paginator.get_page(request.GET.get('page')) 
-        return render(request, 'profile/history.html', {'theUser': user, 'history': get_history, 'res_type': res_type, 'res_data': res_data})
-    else:
-        messages.info(request, 'You have to be logged in first!')
-        return render(request, 'auth/login')
 
+        return render(request, 'profile/history.html', {'theUser': user, 'history': get_history})
+    else:
+        raise PermissionDenied()
 
 # ----------------------------------------------------------------
 # Report
@@ -1051,17 +1040,14 @@ def test_SehatMental_Result(request):
             # sangat kesepian dan sangat kurang dukungan sosial
             5: "Berdasarkan jawaban Kamu, dapat disimpulkan bahwa untuk saat ini Kamu sangat kesepian dan juga sangat kurang akan dukungan sosial. Untuk itu, cobalah untuk membuka diri, beradaptasi, dan berinteraksi pada lingkungan pertemanan mu dan juga coba untuk percaya kepada teman-teman mu sehingga temanmu juga akan begitu, yang nantinya kalian akan bisa bersama-sama saling memberi dukungan. Jadi, apapun keadaanmu sekarang jangan sampai membuat mu putus asa akan kehidupan ya. Masih ada waktu untuk mu memperbaiki keadaan. Kami tahu ini bukanlah hal yang mudah, tapi Kami juga yakin Kamu pasti bisa. Semangat!"
         }
-
-        result = {"res_type": resultType, "res_data": result_data[resultKey]}
-
         # Save to history if user is logged in
         if request.user.is_authenticated:
             # Save to history
-            history = History(user=user, quiz_type='Test Kesehatan Mental', result=result)
+            history = History(user=user, quiz_type='Test Kesehatan Mental', res_type=resultType, res_data=result_data[resultKey])
             history.save()
 
         # Nanti bisa di return banyak, style json -> title, hasil text, apa2 lah
-        return render(request, 'tests/result.html', {'result': result})
+        return render(request, 'tests/result.html', {'res_type': resultType, 'res_data': result_data[resultKey]})
     else:
         messages.info(request, 'You have to take the test first!')
         return redirect('/tests/health/kesehatan-mental')
