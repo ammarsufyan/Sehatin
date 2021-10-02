@@ -168,7 +168,7 @@ def forum(request):
 def forum_Tag(request, tagName):
     """See post by tag"""
     tag = Tag.objects.get(name=tagName.replace('-', ' '))
-    if tag is not None:
+    if tag is not None and tag.type == 'Forum':
         paginator = Paginator(Forum.objects.filter(tag=tag).order_by('-created_at'), 25)
         page = request.GET.get('page')
         posts = paginator.get_page(page)
@@ -179,12 +179,13 @@ def forum_Tag(request, tagName):
 def forum_Content(request, id):
     """Redirect to forum content"""
     if id is not None:
-        post = Forum.objects.get(id=id)
-        if post is not None:
-            # Redirect to vanity url
-            return redirect('/forum/' + str(post.id) + '/' + post.title.replace(' ', '-'))
-        else:
+        try:
+            post = Forum.objects.get(id=id)
+        except:
             raise Http404
+
+        # Redirect to vanity url
+        return redirect('/forum/' + str(post.id) + '/' + post.title.replace(' ', '-'))
     else:
         # return 404
         raise Http404
@@ -195,8 +196,8 @@ def forum_Url(request, id, title):
     if id is not None and title is not None:
         post = Forum.objects.get(id=id)
         # To ensure the vanity url is always exactly the title
-        if title.replace('-', ' ') != post.title:
-            return redirect('/forum/' + str(post.id) + '/' + post.title.replace(' ', '-'))
+        if title.replace('-', ' ') != post.title.replace('?', ''):
+            return redirect('/forum/' + str(post.id) + '/' + post.title.replace(' ', '-').replace('?', ''))
         
         if post is not None:
             comments = Comment.objects.filter(comment_Forum=post).order_by('created_at') # oldest to newest
@@ -475,7 +476,7 @@ def forum_Comment(request, id, title):
             # send notification to post owner
             if post.user != user:
                 if post.user != None: # Check if post user's account still exist
-                    notification = Notification(user=post.user, post=post, comment=comment, notification_Content=user.username + ' posted a comment on your post')
+                    notification = Notification(user=post.user, post=post, comment_Forum=comment, notification_Content=user.username + ' posted a comment on your post')
                     notification.save()
 
             # Send notification to mentioned users @
@@ -493,7 +494,7 @@ def forum_Comment(request, id, title):
                         # Get the comment object
                         mentionedComment = Comment.objects.get(user=user, comment_Forum=post, content=commentGet)
                     
-                        notification = Notification(user=mentionedUserObject, comment=mentionedComment, post=post, notification_Content=user.username + ' mentioned you in a comment')
+                        notification = Notification(user=mentionedUserObject, comment_Forum=mentionedComment, post=post, notification_Content=user.username + ' mentioned you in a comment')
                         notification.save()
                     except:
                         continue
@@ -927,6 +928,287 @@ def artikel(request):
 
 # ----------------------------------------------------------------
 # Konsul
+def konsultasi(request):
+    """Open konsultasi view"""
+    # Get reqeuest split konsultasis to 25 per page
+    paginator = Paginator(Konsultasi.objects.all().order_by('-created_at'), 25)
+    page = request.GET.get('page')
+    konsultasi = paginator.get_page(page)
+    tags = Tag.objects.filter(type="Konsultasi")
+
+    return render(request, 'konsultasi/index.html', {'post_konsul': konsultasi, 'tags': tags})
+
+def konsultasi_Create(request):
+    """Create post, if no request open page like usual. Request are made using jquery ajax
+    
+    Onsucess: Redirect to the post
+    Onfail: Return error message
+    """
+    if request.user.is_authenticated:
+        if request.method == 'POST': # If a request is made
+            user = request.user
+            title = request.POST.get('title')
+            content = request.POST.get('content')
+            tag_get = request.POST.get('tag')
+            
+            # Check if tag is found
+            if tag_get is None:
+                messages.info(request, 'Invalid tag options!')
+                return HttpResponse('error')
+
+            # Check tittle length
+            if len(title) < 5:
+                messages.info(request, 'Title is too short, Min title length is 5 characters')
+                return HttpResponse('error')
+
+            if len(title) > 200:
+                messages.info(request, 'Title is too long, Max title length is 200 characters')
+                return HttpResponse('error')
+
+            # Check content length
+            if len(content) < 25:
+                messages.info(request, 'Content must be at least 25 characters!')
+                return HttpResponse('limit')
+
+            # Max 40k
+            if len(content) > 40000:
+                messages.info(request, 'Invalid content length! Max allowed are 40k including formatting')
+                return HttpResponse('limit')
+
+            # Check if tag is found
+            tag = Tag.objects.get(name=tag_get)
+
+            if tag is None:
+                messages.info(request, 'Invalid tag options! No tag found!')
+                return HttpResponse('error')
+
+            post = Konsultasi(title=title, content=content, user=user, tag=tag)
+            post.save()
+
+            # Return the post id
+            getPost = Konsultasi.objects.get(title=title, content=content, user=user)
+            return HttpResponse(getPost.id)
+        else: # user enter normally
+            tags = Tag.objects.filter(type="Konsultasi")
+            return render(request, 'konsultasi/create.html', {'tags': tags})
+    else: # user is not logged in
+        messages.info(request, 'Need to login first!')
+        return redirect('/auth/login')
+
+def konsultasi_Tag(request, tagName):
+    """Open konsultasi tag view"""
+    tag = Tag.objects.get(name=tagName.replace('-', ' '))
+    if tag is not None and tag.type == "Konsultasi":
+        paginator = Paginator(Konsultasi.objects.filter(tag=tag).order_by('-created_at'), 25)
+        page = request.GET.get('page')
+        posts = paginator.get_page(page)
+        return render(request, 'konsultasi/tag.html', {'post_konsul': posts, 'tag': tag})
+    else:
+        raise Http404
+
+def konsultasi_Delete(request):
+    """Delete konsultasi"""
+        # Check if user is logged in and it's the post owner
+    if request.method == 'POST': # If a request is made
+        mode = request.POST.get('mode')
+        user = request.user
+        konsultasi = Konsultasi.objects.get(id=request.POST.get('id'))
+
+        if not user.is_superuser:
+            if user != konsultasi.user:
+                messages.info(request, 'Need to login first!')
+                dataJson = {'status': 'error', 'message': 'Need to login first!'}
+                return HttpResponse(json.dumps(dataJson))
+
+        # If delete mode admin send notification to the user
+        if mode == 'admin' and user.is_superuser:
+            if konsultasi.user != None: # Check if post user's account still exist
+                # Check if the deleted comment's user is admin, if admin then dont send notification
+                if not konsultasi.user.is_superuser:
+                    reason = request.POST.get('reason')
+
+                    # Kirim notif ke user
+                    user = konsultasi.konsultasi_User
+                    message = "Konsultasi anda dengan judul '" + konsultasi.konsultasi_Title + "' telah dihapus oleh admin. Alasan: " + reason
+                    notification = Notification(user=user, notification_content=message)
+                    notification.save()
+
+        # Delete the post
+        konsultasi.delete()
+
+        # Return success
+        dataJson = {'status': 'success', 'message': 'Konsultasi berhasil dihapus!'}
+        return HttpResponse(json.dumps(dataJson))
+    else:
+        raise Http404
+
+def konsultasi_Url(request, id, title):
+    """Open konsultasi detail view"""
+    # Title in the link is just for vanity url
+    if id is not None and title is not None:
+        konsultasi = Konsultasi.objects.get(id=id)
+        # To ensure the vanity url is always exactly the title
+        if title.replace('-', ' ') != konsultasi.title.replace('?', ''):
+            return redirect('/konsultasi/' + str(konsultasi.id) + '/' + konsultasi.title.replace(' ', '-').replace('?', ''))
+        
+        if konsultasi is not None:
+            comments = Comment.objects.filter(comment_Konsultasi=konsultasi).order_by('created_at') # oldest to newest
+            
+            return render(request, 'konsultasi/view.html', {'post': konsultasi, 'comments': comments})
+        else:
+            raise Http404
+    else:
+        # return 404
+        raise Http404
+
+def konsultasi_Content(request, id):
+    """Open konsultasi detail view"""
+    if id is not None:
+        try:
+            konsultasi = Konsultasi.objects.get(id=id)
+        except:
+            raise Http404
+
+        return redirect('/konsultasi/' + str(konsultasi.id) + '/' + konsultasi.title.replace(' ', '-'))
+    else:
+        # return 404
+        raise Http404
+
+def konsultasi_Comment(request, id, title):
+    """Create konsultasi comment"""
+    if request.method == 'POST': # If a comment is made
+        if request.user.is_authenticated:
+            print('a')
+            # Comment
+            user = request.user
+            post = Konsultasi.objects.get(id=id)
+            print(post)
+            commentGet = request.POST.get('comment')
+
+            # If comment empty
+            if commentGet == None:
+                messages.info(request, 'Invalid comment length!')
+                return HttpResponse('error')
+
+            # If comment too long or too short
+            if len(commentGet) > 10000 or len(commentGet) < 20:
+                messages.info(request, 'Invalid comment length!')
+                return HttpResponse('limit')
+
+            # Save comment first
+            comment = Comment(user=user, comment_Konsultasi=post, content=commentGet)
+            comment.save()
+
+            # Increase the post comments
+            post.comments += 1
+            post.save()
+
+            # send notification to post owner
+            if post.user != user:
+                if post.user != None: # Check if post user's account still exist
+                    notification = Notification(user=post.user, comment_Konsultasi=post, comment=comment, notification_Content=user.username + ' posted a comment on your post')
+                    notification.save()
+
+            # Send notification to mentioned users @
+            mentioned = re.findall(r'@\w+', commentGet)
+            # Remove dupe
+            mentionedNoDupe = list(dict.fromkeys(mentioned))
+            # Loop
+            for mentionedUser in mentionedNoDupe:
+                mentionedUser = mentionedUser[1:] # Remove @
+                if mentionedUser != user.username:
+                    try:
+                        # Get the mentioned user object
+                        mentionedUserObject = User.objects.get(username=mentionedUser)
+
+                        # Get the comment object
+                        mentionedComment = Comment.objects.get(user=user, comment_Konsultasi=post, content=commentGet)
+                    
+                        notification = Notification(user=mentionedUserObject, comment=mentionedComment, post=post, notification_Content=user.username + ' mentioned you in a comment')
+                        notification.save()
+                    except:
+                        continue
+
+            return HttpResponse('success')
+        else: # If user is not logged in
+            messages.info(request, 'Need to login first!')
+            return HttpResponse('error')
+    else: # If no request, throw 404
+        raise Http404
+
+def konsultasi_Comment_Delete(request, id, title, comment_id):
+    """Delete konsultasi comment"""
+        # Check if a post request is made
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+            post = Konsultasi.objects.get(id=id)
+            comment = Comment.objects.get(id=comment_id)
+            user = request.user
+            mode = request.POST.get('mode')
+
+            # Verify if the user is the comment owner
+            if not user.is_superuser:
+                if user != comment.user:
+                    raise PermissionDenied()
+
+            # If delete mode admin send notification to the user
+            if mode == 'admin' and user.is_superuser:
+                if comment.user != None: # Check if post user's account still exist
+                    # Check if the deleted comment's user is admin, if admin then dont send notification
+                    if not comment.user.is_superuser:
+                        # Get reason for deletion by admin
+                        reason = request.POST.get('reason')
+                        # Send notification to user
+                        notification = Notification(user=comment.user, notification_Content='Your comment has been deleted by admin (' + user.username + '). Reason: ' + reason)
+                        notification.save()
+
+            # Delete comment
+            comment.delete()
+
+            # Decrease the post comments
+            post.comments -= 1
+            post.save()
+
+            # Get current comment count
+            comments = Comment.objects.filter(comment_Forum=comment.comment_Forum)
+            dataJson = {'status': 'success', 'message': comments.count()}
+            return HttpResponse(json.dumps(dataJson))
+        else: # If user is not logged in
+            messages.info(request, 'Need to login first!')
+            dataJson = {'status': 'error', 'message': 'Need to login first!'}
+            return HttpResponse(json.dumps(dataJson))
+    else: # If no request, throw 404
+        raise Http404
+
+def konsultasi_Comment_Edit(request, id, title, comment_id):
+    """Edit konsultasi comment"""
+    # Check if a post request is made
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+            comment = Comment.objects.get(id=comment_id)
+            user = request.user
+            commentGet = request.POST.get('comment')
+
+            # Check length of comment
+            if len(commentGet) > 10000 or len(commentGet) < 20:
+                messages.info(request, 'Invalid comment length!')
+                return HttpResponse('limit')
+
+            # If comment empty
+            if commentGet == None:
+                messages.info(request, 'Invalid comment length!')
+                return HttpResponse('error')
+
+            # Edit comment
+            comment.content = commentGet
+            comment.save()
+
+            return HttpResponse('success')
+        else: # If user is not logged in
+            messages.info(request, 'Need to login first!')
+            return HttpResponse('error')
+    else: # If no request, throw 404
+        raise Http404
 
 # ----------------------------------------------------------------
 # Tests menu
