@@ -14,7 +14,7 @@
     {% include 'templates/header.html' %}
 
     List of posts... with the tag "{{ tag.name }}"<br>
-    go back <a href="/post">Home</a>
+    go back <a href="/forum">Forum</a>
 
     <br>
     {% if user.is_authenticated %}
@@ -40,7 +40,7 @@
         <a href="?page=1">&laquo First</a>
         <a href="?page={{ posts.previous_page_number }}">Previous</a>
     {% endif %}
-    {% if notifications.has_next %}
+    {% if posts.has_next %}
         <a href="?page={{ posts.next_page_number }}">Next</a>
         <a href="?page={{ posts.paginator.num_pages }}">Last &raquo</a>
     {% endif %}

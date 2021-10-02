@@ -82,24 +82,24 @@
                 var tag = $('#tag').val();
                 var csrf = $('input[name=csrfmiddlewaretoken]').val();
                 $.ajax({
-                    url: '/forum/create',
+                    url: '/konsultasi/create',
                     type: 'POST',
                     data: {
                         'csrfmiddlewaretoken': csrf,
                         'title': title.trim(),
                         'content': content.trim(),
                         'tag': tag,
-                        'post_Type': "Forum Post"
+                        'post_Type': "Konsultasi"
                     },
                     success: function(data) {
                         // data returned on success is post id
                         if (data == 'error') {
-                            window.location.href = '/forum/create';
+                            window.location.href = '/konsultasi/create';
                         } else
                         if (data == 'limit')  {
                             alert('Character length invalid!')
                         } else {
-                            window.location.href = '/forum/' + data.toString();
+                            window.location.href = '/konsultasi/' + data.toString();
                         }
                     }
                 });
