@@ -44,7 +44,7 @@
                         Comment ID: {{ report.comment.id }}<br>
                         Content:<br>{% autoescape off %}{{ report.comment.content }}{% endautoescape %}
         
-                        <a href="/post/{{ report.post.id }}/{{ report.post.title }}#comments-{{ report.comment.id }}">Link to the reported Comment</a>
+                        <a href="/forum/{{ report.post.id }}/{{ report.post.title }}#comments-{{ report.comment.id }}">Link to the reported Comment</a>
                     {% else %}
                         Comment is already deleted
                     {% endif %}

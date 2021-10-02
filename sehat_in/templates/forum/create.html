@@ -23,12 +23,16 @@
         <select name="tag" id="tag">
             {% if user.is_superuser %}
                 {% for tag in tags %}
-                <option value="{{ tag.name }}">{{ tag.name }}</option>
+                    {% if tag.type == "Forum" %}
+                        <option value="{{ tag.name }}">{{ tag.name }}</option>
+                    {% endif %}
                 {% endfor %}
             {% else %}
                 {% for tag in tags %}
                     {% if not tag.adminOnly %}
-                        <option value="{{ tag.name }}">{{ tag.name }}</option>
+                        {% if tag.type == "Forum" %}
+                            <option value="{{ tag.name }}">{{ tag.name }}</option>
+                        {% endif %}
                     {% endif %}
                 {% endfor %}
             {% endif %}
@@ -89,7 +93,6 @@
                         'title': title.trim(),
                         'content': content.trim(),
                         'tag': tag,
-                        'post_Type': "Forum Post"
                     },
                     success: function(data) {
                         // data returned on success is post id

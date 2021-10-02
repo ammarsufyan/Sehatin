@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load space_to_dash %}
 
 <html lang="en">
 <head>
@@ -17,7 +18,7 @@
 
     <div class="post">
         <h1>{{ post.title }}</a></h1>
-        <p>Tag: <a href="/post/tag/{{ post.tag.name }}">{{ post.tag.name }}</a></p>
+        <p>Tag: <a href="/forum/tag/{{ post.tag.name|space_to_dash }}">{{ post.tag.name }}</a></p>
         {% autoescape off %}
         {{ post.content }}
         {% endautoescape %}

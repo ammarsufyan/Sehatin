@@ -14,7 +14,7 @@ urlpatterns = [
     # Artikel
     # path('artikel', views.artikel, name='artikel'),
     # path('artikel/', views.artikel, name='artikel'), # So that artikel/ still work too
-    # path('artikel/<str:id>/<str:title>/', views.forum_Content, name='artikel/id'), # The real url for the post
+    # path('artikel/<str:id>/<str:title>/', views.artikel_Content, name='artikel/id'), # The real url for the post
 
     # Forum
     path('forum', views.forum, name='forum'),
@@ -33,7 +33,7 @@ urlpatterns = [
     path('forum/<str:id>/<str:title>/comment/<str:comment_id>/delete', views.forum_Comment_Delete, name='post/comment/delete'),
     path('forum/<str:id>/<str:title>/comment/<str:comment_id>/report', views.forum_Comment_Report, name='post/comment/report'),
 
-    # Konsul
+    # Konsultasi
     # path('konsultasi/', views.konsul, name='konsultasi'),
     # path('konsultasi/<str:id>/', views.konsul_Content, name='konsultasi/id'), # The real url for the konsul
     # path('konsultasi/<str:id>/<str:title>', views.konsul_Url, name='konsultasi/id'), # Vanity url

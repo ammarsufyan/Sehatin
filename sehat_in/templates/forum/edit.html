@@ -21,13 +21,29 @@
         <div id="editor"></div>
         <p>Tag</p>
         <select name="tag" id="tag">
-            {% for tag in tags %}
-                {% if tag.id == post.tag_id %}
-                <option value="{{ tag.name }}" selected>{{ tag.name }}</option>
-                {% else %}
-                <option value="{{ tag.name }}">{{ tag.name }}</option>
-                {% endif %}
-            {% endfor %}
+            {% if user.is_superuser %}
+                {% for tag in tags %}
+                    {% if tag.type == "Forum" %}
+                            {% if tag.id == post.tag_id %}
+                                <option value="{{ tag.name }}" selected>{{ tag.name }}</option>
+                            {% else %}
+                                <option value="{{ tag.name }}">{{ tag.name }}</option>
+                            {% endif %}
+                    {% endif %}
+                {% endfor %}
+            {% else %}
+                {% for tag in tags %}
+                    {% if not tag.adminOnly %}
+                        {% if tag.type == "Forum" %}
+                            {% if tag.id == post.tag_id %}
+                                <option value="{{ tag.name }}" selected>{{ tag.name }}</option>
+                            {% else %}
+                                <option value="{{ tag.name }}">{{ tag.name }}</option>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
         </select>
         <br>
         <input type="submit" value="Edit" onclick="editPost()">

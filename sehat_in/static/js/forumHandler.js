@@ -119,7 +119,7 @@ function deletePost(logged_in, postid, title, csrf_token, mode) {
             dataJson = JSON.parse(data);
             if (dataJson.status == 'success') {
                 alert("Post has been deleted successfully!");
-                window.location.href = '/post';
+                window.location.href = '/forum';
             } else {
                 alert("Error! Fail to delete post!" + dataJson.message);
             }

@@ -155,11 +155,11 @@ def logout(request):
     return redirect('/')
 
 # ----------------------------------------------------------------
-# Post
+# Forum
 def forum(request):
     """See all post"""
     tags = Tag.objects.all()
-    paginator = Paginator(Post.objects.all().order_by('-created_at'), 25)
+    paginator = Paginator(Forum.objects.all().order_by('-created_at'), 25)
     page = request.GET.get('page')
     posts = paginator.get_page(page)
 
@@ -169,7 +169,7 @@ def forum_Tag(request, tagName):
     """See post by tag"""
     tag = Tag.objects.get(name=tagName.replace('-', ' '))
     if tag is not None:
-        paginator = Paginator(Post.objects.filter(tag=tag).order_by('-created_at'), 25)
+        paginator = Paginator(Forum.objects.filter(tag=tag).order_by('-created_at'), 25)
         page = request.GET.get('page')
         posts = paginator.get_page(page)
         return render(request, 'forum/tag.html', {'posts': posts, 'tag': tag})
@@ -179,7 +179,7 @@ def forum_Tag(request, tagName):
 def forum_Content(request, id):
     """Redirect to forum content"""
     if id is not None:
-        post = Post.objects.get(id=id)
+        post = Forum.objects.get(id=id)
         if post is not None:
             # Redirect to vanity url
             return redirect('/forum/' + str(post.id) + '/' + post.title.replace(' ', '-'))
@@ -193,13 +193,13 @@ def forum_Url(request, id, title):
     """Generate URL for post with vanity url of title"""
     # Title in the link is just for vanity url
     if id is not None and title is not None:
-        post = Post.objects.get(id=id)
+        post = Forum.objects.get(id=id)
         # To ensure the vanity url is always exactly the title
         if title.replace('-', ' ') != post.title:
             return redirect('/forum/' + str(post.id) + '/' + post.title.replace(' ', '-'))
         
         if post is not None:
-            comments = Comment.objects.filter(post=post).order_by('created_at') # oldest to newest
+            comments = Comment.objects.filter(comment_Forum=post).order_by('created_at') # oldest to newest
             likes = Like.objects.filter(post=post)
             
             return render(request, 'forum/view.html', {'post': post, 'comments': comments, 'likes': likes})
@@ -221,7 +221,6 @@ def forum_Create(request):
             title = request.POST.get('title')
             content = request.POST.get('content')
             tag_get = request.POST.get('tag')
-            post_Type = request.POST.get('post_Type')
             
             # Check if tag is found
             if tag_get is None:
@@ -254,11 +253,11 @@ def forum_Create(request):
                 messages.info(request, 'Invalid tag options! No tag found!')
                 return HttpResponse('error')
 
-            post = Post(title=title, content=content, user=user, tag=tag, type=post_Type)
+            post = Forum(title=title, content=content, user=user, tag=tag)
             post.save()
 
             # Return the post id
-            getPost = Post.objects.get(title=title, content=content, user=user)
+            getPost = Forum.objects.get(title=title, content=content, user=user)
             return HttpResponse(getPost.id)
         else: # user enter normally
             tags = Tag.objects.all()
@@ -274,7 +273,7 @@ def forum_Edit(request, id, title):
     Onfail: Return error message
     """
     # Check if user is logged in and it's the post owner
-    if request.user != Post.objects.get(id=id).user:
+    if request.user != Forum.objects.get(id=id).user:
         raise PermissionDenied()
 
     if request.user.is_authenticated:
@@ -293,7 +292,7 @@ def forum_Edit(request, id, title):
                 return HttpResponse('limit')
 
             # Get the post and tag object
-            post = Post.objects.get(id=id)
+            post = Forum.objects.get(id=id)
             tag = Tag.objects.get(name=tag_name)
 
             # Change the stuff
@@ -306,7 +305,7 @@ def forum_Edit(request, id, title):
             # Redirect to the post
             return HttpResponse('success')
         else: # If user enter the edit page
-            post = Post.objects.get(id=id)
+            post = Forum.objects.get(id=id)
             tag = Tag.objects.all()
 
             if title.replace('-', ' ') != post.title: # Ensure the title is exactly the same
@@ -327,7 +326,7 @@ def forum_Delete(request, id, title):
     if request.method == 'POST': # If a request is made
         mode = request.POST.get('mode')
         user = request.user
-        post = Post.objects.get(id=id)
+        post = Forum.objects.get(id=id)
 
         if not user.is_superuser:
             if user != post.user:
@@ -363,7 +362,7 @@ def forum_Like(request, id, title):
     """
     if request.method == 'POST':
         if request.user.is_authenticated:
-            post = Post.objects.get(id=id)
+            post = Forum.objects.get(id=id)
             user = request.user
             like = Like.objects.filter(user=user, post=post)
             if like.count() == 0: # If user hasn't liked this post
@@ -408,7 +407,7 @@ def forum_Report(request, id, title):
         if request.user.is_authenticated:
             # Report
             user = request.user
-            post = Post.objects.get(id=id)
+            post = Forum.objects.get(id=id)
             reason = request.POST.get('reason')
 
             # Validate reason
@@ -452,7 +451,7 @@ def forum_Comment(request, id, title):
         if request.user.is_authenticated:
             # Comment
             user = request.user
-            post = Post.objects.get(id=id)
+            post = Forum.objects.get(id=id)
             commentGet = request.POST.get('comment')
 
             # If comment empty
@@ -466,7 +465,7 @@ def forum_Comment(request, id, title):
                 return HttpResponse('limit')
 
             # Save comment first
-            comment = Comment(user=user, post=post, content=commentGet)
+            comment = Comment(user=user, comment_Forum=post, content=commentGet)
             comment.save()
 
             # Increase the post comments
@@ -492,7 +491,7 @@ def forum_Comment(request, id, title):
                         mentionedUserObject = User.objects.get(username=mentionedUser)
 
                         # Get the comment object
-                        mentionedComment = Comment.objects.get(user=user, post=post, content=commentGet)
+                        mentionedComment = Comment.objects.get(user=user, comment_Forum=post, content=commentGet)
                     
                         notification = Notification(user=mentionedUserObject, comment=mentionedComment, post=post, notification_Content=user.username + ' mentioned you in a comment')
                         notification.save()
@@ -517,7 +516,7 @@ def forum_Comment_Like(request, id, title, comment_id):
             comment = Comment.objects.get(id=comment_id)
             user = request.user
             like = Like.objects.filter(user=user, comment=comment)
-            post = Post.objects.get(id=id)
+            post = Forum.objects.get(id=id)
 
             if like.count() == 0: # If user hasn't liked this comment
                 like = Like(user=user, comment=comment, post=post)
@@ -599,7 +598,7 @@ def forum_Comment_Delete(request, id, title, comment_id):
     # Check if a post request is made
     if request.method == 'POST':
         if request.user.is_authenticated:
-            post = Post.objects.get(id=id)
+            post = Forum.objects.get(id=id)
             comment = Comment.objects.get(id=comment_id)
             user = request.user
             mode = request.POST.get('mode')
@@ -628,7 +627,7 @@ def forum_Comment_Delete(request, id, title, comment_id):
             post.save()
 
             # Get current comment count
-            comments = Comment.objects.filter(post=comment.post)
+            comments = Comment.objects.filter(comment_Forum=comment.comment_Forum)
             dataJson = {'status': 'success', 'message': comments.count()}
             return HttpResponse(json.dumps(dataJson))
         else: # If user is not logged in
@@ -696,7 +695,7 @@ def profile(request, username):
         user_profile = UserProfile.objects.get(user=user)
         
         # get the user posts
-        posts = Post.objects.filter(user=user)
+        posts = Forum.objects.filter(user=user)
 
         # get the user comments
         comments = Comment.objects.filter(user=user)
@@ -713,7 +712,7 @@ def profile_Posts(request, username):
     # Check if user exists or not
     if user:
         # get the user posts 25 per page
-        paginator = Paginator(Post.objects.filter(user=user).order_by('-created_at'), 25)
+        paginator = Paginator(Forum.objects.filter(user=user).order_by('-created_at'), 25)
         page = request.GET.get('page')
         posts = paginator.get_page(page)
 
@@ -913,6 +912,21 @@ def report_Resolve(request, id):
             raise PermissionDenied()
     else:
         raise Http404
+
+# ----------------------------------------------------------------
+# Artikel
+def artikel(request):
+    """Open artikel view"""
+    # Get reqeuest split artikels to 25 per page
+    paginator = Paginator(Artikel.objects.all().order_by('-created_at'), 25)
+    page = request.GET.get('page')
+    artikels = paginator.get_page(page)
+
+    return render(request, 'artikel.html', {'artikels': artikels})
+
+
+# ----------------------------------------------------------------
+# Konsul
 
 # ----------------------------------------------------------------
 # Tests menu
