@@ -27,7 +27,7 @@
 
     {% for konsultasi in post_konsul %}
         <div class="post-lists" id="post-id-{{ konsultasi.id }}">
-            <h1><a href="/forum/{{ post.id }}">{{ konsultasi.title }}</a></h1>
+            <h1><a href="/konsultasi/{{ konsultasi.id }}">{{ konsultasi.title }}</a></h1>
             <p>Tag: <a href="/forum/tag/{{ konsultasi.tag.name }}">{{ konsultasi.tag.name }}</a></p>
 
             <p> Author: {% if konsultasi.user == null %}deleted{% else %}{{ konsultasi.user }}{% endif %} - Created at {{ konsultasi.created_at }} - last updated at {{ konsultasi.updated_at }}</p>

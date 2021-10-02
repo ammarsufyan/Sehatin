@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 {% load static %}
+{% load remove_unused %}
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -22,12 +24,19 @@
             {% else %}
             <li style="background-color:yellow;" name="notif-id" id="notif-{{ notif.id }}">
             {% endif %}
-            {% if notif.post %}
+            {% if notif.post_Forum %}
                 Type: Post-Comment<br>
-                <a href="/post/{{ notif.post.id }}/{{ notif.post.title }}#comments-{{ notif.comment.id }}">{{ notif.notification_Content }}</a>
+                <a href="/forum/{{ notif.post_Forum.id }}/{{ notif.post_Forum.title|remove_unused }}#comments-{{ notif.comment.id }}">{{ notif.notification_Content }}</a>
+            {% elif notif.post_Konsultasi %}
+                Type: Jawaban Konsultasi<br>
+                <a href="/konsultasi/{{ notif.post_Konsultasi.id }}/{{ notif.post_Konsultasi.title|remove_unused }}#comments-{{ notif.comment.id }}">{{ notif.notification_Content }}</a>
             {% elif notif.comment %}
-                Type: Comment-Mention<br>
-                <a href="/post/{{ notif.post.id }}/{{ notif.post.title }}#comments-{{ notif.comment.id }}">{{ notif.notification_Content }}</a>
+                {% if notif.post_Forum %}
+                    Type: Comment-Mention<br>
+                    <a href="/forum/{{ notif.post.id }}/{{ notif.post.title|remove_unused }}#comments-{{ notif.comment.id }}">{{ notif.notification_Content }}</a>
+                {% else %}
+                    <a href="/konsultasi/{{ notif.post.id }}/{{ notif.post.title|remove_unused }}#comments-{{ notif.comment.id }}">{{ notif.notification_Content }}</a>
+                {% endif %}
             {% else %}
                 {{ notif.notification_Content }}
             {% endif %}

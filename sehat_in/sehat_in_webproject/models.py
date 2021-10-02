@@ -64,7 +64,8 @@ class History(models.Model):
 
 class Notification(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE) # The user who is notified
-    post = models.ForeignKey(Forum, on_delete=models.SET_NULL, null=True, blank=True) # Notification in post, ex: someone commented ...
+    post_Forum = models.ForeignKey(Forum, on_delete=models.SET_NULL, null=True, blank=True) # Notification in post, ex: someone commented ...
+    post_Konsultasi = models.ForeignKey(Konsultasi, on_delete=models.SET_NULL, null=True, blank=True) # Notification in post, ex: someone commented ...
     comment = models.ForeignKey(Comment, on_delete=models.SET_NULL, null=True, blank=True) # Notifcation in comment, ex: someone replied
     notification_Content = models.TextField(max_length=500) # The notification message, will be auto generated based on the notification type
     created_at = models.DateTimeField(auto_now_add=True)

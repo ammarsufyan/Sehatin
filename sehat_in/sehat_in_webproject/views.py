@@ -476,7 +476,7 @@ def forum_Comment(request, id, title):
             # send notification to post owner
             if post.user != user:
                 if post.user != None: # Check if post user's account still exist
-                    notification = Notification(user=post.user, post=post, comment_Forum=comment, notification_Content=user.username + ' posted a comment on your post')
+                    notification = Notification(user=post.user, post_Forum=post, comment=comment, notification_Content=user.username + ' posted a comment on your post')
                     notification.save()
 
             # Send notification to mentioned users @
@@ -494,7 +494,7 @@ def forum_Comment(request, id, title):
                         # Get the comment object
                         mentionedComment = Comment.objects.get(user=user, comment_Forum=post, content=commentGet)
                     
-                        notification = Notification(user=mentionedUserObject, comment_Forum=mentionedComment, post=post, notification_Content=user.username + ' mentioned you in a comment')
+                        notification = Notification(user=mentionedUserObject, comment=mentionedComment, post_Forum=post, notification_Content=user.username + ' mentioned you in a comment')
                         notification.save()
                     except:
                         continue
@@ -1106,7 +1106,7 @@ def konsultasi_Comment(request, id, title):
             # send notification to post owner
             if post.user != user:
                 if post.user != None: # Check if post user's account still exist
-                    notification = Notification(user=post.user, comment_Konsultasi=post, comment=comment, notification_Content=user.username + ' posted a comment on your post')
+                    notification = Notification(user=post.user, post_Konsultasi=post, comment=comment, notification_Content=user.username + ' posted a comment on your post')
                     notification.save()
 
             # Send notification to mentioned users @
@@ -1124,7 +1124,7 @@ def konsultasi_Comment(request, id, title):
                         # Get the comment object
                         mentionedComment = Comment.objects.get(user=user, comment_Konsultasi=post, content=commentGet)
                     
-                        notification = Notification(user=mentionedUserObject, comment=mentionedComment, post=post, notification_Content=user.username + ' mentioned you in a comment')
+                        notification = Notification(user=mentionedUserObject, comment=mentionedComment, post_Konsultasi=post, notification_Content=user.username + ' mentioned you in a comment')
                         notification.save()
                     except:
                         continue
