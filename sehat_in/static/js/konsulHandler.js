@@ -1,67 +1,5 @@
 // The variable that is passed are only for the api to works
 // The backend process is handled in views.js
-// Quill
-var myToolbar = [
-    ['bold', 'italic', 'underline', 'strike'],
-    ['blockquote', 'code-block'],
-
-    [{
-        'color': []
-    }, {
-        'background': []
-    }],
-    [{
-        'font': []
-    }],
-    [{
-        'align': []
-    }],
-
-    ['clean'],
-    ['image']
-];
-
-function imageHandler() {
-    var range = this.quill.getSelection();
-    var value = prompt('please copy paste the image url here.');
-    if (value) {
-        this.quill.insertEmbed(range.index, 'image', value, Quill.sources.USER);
-    }
-}
-
-function editPost(logged_in, id, title) {
-    /* edit post, move page to edit page */
-    if (logged_in == "False") {
-        alert("You must be logged in to edit a post");
-        return;
-    }
-    window.location.href = '/forum/' + id + '/' + title.replaceAll(' ', '-').replaceAll('?', '') + '/edit';
-}
-
-function likePost(logged_in, id, title, csrf_token) {
-    /* like post, if success edit likes and liker, if fail alert fail */
-    if (logged_in == "False") {
-        alert('You must be logged in to like a post');
-        return;
-    }
-
-    $.ajax({
-        url: '/forum/' + id + '/' + title.replaceAll(' ', '-').replaceAll('?', '') + '/like',
-        type: 'POST',
-        data: {
-            'csrfmiddlewaretoken': csrf_token
-        },
-        success: function (data) {
-            dataJson = JSON.parse(data);
-            if (dataJson.names != 'error') {
-                $('#post-like-count').html(dataJson.likes);
-                $('#post-liker').html(dataJson.names.join(', '));
-            } else {
-                alert("Error! Fail to like post!");
-            }
-        }
-    });
-}
 
 function deletePost(logged_in, postid, title, csrf_token, mode) {
     /* delete post, alert post has been deleted successfully and redirect to post lists on success, alert fail otherwise */
@@ -106,9 +44,9 @@ function deletePost(logged_in, postid, title, csrf_token, mode) {
         alert("The title you entered does not match the title of the post!");
         return;
     }
-
+    console.log(title.replaceAll(' ', '-').replaceAll('?', ''));
     $.ajax({
-        url: '/forum/' + postid + '/' + title.replaceAll(' ', '-').replaceAll('?', '') + '/delete',
+        url: '/konsultasi/' + postid + '/' + title.replaceAll(' ', '-').replaceAll('?', '') + '/delete',
         type: 'POST',
         data: {
             'csrfmiddlewaretoken': csrf_token,
@@ -119,97 +57,9 @@ function deletePost(logged_in, postid, title, csrf_token, mode) {
             dataJson = JSON.parse(data);
             if (dataJson.status == 'success') {
                 alert("Post has been deleted successfully!");
-                window.location.href = '/forum';
+                window.location.href = '/konsultasi';
             } else {
                 alert("Error! Fail to delete post!" + dataJson.message);
-            }
-        }
-    });
-}
-
-function reportPost(logged_in, postid, title, csrf_token) {
-    /* report post, alert success on success, alert fail on failure */
-    if (logged_in == "False") {
-        alert('You need to login to report a post');
-        return;
-    }
-
-    // Ask for confirmation
-    if (!confirm("Are you sure you want to report this post?")) {
-        return;
-    }
-
-    // Ask for reasons
-    var reason = prompt("Please enter a reason for reporting this post:");
-    if (reason == null) { // cancel button pressed
-        return;
-    }
-    if (reason == "") {
-        alert("You must enter a reason for reporting this post.");
-        return;
-    }
-    if (reason < 4 || reason > 200) {
-        alert("Invalid Reason Length! Must be between 4 and 200 characters!");
-        return;
-    }
-
-    $.ajax({
-        url: '/forum/' + postid + '/' + title.replaceAll(' ', '-').replaceAll('?', '') + '/report',
-        type: 'POST',
-        data: {
-            'csrfmiddlewaretoken': csrf_token,
-            'reason': reason
-        },
-        success: function (data) {
-            dataJson = JSON.parse(data);
-            if (dataJson.status == 'success') {
-                alert("Post has been Reported successfully! Thanks for trying to make the site a better place!");
-            } else {
-                alert("Error! Fail to report post! " + dataJson.message);
-            }
-        }
-    });
-}
-
-function reportComment(logged_in, postid, title, commentId, csrf_token) {
-    /* report comment, alert success on success, alert fail on failure */
-    if (logged_in == "False") {
-        alert('You need to login to report a comment');
-        return;
-    }
-
-    // Ask for confirmation
-    if (!confirm("Are you sure you want to report this comment?")) {
-        return;
-    }
-
-    // Ask for reasons
-    var reason = prompt("Please enter a reason for reporting this comment:");
-    if (reason == null) { // cancel button pressed
-        return;
-    }
-    if (reason == "") {
-        alert("You must enter a reason for reporting this comment.");
-        return;
-    }
-    if (reason < 4 || reason > 200) {
-        alert("Invalid Reason Length! Must be between 4 and 200 characters!");
-        return;
-    }
-
-    $.ajax({
-        url: '/forum/' + postid + '/' + title.replaceAll(' ', '-').replaceAll('?', '') + '/comment/' + commentId + '/report',
-        type: 'POST',
-        data: {
-            'csrfmiddlewaretoken': csrf_token,
-            'reason': reason,
-        },
-        success: function (data) {
-            dataJson = JSON.parse(data);
-            if (dataJson.status == 'success') {
-                alert("Comment Has Been Reported successfully! Thanks for trying to make the site a better place!");
-            } else {
-                alert("Error! Fail to report comment! " + dataJson.message);
             }
         }
     });
@@ -268,7 +118,7 @@ function deleteComment(logged_in, postid, title, commentId, csrf_token, mode) {
         }
 
         $.ajax({
-            url: '/forum/' + postid + '/' + title.replaceAll(' ', '-').replaceAll('?', '') + '/comment/' + commentId + '/delete',
+            url: '/konsultasi/' + postid + '/' + title.replaceAll(' ', '-').replaceAll('?', '') + '/comment/' + commentId + '/delete',
             type: 'POST',
             data: {
                 'csrfmiddlewaretoken': csrf_token,
@@ -361,7 +211,7 @@ function editComment(logged_in, id, title, comment_id, csrf_token) {
         }
 
         $.ajax({
-            url: '/forum/' + id + '/' + title.replaceAll(' ', '-').replaceAll('?', '') + '/comment/' + comment_id + '/edit',
+            url: '/konsultasi/' + id + '/' + title.replaceAll(' ', '-').replaceAll('?', '') + '/comment/' + comment_id + '/edit',
             type: 'POST',
             data: {
                 'csrfmiddlewaretoken': csrf_token,
@@ -399,31 +249,6 @@ function editComment(logged_in, id, title, comment_id, csrf_token) {
     valueDiv.appendChild(cancelButton);
 }
 
-
-function likeComment(logged_in, post_id, title, comment_id, csrf_token) {
-    /* like comment, if success edit likes count, if fail alert fail */
-    if (logged_in == "False") {
-        alert('You must be logged in to like a comment');
-        return;
-    }
-
-    $.ajax({
-        url: '/forum/' + post_id + '/' + title.replaceAll(' ', '-').replaceAll('?', '') + '/comment/' + comment_id + '/like',
-        type: 'POST',
-        data: {
-            'csrfmiddlewaretoken': csrf_token
-        },
-        success: function (data) {
-            dataJson = JSON.parse(data);
-            if (dataJson.names != 'error') {
-                $('#comment-like-count-' + comment_id).html(dataJson.likes);
-            } else {
-                alert("Error! Fail to like comment!");
-            }
-        }
-    });
-}
-
 function comment(logged_in, id, title, csrf_token) {
     /* comment, if success refresh page, if fail alert fail */
     if (logged_in == "False") {
@@ -442,7 +267,7 @@ function comment(logged_in, id, title, csrf_token) {
         alert('Comment to long! Max character allowed including formatting are 10000 characters long');
     } else {
         $.ajax({
-            url: '/forum/' + id + '/' + title.replaceAll(' ', '-').replaceAll('?', '') + '/comment',
+            url: '/konsultasi/' + id + '/' + title.replaceAll(' ', '-').replaceAll('?', '') + '/comment',
             type: 'POST',
             data: {
                 'csrfmiddlewaretoken': csrf_token,
@@ -451,7 +276,7 @@ function comment(logged_in, id, title, csrf_token) {
             success: function (data) {
                 if (data == 'success') {
                     // Refresh the page
-                    window.location.href = '/forum/' + id + '/' + title.replaceAll(' ', '-').replaceAll('?', '');
+                    window.location.href = '/konsultasi/' + id + '/' + title.replaceAll(' ', '-').replaceAll('?', '');
                 } else
                 if (data == 'limit') {
                     alert('Character length invalid!')
