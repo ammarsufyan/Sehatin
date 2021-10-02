@@ -158,7 +158,7 @@ def logout(request):
 # Forum
 def forum(request):
     """See all post"""
-    tags = Tag.objects.all()
+    tags = Tag.objects.filter(type="Forum")
     paginator = Paginator(Forum.objects.all().order_by('-created_at'), 25)
     page = request.GET.get('page')
     posts = paginator.get_page(page)
@@ -260,7 +260,7 @@ def forum_Create(request):
             getPost = Forum.objects.get(title=title, content=content, user=user)
             return HttpResponse(getPost.id)
         else: # user enter normally
-            tags = Tag.objects.all()
+            tags = Tag.objects.filter(type="Forum")
             return render(request, 'forum/create.html', {'tags': tags})
     else: # user is not logged in
         messages.info(request, 'Need to login first!')
@@ -306,7 +306,7 @@ def forum_Edit(request, id, title):
             return HttpResponse('success')
         else: # If user enter the edit page
             post = Forum.objects.get(id=id)
-            tag = Tag.objects.all()
+            tag = Tag.objects.filter(type="Forum")
 
             if title.replace('-', ' ') != post.title: # Ensure the title is exactly the same
                 return redirect('/forum/' + str(post.id) + '/' + post.title.replace(' ', '-') + '/edit')

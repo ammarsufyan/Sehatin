@@ -23,23 +23,19 @@
         <select name="tag" id="tag">
             {% if user.is_superuser %}
                 {% for tag in tags %}
-                    {% if tag.type == "Forum" %}
-                            {% if tag.id == post.tag_id %}
-                                <option value="{{ tag.name }}" selected>{{ tag.name }}</option>
-                            {% else %}
-                                <option value="{{ tag.name }}">{{ tag.name }}</option>
-                            {% endif %}
+                    {% if tag.id == post.tag_id %}
+                        <option value="{{ tag.name }}" selected>{{ tag.name }}</option>
+                    {% else %}
+                        <option value="{{ tag.name }}">{{ tag.name }}</option>
                     {% endif %}
                 {% endfor %}
             {% else %}
                 {% for tag in tags %}
                     {% if not tag.adminOnly %}
-                        {% if tag.type == "Forum" %}
-                            {% if tag.id == post.tag_id %}
-                                <option value="{{ tag.name }}" selected>{{ tag.name }}</option>
-                            {% else %}
-                                <option value="{{ tag.name }}">{{ tag.name }}</option>
-                            {% endif %}
+                        {% if tag.id == post.tag_id %}
+                            <option value="{{ tag.name }}" selected>{{ tag.name }}</option>
+                        {% else %}
+                            <option value="{{ tag.name }}">{{ tag.name }}</option>
                         {% endif %}
                     {% endif %}
                 {% endfor %}
