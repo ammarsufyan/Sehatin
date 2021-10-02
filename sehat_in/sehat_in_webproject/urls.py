@@ -21,8 +21,9 @@ urlpatterns = [
     path('forum/', views.forum, name='forum'), # So that forum/ still work too
     path('forum/tag/<str:tagName>', views.forum_Tag, name='forum/tag'),
     path('forum/create', views.forum_Create, name='forum/create'),
-    path('forum/<str:id>/', views.forum_Content, name='forum'), # The real url for the post
-    path('forum/<str:id>/<str:title>/', views.forum_Url, name='forum'), # The real url for the post
+    path('forum/<str:id>/', views.forum_Content, name='forum'), 
+    path('forum/<str:id>/<str:title>', views.forum_Url, name='forum'), 
+    path('forum/<str:id>/<str:title>/', views.forum_Url, name='forum'),
     path('forum/<str:id>/<str:title>/edit', views.forum_Edit, name='forum/edit'),
     path('forum/<str:id>/<str:title>/delete', views.forum_Delete, name='forum/delete'),
     path('forum/<str:id>/<str:title>/report', views.forum_Report, name='forum/report'),
@@ -34,12 +35,18 @@ urlpatterns = [
     path('forum/<str:id>/<str:title>/comment/<str:comment_id>/report', views.forum_Comment_Report, name='post/comment/report'),
 
     # Konsultasi
-    # path('konsultasi/', views.konsul, name='konsultasi'),
-    # path('konsultasi/<str:id>/', views.konsul_Content, name='konsultasi/id'), # The real url for the konsul
-    # path('konsultasi/<str:id>/<str:title>', views.konsul_Url, name='konsultasi/id'), # Vanity url
-    # path('konsultasi/<str:id>/<str:title>/', views.konsul_Url, name='konsultasi/id'),
-    # path('konsultasi/<str:id>/<str:title>/delete', views.konsul_Edit, name='konsultasi/edit'),
-    # path('konsultasi/<str:id>/<str:title>/report', views.konsul_Report, name='konsultasi/report'),
+    path('konsultasi', views.konsultasi, name='konsultasi'),
+    path('konsultasi/', views.konsultasi, name='konsultasi'),
+    path('konsultasi/create', views.konsultasi_Create, name='konsultasi/create'),
+    path('konsultasi/create/', views.konsultasi_Create, name='konsultasi/create'), # I DONT KNOW WHY BUT IT DOES NOT WORK IF THERE IS NO /
+    path('konsultasi/tag/<str:tagName>', views.konsultasi_Tag, name='konsultasi/tag'),
+    path('konsultasi/<str:id>/', views.konsultasi_Content, name='konsultasi/id'), # The real url for the konsul
+    path('konsultasi/<str:id>/<str:title>', views.konsultasi_Url, name='konsultasi/id'), # Vanity url
+    path('konsultasi/<str:id>/<str:title>/', views.konsultasi_Url, name='konsultasi/id'),
+    path('konsultasi/<str:id>/<str:title>/delete', views.konsultasi_Delete, name='konsultasi/delete'),
+    path('konsultasi/<str:id>/<str:title>/comment', views.konsultasi_Comment, name='konsultasi/comment'),
+    path('konsultasi/<str:id>/<str:title>/comment/<str:comment_id>/delete', views.konsultasi_Comment_Delete, name='konsultasi/comment/delete'),
+    path('konsultasi/<str:id>/<str:title>/comment/<str:comment_id>/edit', views.konsultasi_Comment_Edit, name='konsultasi/comment/report'),
 
     # Profile
     path('profile/<str:username>', views.profile, name='profile'),
