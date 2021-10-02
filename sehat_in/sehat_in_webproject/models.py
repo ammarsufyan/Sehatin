@@ -34,20 +34,6 @@ class Like(models.Model): # Post/comment like
     comment = models.ForeignKey(Comment, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
-# class Message(models.Model): # The message of the chat
-#     id = models.AutoField(primary_key=True)
-#     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sender')
-#     receiver = models.ForeignKey(User, on_delete=models.CASCADE, related_name='receiver')
-#     content = models.TextField()
-#     created_at = models.DateTimeField(auto_now_add=True)
-#     updated_at = models.DateTimeField(auto_now=True)
-#     read = models.BooleanField(default=False)
-
-# class Chat(models.Model): # Chat to who ..
-#     id = models.AutoField(primary_key=True)
-#     users = models.ManyToManyField(User)
-#     messages = models.ManyToManyField(Message)
-
 class History(models.Model):
     id = models.AutoField(primary_key=True)
     user = models.ForeignKey(User, on_delete=models.CASCADE)

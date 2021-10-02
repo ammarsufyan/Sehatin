@@ -11,25 +11,35 @@ urlpatterns = [
     path('auth/login', views.login, name='auth/login'),
     path('logout', views.logout, name='logout'), # Not going anywhere, just logging out
 
-    # Post
-    path('post', views.post, name='post'),
-    path('post/', views.post, name='post'), # So that post/ still work too
-    path('post/tag/<str:tagName>', views.post_Tag, name='post/tag'),
-    path('post/create', views.post_Create, name='post/create'), # So that post/ still work too
-    path('post/<str:id>/', views.post_Content, name='post'), # The real url for the post
-    path('post/<str:id>/<str:title>', views.post_Url, name='post'), # Vanity url
-    path('post/<str:id>/<str:title>/', views.post_Url, name='post'),
-    path('post/<str:id>/<str:title>/edit', views.post_Edit, name='post/edit'),
-    path('post/<str:id>/<str:title>/delete', views.post_Delete, name='post/delete'),
-    path('post/<str:id>/<str:title>/report', views.post_Report, name='post/report'),
-    path('post/<str:id>/<str:title>/like', views.post_Like, name='post/like'),
+    # Artikel
+    # path('artikel', views.artikel, name='artikel'),
+    # path('artikel/', views.artikel, name='artikel'), # So that artikel/ still work too
+    # path('artikel/<str:id>/<str:title>/', views.forum_Content, name='artikel/id'), # The real url for the post
 
-    # Post comment
-    path('post/<str:id>/<str:title>/comment', views.post_Comment, name='post/comment'),
-    path('post/<str:id>/<str:title>/comment/<str:comment_id>/like', views.post_Comment_Like, name='post/comment/like'),
-    path('post/<str:id>/<str:title>/comment/<str:comment_id>/edit', views.post_Comment_Edit, name='post/comment/edit'),
-    path('post/<str:id>/<str:title>/comment/<str:comment_id>/delete', views.post_Comment_Delete, name='post/comment/delete'),
-    path('post/<str:id>/<str:title>/comment/<str:comment_id>/report', views.post_Comment_Report, name='post/comment/report'),
+    # Forum
+    path('forum', views.forum, name='forum'),
+    path('forum/', views.forum, name='forum'), # So that forum/ still work too
+    path('forum/tag/<str:tagName>', views.forum_Tag, name='forum/tag'),
+    path('forum/create', views.forum_Create, name='forum/create'),
+    path('forum/<str:id>/', views.forum_Content, name='forum'), # The real url for the post
+    path('forum/<str:id>/<str:title>/', views.forum_Url, name='forum'), # The real url for the post
+    path('forum/<str:id>/<str:title>/edit', views.forum_Edit, name='forum/edit'),
+    path('forum/<str:id>/<str:title>/delete', views.forum_Delete, name='forum/delete'),
+    path('forum/<str:id>/<str:title>/report', views.forum_Report, name='forum/report'),
+    path('forum/<str:id>/<str:title>/like', views.forum_Like, name='forum/like'),
+    path('forum/<str:id>/<str:title>/comment', views.forum_Comment, name='post/comment'),
+    path('forum/<str:id>/<str:title>/comment/<str:comment_id>/like', views.forum_Comment_Like, name='forum/comment/like'),
+    path('forum/<str:id>/<str:title>/comment/<str:comment_id>/edit', views.forum_Comment_Edit, name='post/comment/edit'),
+    path('forum/<str:id>/<str:title>/comment/<str:comment_id>/delete', views.forum_Comment_Delete, name='post/comment/delete'),
+    path('forum/<str:id>/<str:title>/comment/<str:comment_id>/report', views.forum_Comment_Report, name='post/comment/report'),
+
+    # Konsul
+    # path('konsultasi/', views.konsul, name='konsultasi'),
+    # path('konsultasi/<str:id>/', views.konsul_Content, name='konsultasi/id'), # The real url for the konsul
+    # path('konsultasi/<str:id>/<str:title>', views.konsul_Url, name='konsultasi/id'), # Vanity url
+    # path('konsultasi/<str:id>/<str:title>/', views.konsul_Url, name='konsultasi/id'),
+    # path('konsultasi/<str:id>/<str:title>/delete', views.konsul_Edit, name='konsultasi/edit'),
+    # path('konsultasi/<str:id>/<str:title>/report', views.konsul_Report, name='konsultasi/report'),
 
     # Profile
     path('profile/<str:username>', views.profile, name='profile'),

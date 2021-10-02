@@ -156,60 +156,60 @@ def logout(request):
 
 # ----------------------------------------------------------------
 # Post
-def post_Url(request, id, title):
-    """Generate URL for post with vanity url of title"""
-    # Title in the link is just for vanity url
-    if id is not None and title is not None:
-        post = Post.objects.get(id=id)
-        # To ensure the vanity url is always exactly the title
-        if title.replace('-', ' ') != post.title:
-            return redirect('/post/' + str(post.id) + '/' + post.title.replace(' ', '-'))
-        
-        if post is not None:
-            comments = Comment.objects.filter(post=post).order_by('created_at') # oldest to newest
-            likes = Like.objects.filter(post=post)
-            
-            return render(request, 'post/postview.html', {'post': post, 'comments': comments, 'likes': likes})
-        else:
-            raise Http404
-    else:
-        # return 404
-        raise Http404
-
-def post_Content(request, id):
-    """Redirect to post content"""
-    if id is not None:
-        post = Post.objects.get(id=id)
-        if post is not None:
-            # Redirect to vanity url
-            return redirect('/post/' + str(post.id) + '/' + post.title.replace(' ', '-'))
-        else:
-            raise Http404
-    else:
-        # return 404
-        raise Http404
-
-def post(request):
+def forum(request):
     """See all post"""
     tags = Tag.objects.all()
     paginator = Paginator(Post.objects.all().order_by('-created_at'), 25)
     page = request.GET.get('page')
     posts = paginator.get_page(page)
 
-    return render(request, 'post/index.html', {'posts': posts, 'tags': tags})
+    return render(request, 'forum/index.html', {'posts': posts, 'tags': tags})
 
-def post_Tag(request, tagName):
+def forum_Tag(request, tagName):
     """See post by tag"""
     tag = Tag.objects.get(name=tagName.replace('-', ' '))
     if tag is not None:
         paginator = Paginator(Post.objects.filter(tag=tag).order_by('-created_at'), 25)
         page = request.GET.get('page')
         posts = paginator.get_page(page)
-        return render(request, 'post/tag.html', {'posts': posts, 'tag': tag})
+        return render(request, 'forum/tag.html', {'posts': posts, 'tag': tag})
     else:
         raise Http404
 
-def post_Create(request):
+def forum_Content(request, id):
+    """Redirect to forum content"""
+    if id is not None:
+        post = Post.objects.get(id=id)
+        if post is not None:
+            # Redirect to vanity url
+            return redirect('/forum/' + str(post.id) + '/' + post.title.replace(' ', '-'))
+        else:
+            raise Http404
+    else:
+        # return 404
+        raise Http404
+
+def forum_Url(request, id, title):
+    """Generate URL for post with vanity url of title"""
+    # Title in the link is just for vanity url
+    if id is not None and title is not None:
+        post = Post.objects.get(id=id)
+        # To ensure the vanity url is always exactly the title
+        if title.replace('-', ' ') != post.title:
+            return redirect('/forum/' + str(post.id) + '/' + post.title.replace(' ', '-'))
+        
+        if post is not None:
+            comments = Comment.objects.filter(post=post).order_by('created_at') # oldest to newest
+            likes = Like.objects.filter(post=post)
+            
+            return render(request, 'forum/postview.html', {'post': post, 'comments': comments, 'likes': likes})
+        else:
+            raise Http404
+    else:
+        # return 404
+        raise Http404
+
+def forum_Create(request):
     """Create post, if no request open page like usual. Request are made using jquery ajax
     
     Onsucess: Redirect to the post
@@ -278,12 +278,12 @@ def post_Create(request):
             return HttpResponse(getPost.id)
         else: # user enter normally
             tags = Tag.objects.all()
-            return render(request, 'post/create.html', {'tags': tags})
+            return render(request, 'forum/create.html', {'tags': tags})
     else: # user is not logged in
         messages.info(request, 'Need to login first!')
         return redirect('/auth/login')
 
-def post_Edit(request, id, title):
+def forum_Edit(request, id, title):
     """Edit post, if no request open page like usual. Request are made using jquery ajax
     
     Onsucess: Redirect to the post
@@ -334,14 +334,14 @@ def post_Edit(request, id, title):
             tag = Tag.objects.all()
 
             if title.replace('-', ' ') != post.title: # Ensure the title is exactly the same
-                return redirect('/post/' + str(post.id) + '/' + post.title.replace(' ', '-') + '/edit')
+                return redirect('/forum/' + str(post.id) + '/' + post.title.replace(' ', '-') + '/edit')
 
-            return render(request, 'post/edit.html', {'post': post, 'tags': tag})
+            return render(request, 'forum/edit.html', {'post': post, 'tags': tag})
     else: # Double check, this shouldn't actually happen
         messages.info(request, 'Need to login first!')
         return HttpResponse('error')
 
-def post_Delete(request, id, title):
+def forum_Delete(request, id, title):
     """Delete a post. Only post request allowed, if no request throw 404. Request are made using jquery ajax
     
     onsuccess: Go to post home
@@ -379,7 +379,7 @@ def post_Delete(request, id, title):
     else: # If no request, throw 404
         raise Http404
 
-def post_Like(request, id, title):
+def forum_Like(request, id, title):
     """Like post, if no request throw 404. Request are made using jquery ajax
     
     onsuccess: Use jquery to update the likes
@@ -427,7 +427,7 @@ def post_Like(request, id, title):
     else: # If no request, throw 404
         raise Http404
 
-def post_Report(request, id, title):
+def forum_Report(request, id, title):
     if request.method == 'POST':
         if request.user.is_authenticated:
             # Report
@@ -466,7 +466,7 @@ def post_Report(request, id, title):
 
 # ----------------------------------------------------------------
 # Comment
-def post_Comment(request, id, title):
+def forum_Comment(request, id, title):
     """Comment on a post, if no request throw 404. Request are made using jquery ajax
     
     Onsucess: Refresh page / re-Load the page
@@ -530,7 +530,7 @@ def post_Comment(request, id, title):
     else: # If no request, throw 404
         raise Http404
 
-def post_Comment_Like(request, id, title, comment_id):
+def forum_Comment_Like(request, id, title, comment_id):
     """Like a comment, if no request throw 404. Request are made using jquery ajax
     
     onsuccess: Use jquery to update the likes
@@ -580,7 +580,7 @@ def post_Comment_Like(request, id, title, comment_id):
     else: # If no request, throw 404
         raise Http404
 
-def post_Comment_Edit(request, id, title, comment_id):
+def forum_Comment_Edit(request, id, title, comment_id):
     """Edit a comment, if no request throw 404. Request are made using jquery ajax
     
     onsuccess: Use jquery to update the comment
@@ -614,7 +614,7 @@ def post_Comment_Edit(request, id, title, comment_id):
     else: # If no request, throw 404
         raise Http404
 
-def post_Comment_Delete(request, id, title, comment_id):
+def forum_Comment_Delete(request, id, title, comment_id):
     """Delete a comment, if no request throw 404. Request are made using jquery ajax
     
     onsuccess: Use jquery to update the comment
@@ -662,7 +662,7 @@ def post_Comment_Delete(request, id, title, comment_id):
     else: # If no request, throw 404
         raise Http404
 
-def post_Comment_Report(request, id, title, comment_id):
+def forum_Comment_Report(request, id, title, comment_id):
     """Report a comment, if no request throw 404. Request are made using jquery ajax
     
     onsuccess: Tell report success using jquery

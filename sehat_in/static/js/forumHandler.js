@@ -35,7 +35,7 @@ function editPost(logged_in, id, title) {
         alert("You must be logged in to edit a post");
         return;
     }
-    window.location.href = '/post/' + id + '/' + title.replaceAll(' ', '-') + '/edit';
+    window.location.href = '/forum/' + id + '/' + title.replaceAll(' ', '-') + '/edit';
 }
 
 function likePost(logged_in, id, title, csrf_token) {
@@ -46,7 +46,7 @@ function likePost(logged_in, id, title, csrf_token) {
     }
 
     $.ajax({
-        url: '/post/' + id + '/' + title.replaceAll(' ', '-') + '/like',
+        url: '/forum/' + id + '/' + title.replaceAll(' ', '-') + '/like',
         type: 'POST',
         data: {
             'csrfmiddlewaretoken': csrf_token
@@ -108,7 +108,7 @@ function deletePost(logged_in, postid, title, csrf_token, mode) {
     }
 
     $.ajax({
-        url: '/post/' + postid + '/' + title.replaceAll(' ', '-') + '/delete',
+        url: '/forum/' + postid + '/' + title.replaceAll(' ', '-') + '/delete',
         type: 'POST',
         data: {
             'csrfmiddlewaretoken': csrf_token,
@@ -154,7 +154,7 @@ function reportPost(logged_in, postid, title, csrf_token) {
     }
 
     $.ajax({
-        url: '/post/' + postid + '/' + title.replaceAll(' ', '-') + '/report',
+        url: '/forum/' + postid + '/' + title.replaceAll(' ', '-') + '/report',
         type: 'POST',
         data: {
             'csrfmiddlewaretoken': csrf_token,
@@ -198,7 +198,7 @@ function reportComment(logged_in, postid, title, commentId, csrf_token) {
     }
 
     $.ajax({
-        url: '/post/' + postid + '/' + title.replaceAll(' ', '-') + '/comment/' + commentId + '/report',
+        url: '/forum/' + postid + '/' + title.replaceAll(' ', '-') + '/comment/' + commentId + '/report',
         type: 'POST',
         data: {
             'csrfmiddlewaretoken': csrf_token,
@@ -242,7 +242,7 @@ function deleteComment(logged_in, postid, title, commentId, csrf_token, mode) {
             return;
         } else {
             $.ajax({
-                url: '/post/' + postid + '/' + title.replaceAll(' ', '-') + '/comment/' + commentId + '/delete',
+                url: '/forum/' + postid + '/' + title.replaceAll(' ', '-') + '/comment/' + commentId + '/delete',
                 type: 'POST',
                 data: {
                     'csrfmiddlewaretoken': csrf_token,
@@ -268,7 +268,7 @@ function deleteComment(logged_in, postid, title, commentId, csrf_token, mode) {
         }
 
         $.ajax({
-            url: '/post/' + postid + '/' + title.replaceAll(' ', '-') + '/comment/' + commentId + '/delete',
+            url: '/forum/' + postid + '/' + title.replaceAll(' ', '-') + '/comment/' + commentId + '/delete',
             type: 'POST',
             data: {
                 'csrfmiddlewaretoken': csrf_token,
@@ -361,7 +361,7 @@ function editComment(logged_in, id, title, comment_id, csrf_token) {
         }
 
         $.ajax({
-            url: '/post/' + id + '/' + title.replaceAll(' ', '-') + '/comment/' + comment_id + '/edit',
+            url: '/forum/' + id + '/' + title.replaceAll(' ', '-') + '/comment/' + comment_id + '/edit',
             type: 'POST',
             data: {
                 'csrfmiddlewaretoken': csrf_token,
@@ -408,7 +408,7 @@ function likeComment(logged_in, post_id, title, comment_id, csrf_token) {
     }
 
     $.ajax({
-        url: '/post/' + post_id + '/' + title.replaceAll(' ', '-') + '/comment/' + comment_id + '/like',
+        url: '/forum/' + post_id + '/' + title.replaceAll(' ', '-') + '/comment/' + comment_id + '/like',
         type: 'POST',
         data: {
             'csrfmiddlewaretoken': csrf_token
@@ -442,7 +442,7 @@ function comment(logged_in, id, title, csrf_token) {
         alert('Comment to long! Max character allowed including formatting are 10000 characters long');
     } else {
         $.ajax({
-            url: '/post/' + id + '/' + title.replaceAll(' ', '-') + '/comment',
+            url: '/forum/' + id + '/' + title.replaceAll(' ', '-') + '/comment',
             type: 'POST',
             data: {
                 'csrfmiddlewaretoken': csrf_token,
@@ -451,7 +451,7 @@ function comment(logged_in, id, title, csrf_token) {
             success: function (data) {
                 if (data == 'success') {
                     // Refresh the page
-                    window.location.href = '/post/' + id + '/' + title.replaceAll(' ', '-');
+                    window.location.href = '/forum/' + id + '/' + title.replaceAll(' ', '-');
                 } else
                 if (data == 'limit') {
                     alert('Character length invalid!')

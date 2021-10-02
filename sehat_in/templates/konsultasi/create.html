@@ -17,31 +17,8 @@
         {% csrf_token %}
         <p>Title</p>
         <input type="text" name="title" placeholder="Title" autocomplete="off">
-        <p>Thumbnail URL *Can be left blank</p>
-        <input type="text" name="thumbnail" placeholder="Thumbnail URL" autocomplete="off">
         <p>Content</p>
         <div id="editor"></div>
-        <p>Tag</p>
-        <select name="tag" id="tag">
-            {% if user.is_superuser %}
-                {% for tag in tags %}
-                <option value="{{ tag.name }}">{{ tag.name }}</option>
-                {% endfor %}
-            {% else %}
-                {% for tag in tags %}
-                    {% if not tag.adminOnly %}
-                        <option value="{{ tag.name }}">{{ tag.name }}</option>
-                    {% endif %}
-                {% endfor %}
-            {% endif %}
-        </select>
-        {% if user.is_superuser %}
-        <p>Post type: </p>
-        <input type="radio" id="web-post" value="web post" name="post-type">
-        <label for="web-post">Web Post</label>
-        <input type="radio" id="forum-post" value="forum" name="post-type">
-        <label for="forum-post">Forum Post</label>
-        {% endif %}
         <br>
         <input type="submit" value="Create" onclick="createPost()">
     </div>
@@ -103,10 +80,8 @@
             }
 
             if (confirm("Are you sure?")) {
-                var content = document.getElementById('editor').children[0].innerHTML;
                 var title = document.getElementsByName('title')[0].value;
-                var thumbnail = document.getElementsByName('thumbnail')[0].value;
-                var tag = $('#tag').val();
+                var content = document.getElementById('editor').children[0].innerHTML;
                 var csrf = $('input[name=csrfmiddlewaretoken]').val();
                 $.ajax({
                     url: '/post/create',
@@ -114,15 +89,13 @@
                     data: {
                         'csrfmiddlewaretoken': csrf,
                         'title': title.trim(),
-                        'thumbnail_url': thumbnail.trim(),
                         'content': content.trim(),
-                        'tag': tag,
-                        'post_Type': $('input[name=post-type]:checked').val()
+                        'post_Type': "Konsultasi"
                     },
                     success: function(data) {
                         // data returned on success is post id
                         if (data == 'error') {
-                            window.location.href = '/post/create';
+                            window.location.href = '/konsultasi/tanya';
                         } else
                         if (data == 'limit')  {
                             alert('Character length invalid!')
@@ -146,13 +119,11 @@
             [{ 'font': [] }],
             [{ 'align': [] }],
 
-            ['clean'],                                        
-            ['image'] //add image here
+            ['clean']
         ];
 
         function imageHandler() {
             var range = this.quill.getSelection();
-            var value = prompt('please copy paste the image url here.');
             if(value){
                 this.quill.insertEmbed(range.index, 'image', value, Quill.sources.USER);
             }
@@ -163,10 +134,7 @@
             placeholder: 'Post content...',
             modules: {
                 toolbar: {
-                    container: myToolbar,
-                    handlers: {
-                        image: imageHandler
-                    }
+                    container: myToolbar
                 }
             },
         });

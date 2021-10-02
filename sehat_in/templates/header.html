@@ -2,7 +2,7 @@
     <div>
         <ul>
             <li><a href="/">Home</a></li>
-            <li><a class="li-header" href="/post">Post</a></li>
+            <li><a class="li-header" href="/forum">Forum</a></li>
             {% if user.is_authenticated %}
             <li><a class="li-header" href="/profile/{{ user.username }}/notification">Notification</a></li>
             <li><a class="li-header" href="/profile/{{ user.username }}">Profile</a></li>
