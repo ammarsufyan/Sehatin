@@ -17,7 +17,7 @@ class Post(models.Model): # Post
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     likes = models.IntegerField(default=0)
     comments = models.IntegerField(default=0)
-    post_Type = models.CharField(max_length=50, default='forum')
+    type = models.CharField(max_length=50, default='forum')
 
 class Comment(models.Model): # Comment of a post
     id = models.AutoField(primary_key=True)

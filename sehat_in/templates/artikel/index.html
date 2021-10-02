@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+{% load space_to_dash %}
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Posts</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+    {% include 'templates/header.html' %}
+
+    List of posts... 
+    Available tags: 
+    {% for tag in tags %}
+        <a href="/post/tag/{{ tag.name|space_to_dash }}">{{ tag.name }}</a>
+    {% endfor %}
+    <br>
+    {% if user.is_authenticated %}
+        <a class="button" href="/forum/create">Buat diskusi baru</a>
+    {% else %}
+        <a class="button" href="/auth/login">Login to create post</a>
+    {% endif %}
+    {% for post in posts %}
+    <div class="post-lists" id="post-id-{{ post.id }}">
+        <h1><a href="/post/{{ post.id }}">{{ post.title }}</a></h1>
+        <div id="post-thumbnail">
+            <img src="{% if post.thumbnail_url %}{{post.thumbnail_url}}{% else %}/static/img/no_image.png{% endif %}" onerror="this.onerror=null; this.src='/static/img/no_image.png'" alt="{{ post.title }}">
+        </div>
+        <p>Tag: <a href="/post/tag/{{ post.tag.name }}">{{ post.tag.name }}</a></p>
+        {% autoescape off %}
+        <p>{{ post.content }}</p>
+        {% endautoescape %}
+
+        <p> Likes: {{ post.likes }}</p>
+        <p> Comments: {{ post.comments }}</p> <p>
+        <p> Author: {% if post.user == null %}deleted{% else %}{{ post.user }}{% endif %} - Created at {{ post.created_at }} - last updated at {{ post.updated_at }}</p>
+    </div>
+    {% endfor %}
+
+    Page {{ posts.number }} of {{ posts.paginator.num_pages }}<br>
+
+    {% if posts.has_previous %}
+        <a href="?page=1">&laquo First</a>
+        <a href="?page={{ posts.previous_page_number }}">Previous</a>
+    {% endif %}
+    {% if notifications.has_next %}
+        <a href="?page={{ posts.next_page_number }}">Next</a>
+        <a href="?page={{ posts.paginator.num_pages }}">Last &raquo</a>
+    {% endif %}
+
+    {% include 'templates/footer.html' %}
+</body>
+
+</html>

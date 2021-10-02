@@ -17,8 +17,6 @@
         {% csrf_token %}
         <p>Title</p>
         <input type="text" name="title" placeholder="Title" autocomplete="off">
-        <p>Thumbnail URL *Can be left blank</p>
-        <input type="text" name="thumbnail" placeholder="Thumbnail URL" autocomplete="off">
         <p>Content</p>
         <div id="editor"></div>
         <p>Tag</p>
@@ -45,7 +43,6 @@
             // get value from quill
             var content = document.getElementById("editor").children[0].innerHTML;
             var title = document.getElementsByName('title')[0].value;
-            var thumbnail = document.getElementsByName('thumbnail')[0].value;
 
             // Title min 5
             if (title.length < 5) {
@@ -69,22 +66,6 @@
                 alert("Content too long! Max content including formatting are 40,000 characters long");
                 return false;
             }
-            // get radio using jquery
-            var post_type = $('input[name=post-type]:checked').val();
-            if (post_type == undefined) {
-                alert("Please select post type");
-                return false;
-            }
-
-            // verify thumbnail url
-            if (thumbnail.length > 0) {
-                // check regex
-                var regex = /(http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
-                if (!regex.test(thumbnail)) {
-                    alert("Invalid thumbnail url");
-                    return false;
-                }
-            }
 
             return true;
         }
@@ -98,16 +79,14 @@
             if (confirm("Are you sure?")) {
                 var content = document.getElementById('editor').children[0].innerHTML;
                 var title = document.getElementsByName('title')[0].value;
-                var thumbnail = document.getElementsByName('thumbnail')[0].value;
                 var tag = $('#tag').val();
                 var csrf = $('input[name=csrfmiddlewaretoken]').val();
                 $.ajax({
-                    url: '/post/create',
+                    url: '/forum/create',
                     type: 'POST',
                     data: {
                         'csrfmiddlewaretoken': csrf,
                         'title': title.trim(),
-                        'thumbnail_url': thumbnail.trim(),
                         'content': content.trim(),
                         'tag': tag,
                         'post_Type': "Forum Post"
@@ -115,12 +94,12 @@
                     success: function(data) {
                         // data returned on success is post id
                         if (data == 'error') {
-                            window.location.href = '/post/create';
+                            window.location.href = '/forum/create';
                         } else
                         if (data == 'limit')  {
                             alert('Character length invalid!')
                         } else {
-                            window.location.href = '/post/' + data.toString();
+                            window.location.href = '/forum/' + data.toString();
                         }
                     }
                 });

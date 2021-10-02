@@ -202,7 +202,7 @@ def forum_Url(request, id, title):
             comments = Comment.objects.filter(post=post).order_by('created_at') # oldest to newest
             likes = Like.objects.filter(post=post)
             
-            return render(request, 'forum/postview.html', {'post': post, 'comments': comments, 'likes': likes})
+            return render(request, 'forum/view.html', {'post': post, 'comments': comments, 'likes': likes})
         else:
             raise Http404
     else:
@@ -222,7 +222,6 @@ def forum_Create(request):
             content = request.POST.get('content')
             tag_get = request.POST.get('tag')
             post_Type = request.POST.get('post_Type')
-            thumbnail_url = request.POST.get('thumbnail_url')
             
             # Check if tag is found
             if tag_get is None:
@@ -243,12 +242,6 @@ def forum_Create(request):
                 messages.info(request, 'Content must be at least 25 characters!')
                 return HttpResponse('limit')
 
-            # check img url with regex
-            if len(thumbnail_url) > 0:
-                if not re.match(r'^(http|https)://(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(/|/([\w#!:.?+=&%@!-/]))?', thumbnail_url):
-                    messages.info(request, 'Invalid thumbnail url!')
-                    return HttpResponse('error')
-
             # Max 40k
             if len(content) > 40000:
                 messages.info(request, 'Invalid content length! Max allowed are 40k including formatting')
@@ -261,17 +254,8 @@ def forum_Create(request):
                 messages.info(request, 'Invalid tag options! No tag found!')
                 return HttpResponse('error')
 
-            # Admin can choose between posting in forum or site
-            if post_Type is not None or post_Type != '':
-                if post_Type == 'web post':
-                    post = Post(title=title, content=content, user=user, tag=tag, post_Type=post_Type.lower(), thumbnail_url=thumbnail_url)
-                    post.save()
-                else: # forum post
-                    post = Post(title=title, content=content, user=user, tag=tag, thumbnail_url=thumbnail_url)
-                    post.save()
-            else: # Create a new post
-                post = Post(title=title, content=content, user=user, tag=tag, thumbnail_url=thumbnail_url)
-                post.save()
+            post = Post(title=title, content=content, user=user, tag=tag, type=post_Type)
+            post.save()
 
             # Return the post id
             getPost = Post.objects.get(title=title, content=content, user=user)
@@ -298,7 +282,6 @@ def forum_Edit(request, id, title):
             # Can't change title
             content = request.POST.get('content') # content change
             tag_name = request.POST.get('tag') # if user change the tag, it will be changed
-            thumbnail_url = request.POST.get('thumbnail_url')
 
             if len(content) < 25:
                 messages.info(request, 'Content must be at least 25 characters!')
@@ -309,12 +292,6 @@ def forum_Edit(request, id, title):
                 messages.info(request, 'Invalid content length! Max allowed are 40k including formatting')
                 return HttpResponse('limit')
 
-            # check img url with regex
-            if len(thumbnail_url) > 0:
-                if not re.match(r'^(http|https)://(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(/|/([\w#!:.?+=&%@!-/]))?', thumbnail_url):
-                    messages.info(request, 'Invalid thumbnail url!')
-                    return HttpResponse('error')
-            
             # Get the post and tag object
             post = Post.objects.get(id=id)
             tag = Tag.objects.get(name=tag_name)
@@ -322,7 +299,6 @@ def forum_Edit(request, id, title):
             # Change the stuff
             post.content = content
             post.tag = tag
-            post.thumbnail_url = thumbnail_url
 
             # Save
             post.save()
