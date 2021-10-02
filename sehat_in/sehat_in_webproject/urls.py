@@ -35,18 +35,18 @@ urlpatterns = [
     path('forum/<str:id>/<str:title>/comment/<str:comment_id>/report', views.forum_Comment_Report, name='post/comment/report'),
 
     # Konsultasi
-    path('konsultasi', views.konsultasi, name='konsultasi'),
-    path('konsultasi/', views.konsultasi, name='konsultasi'),
-    path('konsultasi/create', views.konsultasi_Create, name='konsultasi/create'),
-    path('konsultasi/create/', views.konsultasi_Create, name='konsultasi/create'), # I DONT KNOW WHY BUT IT DOES NOT WORK IF THERE IS NO /
-    path('konsultasi/tag/<str:tagName>', views.konsultasi_Tag, name='konsultasi/tag'),
-    path('konsultasi/<str:id>/', views.konsultasi_Content, name='konsultasi/id'), # The real url for the konsul
-    path('konsultasi/<str:id>/<str:title>', views.konsultasi_Url, name='konsultasi/id'), # Vanity url
-    path('konsultasi/<str:id>/<str:title>/', views.konsultasi_Url, name='konsultasi/id'),
-    path('konsultasi/<str:id>/<str:title>/delete', views.konsultasi_Delete, name='konsultasi/delete'),
-    path('konsultasi/<str:id>/<str:title>/comment', views.konsultasi_Comment, name='konsultasi/comment'),
-    path('konsultasi/<str:id>/<str:title>/comment/<str:comment_id>/delete', views.konsultasi_Comment_Delete, name='konsultasi/comment/delete'),
-    path('konsultasi/<str:id>/<str:title>/comment/<str:comment_id>/edit', views.konsultasi_Comment_Edit, name='konsultasi/comment/report'),
+    path('tanya-jawab', views.konsultasi, name='konsultasi'),
+    path('tanya-jawab/', views.konsultasi, name='konsultasi'),
+    path('tanya-jawab/create', views.konsultasi_Create, name='konsultasi/create'),
+    path('tanya-jawab/create/', views.konsultasi_Create, name='konsultasi/create'), # I DONT KNOW WHY BUT IT DOES NOT WORK IF THERE IS NO /
+    path('tanya-jawab/tag/<str:tagName>', views.konsultasi_Tag, name='konsultasi/tag'),
+    path('tanya-jawab/<str:id>/', views.konsultasi_Content, name='konsultasi/id'), # The real url for the konsul
+    path('tanya-jawab/<str:id>/<str:title>', views.konsultasi_Url, name='konsultasi/id'), # Vanity url
+    path('tanya-jawab/<str:id>/<str:title>/', views.konsultasi_Url, name='konsultasi/id'),
+    path('tanya-jawab/<str:id>/<str:title>/delete', views.konsultasi_Delete, name='konsultasi/delete'),
+    path('tanya-jawab/<str:id>/<str:title>/comment', views.konsultasi_Comment, name='konsultasi/comment'),
+    path('tanya-jawab/<str:id>/<str:title>/comment/<str:comment_id>/delete', views.konsultasi_Comment_Delete, name='konsultasi/comment/delete'),
+    path('tanya-jawab/<str:id>/<str:title>/comment/<str:comment_id>/edit', views.konsultasi_Comment_Edit, name='konsultasi/comment/report'),
 
     # Profile
     path('profile/<str:username>', views.profile, name='profile'),

@@ -18,7 +18,7 @@
 
     <div class="post">
         <h1>{{ post.title }}</a></h1>
-        <p>Tag: <a href="/konsultasi/tag/{{ post.tag.name|space_to_dash }}">{{ post.tag.name }}</a></p>
+        <p>Tag: <a href="/tanya-jawab/tag/{{ post.tag.name|space_to_dash }}">{{ post.tag.name }}</a></p>
         {% autoescape off %}
         {{ post.content }}
         {% endautoescape %}

@@ -46,7 +46,7 @@ function deletePost(logged_in, postid, title, csrf_token, mode) {
     }
     console.log(title.replaceAll(' ', '-').replaceAll('?', ''));
     $.ajax({
-        url: '/konsultasi/' + postid + '/' + title.replaceAll(' ', '-').replaceAll('?', '') + '/delete',
+        url: '/tanya-jawab/' + postid + '/' + title.replaceAll(' ', '-').replaceAll('?', '') + '/delete',
         type: 'POST',
         data: {
             'csrfmiddlewaretoken': csrf_token,
@@ -57,7 +57,7 @@ function deletePost(logged_in, postid, title, csrf_token, mode) {
             dataJson = JSON.parse(data);
             if (dataJson.status == 'success') {
                 alert("Post has been deleted successfully!");
-                window.location.href = '/konsultasi';
+                window.location.href = '/tanya-jawab';
             } else {
                 alert("Error! Fail to delete post!" + dataJson.message);
             }
@@ -92,7 +92,7 @@ function deleteComment(logged_in, postid, title, commentId, csrf_token, mode) {
             return;
         } else {
             $.ajax({
-                url: '/forum/' + postid + '/' + title.replaceAll(' ', '-').replaceAll('?', '') + '/comment/' + commentId + '/delete',
+                url: '/tanya-jawab/' + postid + '/' + title.replaceAll(' ', '-').replaceAll('?', '') + '/comment/' + commentId + '/delete',
                 type: 'POST',
                 data: {
                     'csrfmiddlewaretoken': csrf_token,
@@ -118,7 +118,7 @@ function deleteComment(logged_in, postid, title, commentId, csrf_token, mode) {
         }
 
         $.ajax({
-            url: '/konsultasi/' + postid + '/' + title.replaceAll(' ', '-').replaceAll('?', '') + '/comment/' + commentId + '/delete',
+            url: '/tanya-jawab/' + postid + '/' + title.replaceAll(' ', '-').replaceAll('?', '') + '/comment/' + commentId + '/delete',
             type: 'POST',
             data: {
                 'csrfmiddlewaretoken': csrf_token,
@@ -211,7 +211,7 @@ function editComment(logged_in, id, title, comment_id, csrf_token) {
         }
 
         $.ajax({
-            url: '/konsultasi/' + id + '/' + title.replaceAll(' ', '-').replaceAll('?', '') + '/comment/' + comment_id + '/edit',
+            url: '/tanya-jawab/' + id + '/' + title.replaceAll(' ', '-').replaceAll('?', '') + '/comment/' + comment_id + '/edit',
             type: 'POST',
             data: {
                 'csrfmiddlewaretoken': csrf_token,
@@ -267,7 +267,7 @@ function comment(logged_in, id, title, csrf_token) {
         alert('Comment to long! Max character allowed including formatting are 10000 characters long');
     } else {
         $.ajax({
-            url: '/konsultasi/' + id + '/' + title.replaceAll(' ', '-').replaceAll('?', '') + '/comment',
+            url: '/tanya-jawab/' + id + '/' + title.replaceAll(' ', '-').replaceAll('?', '') + '/comment',
             type: 'POST',
             data: {
                 'csrfmiddlewaretoken': csrf_token,
@@ -276,7 +276,7 @@ function comment(logged_in, id, title, csrf_token) {
             success: function (data) {
                 if (data == 'success') {
                     // Refresh the page
-                    window.location.href = '/konsultasi/' + id + '/' + title.replaceAll(' ', '-').replaceAll('?', '');
+                    window.location.href = '/tanya-jawab/' + id + '/' + title.replaceAll(' ', '-').replaceAll('?', '');
                 } else
                 if (data == 'limit') {
                     alert('Character length invalid!')

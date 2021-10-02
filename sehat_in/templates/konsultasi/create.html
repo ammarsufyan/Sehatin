@@ -82,7 +82,7 @@
                 var tag = $('#tag').val();
                 var csrf = $('input[name=csrfmiddlewaretoken]').val();
                 $.ajax({
-                    url: '/konsultasi/create',
+                    url: '/tanya-jawab/create',
                     type: 'POST',
                     data: {
                         'csrfmiddlewaretoken': csrf,
@@ -94,12 +94,12 @@
                     success: function(data) {
                         // data returned on success is post id
                         if (data == 'error') {
-                            window.location.href = '/konsultasi/create';
+                            window.location.href = '/tanya-jawab/create';
                         } else
                         if (data == 'limit')  {
                             alert('Character length invalid!')
                         } else {
-                            window.location.href = '/konsultasi/' + data.toString();
+                            window.location.href = '/tanya-jawab/' + data.toString();
                         }
                     }
                 });

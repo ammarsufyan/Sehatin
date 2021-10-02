@@ -1049,7 +1049,7 @@ def konsultasi_Url(request, id, title):
         konsultasi = Konsultasi.objects.get(id=id)
         # To ensure the vanity url is always exactly the title
         if title.replace('-', ' ') != konsultasi.title.replace('?', ''):
-            return redirect('/konsultasi/' + str(konsultasi.id) + '/' + konsultasi.title.replace(' ', '-').replace('?', ''))
+            return redirect('/tanya-jawab/' + str(konsultasi.id) + '/' + konsultasi.title.replace(' ', '-').replace('?', ''))
         
         if konsultasi is not None:
             comments = Comment.objects.filter(comment_Konsultasi=konsultasi).order_by('created_at') # oldest to newest
@@ -1069,7 +1069,7 @@ def konsultasi_Content(request, id):
         except:
             raise Http404
 
-        return redirect('/konsultasi/' + str(konsultasi.id) + '/' + konsultasi.title.replace(' ', '-'))
+        return redirect('/tanya-jawab/' + str(konsultasi.id) + '/' + konsultasi.title.replace(' ', '-'))
     else:
         # return 404
         raise Http404

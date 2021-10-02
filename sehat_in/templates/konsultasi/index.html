@@ -13,22 +13,22 @@
 <body>
     {% include 'templates/header.html' %}
 
-    List of konsultasi... 
+    List of tanya-jawab... 
     Available tags: 
     {% for tag in tags %}
-        <a href="/konsultasi/tag/{{ tag.name|space_to_dash }}">{{ tag.name }}</a>
+        <a href="/tanya-jawab/tag/{{ tag.name|space_to_dash }}">{{ tag.name }}</a>
     {% endfor %}
     <br>
     {% if user.is_authenticated %}
-        <a class="button" href="/konsultasi/create">Post konsultasi</a>
+        <a class="button" href="/tanya-jawab/create">AYO TANYA</a>
     {% else %}
-        <a class="button" href="/auth/login">Login untuk berkonsultasi</a>
+        <a class="button" href="/auth/login">Login untuk BERTANYA</a>
     {% endif %}
 
     {% for konsultasi in post_konsul %}
         <div class="post-lists" id="post-id-{{ konsultasi.id }}">
-            <h1><a href="/konsultasi/{{ konsultasi.id }}">{{ konsultasi.title }}</a></h1>
-            <p>Tag: <a href="/forum/tag/{{ konsultasi.tag.name }}">{{ konsultasi.tag.name }}</a></p>
+            <h1><a href="/tanya-jawab/{{ konsultasi.id }}">{{ konsultasi.title }}</a></h1>
+            <p>Tag: <a href="/tanya-jawab/tag/{{ konsultasi.tag.name }}">{{ konsultasi.tag.name }}</a></p>
 
             <p> Author: {% if konsultasi.user == null %}deleted{% else %}{{ konsultasi.user }}{% endif %} - Created at {{ konsultasi.created_at }} - last updated at {{ konsultasi.updated_at }}</p>
         </div>
