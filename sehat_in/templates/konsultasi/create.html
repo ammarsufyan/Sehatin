@@ -121,14 +121,6 @@
             ['clean']
         ];
 
-        function imageHandler() {
-            var range = this.quill.getSelection();
-            var value = prompt('please copy paste the image url here.');
-            if(value){
-                this.quill.insertEmbed(range.index, 'image', value, Quill.sources.USER);
-            }
-        }
-
         var quill = new Quill('#editor', {
             theme: 'snow',
             placeholder: 'Post content...',

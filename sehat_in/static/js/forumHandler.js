@@ -2,30 +2,34 @@
 // The backend process is handled in views.js
 // Quill
 var myToolbar = [
-    ['bold', 'italic', 'underline', 'strike'],
+    ['bold', 'italic', 'underline', 'strike'],       
     ['blockquote', 'code-block'],
 
-    [{
-        'color': []
-    }, {
-        'background': []
-    }],
-    [{
-        'font': []
-    }],
-    [{
-        'align': []
-    }],
+    [{ 'color': [] }, { 'background': [] }],         
+    [{ 'font': [] }],
+    [{ 'align': [] }],
 
-    ['clean'],
+    ['clean'],                                        
     ['image']
 ];
 
 function imageHandler() {
     var range = this.quill.getSelection();
     var value = prompt('please copy paste the image url here.');
-    if (value) {
+    if (value == "") { // If empty value
+        return;
+    }
+
+    // verify the url, must be an image and a https image
+    if (value.startsWith('https://') && value.endsWith('.png') || value.endsWith('.jpg') || value.endsWith('.jpeg')) {
         this.quill.insertEmbed(range.index, 'image', value, Quill.sources.USER);
+    } else {
+        // Check if img is http
+        if (value.startsWith('http://')) {
+            alert('Image linked needs to be secured (HTTPS)!');
+        } else {
+            alert('Invalid linked image! Image must be a png, jpg or jpeg!');
+        }
     }
 }
 
