@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{% comment %} <!DOCTYPE html>
 <html lang="en">
 {% load static %}
 
@@ -30,10 +30,11 @@
     {% include 'templates/footer.html' %}
 </body>
 
-</html>
+</html> {% endcomment %}
 
 <!DOCTYPE html>
 <html lang="en">
+{% load static %}
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -80,20 +81,33 @@
             </div>
 
             <div class="nav__btns">
-
+                {% if user.is_authenticated %}
+                <ul class="login-signup">
+                    <li>
+                        <a href="/profile/{{ user.username }}" class="nav__link">
+                            Profile
+                        </a>
+                    </li>
+                    <li class="sign__hide">
+                        <a href="{% url 'logout' %}" class="nav__link">
+                            Logout
+                        </a>
+                    </li>
+                </ul>                
+                {% else %}
                 <ul class="login-signup">
                     <li class="sign__hide">
-                        <a href="#signup" class="nav__link">
+                        <a href="/auth/register" class="nav__link">
                             Signup
                         </a>
                     </li>
                     <li>
-                        <a href="#login
-                        " class="nav__link">
+                        <a href="/auth/login" class="nav__link">
                             Login
                         </a>
                     </li>
                 </ul>
+                {% endif %}
 
                 <div class="nav__toggle" id="nav-toggle">
                     <i class="uil uil-apps"></i>
@@ -183,7 +197,7 @@
             <div class="tes__container">
                 <div class="tes__card">
                     <div class="tes__wrapper">
-                        <img class="tes__image" src="assets/img/tes_image_1.svg" alt="tes image">
+                        <img class="tes__image" src="{% static 'img/tes_image_1.svg' %}" alt="tes image">
                         <div class="tes__wrapper__content">
                             <a class="tes__category" href="">Tes Psikologi<a>
                             <h2 class="tes__title">Tes Tingkat Rasa Kesepian: Loneliness Scale</h2>
@@ -222,12 +236,8 @@
                         </div>
                     </div>
                 </div>
-
             </div>
-
         </section>
-
-
     </main>
 
 
