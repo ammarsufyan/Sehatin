@@ -11,11 +11,6 @@ urlpatterns = [
     path('auth/login', views.login, name='auth/login'),
     path('logout', views.logout, name='logout'), # Not going anywhere, just logging out
 
-    # Artikel
-    # path('artikel', views.artikel, name='artikel'),
-    # path('artikel/', views.artikel, name='artikel'), # So that artikel/ still work too
-    # path('artikel/<str:id>/<str:title>/', views.artikel_Content, name='artikel/id'), # The real url for the post
-
     # Forum
     path('forum', views.forum, name='forum'),
     path('forum/', views.forum, name='forum'), # So that forum/ still work too
@@ -33,6 +28,18 @@ urlpatterns = [
     path('forum/<str:id>/<str:title>/comment/<str:comment_id>/edit', views.forum_Comment_Edit, name='post/comment/edit'),
     path('forum/<str:id>/<str:title>/comment/<str:comment_id>/delete', views.forum_Comment_Delete, name='post/comment/delete'),
     path('forum/<str:id>/<str:title>/comment/<str:comment_id>/report', views.forum_Comment_Report, name='post/comment/report'),
+
+    # Artikel
+    path('artikel', views.artikel, name='artikel'),
+    path('artikel/', views.artikel, name='artikel'),
+    path('artikel/create', views.artikel_create, name='artikel/create'),
+    path('artikel/tag/<str:tagName>', views.artikel_tag, name='artikel/tag'),
+    path('artikel/<str:id>', views.artikel_content, name='artikel/id'), 
+    path('artikel/<str:id>/', views.artikel_content, name='artikel/id'), 
+    path('artikel/<str:id>/<str:title>', views.artikel_url, name='artikel'), 
+    path('artikel/<str:id>/<str:title>/', views.artikel_url, name='artikel'),
+    path('artikel/<str:id>/<str:title>/edit', views.artikel_edit, name='artikel/edit'),
+    path('artikel/<str:id>/<str:title>/delete', views.artikel_delete, name='artikel/delete'),
 
     # Konsultasi
     path('tanya-jawab', views.konsultasi, name='konsultasi'),

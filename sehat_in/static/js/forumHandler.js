@@ -21,7 +21,7 @@ function imageHandler() {
     }
 
     // verify the url, must be an image and a https image
-    if (value.startsWith('https://') && value.endsWith('.png') || value.endsWith('.jpg') || value.endsWith('.jpeg')) {
+    if (value.startsWith('https://') && (value.endsWith('.png') || value.endsWith('.jpg') || value.endsWith('.jpeg'))) {
         this.quill.insertEmbed(range.index, 'image', value, Quill.sources.USER);
     } else {
         // Check if img is http

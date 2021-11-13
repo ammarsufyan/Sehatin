@@ -1321,3 +1321,204 @@ def test_SehatMental_Result(request):
     else:
         messages.info(request, 'You have to take the test first!')
         return redirect('/tests/health/kesehatan-mental')
+
+# ----------------------------------------------------------------
+# Artikel
+def artikel(request):
+    """See all artikel"""
+    tags = Tag.objects.filter(type="Artikel")
+    paginator = Paginator(Artikel.objects.all().order_by('-created_at'), 25)
+    page = request.GET.get('page')
+    posts = paginator.get_page(page)
+
+    return render(request, 'artikel/index.html', {'posts': posts, 'tags': tags})
+
+def artikel_tag(request, tagName):
+    """See post by tag"""
+    tag = Tag.objects.get(name=tagName.replace('-', ' '))
+    if tag is not None and tag.type == 'Artikel':
+        paginator = Paginator(Artikel.objects.filter(tag=tag).order_by('-created_at'), 25)
+        page = request.GET.get('page')
+        posts = paginator.get_page(page)
+        return render(request, 'artikel/tag.html', {'posts': posts, 'tag': tag})
+    else:
+        raise Http404
+
+def artikel_content(request, id):
+    """Redirect to artikel content"""
+    if id is not None:
+        try:
+            post = Artikel.objects.get(id=id)
+        except:
+            raise Http404
+
+        # Redirect to vanity url
+        return redirect('/artikel/' + str(post.id) + '/' + post.title.replace(' ', '-'))
+    else:
+        # return 404
+        raise Http404
+
+def artikel_url(request, id, title):
+    """Generate URL for post with vanity url of title"""
+    # Title in the link is just for vanity url
+    if id is not None and title is not None:
+        post = Artikel.objects.get(id=id)
+        # To ensure the vanity url is always exactly the title
+        if title.replace('-', ' ') != post.title.replace('?', ''):
+            return redirect('/artikel/' + str(post.id) + '/' + post.title.replace(' ', '-').replace('?', ''))
+        
+        if post is not None:
+            return render(request, 'artikel/view.html', {'post': post})
+        else:
+            raise Http404
+    else:
+        # return 404
+        raise Http404
+
+def artikel_create(request):
+    """Create post, if no request open page like usual. Request are made using jquery ajax
+    
+    Onsucess: Redirect to the post
+    Onfail: Return error message
+    """
+    if request.user.is_authenticated:
+        if request.method == 'POST': # If a request is made
+            user = request.user
+            title = request.POST.get('title')
+            content = request.POST.get('content')
+            tag_get = request.POST.get('tag')
+            thumbnail_url = request.POST.get('thumbnail_url')
+            
+            # Check if tag is found
+            if tag_get is None:
+                messages.info(request, 'Invalid tag options!')
+                return HttpResponse('error')
+
+            # Check tittle length
+            if len(title) < 5:
+                messages.info(request, 'Title is too short, Min title length is 5 characters')
+                return HttpResponse('error')
+
+            if len(title) > 200:
+                messages.info(request, 'Title is too long, Max title length is 200 characters')
+                return HttpResponse('error')
+
+            # Check content length
+            if len(content) < 25:
+                messages.info(request, 'Content must be at least 25 characters!')
+                return HttpResponse('limit')
+
+            # Max 40k
+            if len(content) > 40000:
+                messages.info(request, 'Invalid content length! Max allowed are 40k including formatting')
+                return HttpResponse('limit')
+
+            # Check if tag is found
+            tag = Tag.objects.get(name=tag_get)
+
+            if tag is None:
+                messages.info(request, 'Invalid tag options! No tag found!')
+                return HttpResponse('error')
+
+            post = Artikel(title=title, content=content, user=user, tag=tag, thumbnail_url=thumbnail_url)
+            post.save()
+
+            # Return the post id
+            getPost = Artikel.objects.get(title=title, content=content, user=user)
+            return HttpResponse(getPost.id)
+        else: # user enter normally
+            tags = Tag.objects.filter(type="Artikel")
+            return render(request, 'artikel/create.html', {'tags': tags})
+    else: # user is not logged in
+        messages.info(request, 'Need to login first!')
+        return redirect('/auth/login')
+
+def artikel_edit(request, id, title):
+    """Edit post, if no request open page like usual. Request are made using jquery ajax
+    
+    Onsucess: Redirect to the post
+    Onfail: Return error message
+    """
+    # Check if user is logged in and it's the post owner
+    if request.user != Artikel.objects.get(id=id).user:
+        raise PermissionDenied()
+
+    if request.user.is_authenticated:
+        if request.method == 'POST': # If an update is made
+            # Can't change title
+            content = request.POST.get('content') # content change
+            tag_name = request.POST.get('tag') # if user change the tag, it will be changed
+            thumbnail_url = request.POST.get('thumbnail_url')
+
+            if len(content) < 25:
+                messages.info(request, 'Content must be at least 25 characters!')
+                return HttpResponse('limit')
+
+            # Max 40k
+            if len(content) > 40000:
+                messages.info(request, 'Invalid content length! Max allowed are 40k including formatting')
+                return HttpResponse('limit')
+
+            # Get the post and tag object
+            post = Artikel.objects.get(id=id)
+            tag = Tag.objects.get(name=tag_name)
+
+            # Change the stuff
+            post.content = content
+            post.tag = tag
+            post.thumbnail_url = thumbnail_url
+
+            # Save
+            post.save()
+
+            # Redirect to the post
+            return HttpResponse('success')
+        else: # If user enter the edit page
+            post = Artikel.objects.get(id=id)
+            tag = Tag.objects.filter(type="Artikel")
+
+            if title.replace('-', ' ') != post.title: # Ensure the title is exactly the same
+                return redirect('/artikel/' + str(post.id) + '/' + post.title.replace(' ', '-') + '/edit')
+
+            return render(request, 'artikel/edit.html', {'post': post, 'tags': tag})
+    else: # Double check, this shouldn't actually happen
+        messages.info(request, 'Need to login first!')
+        return HttpResponse('error')
+
+def artikel_delete(request, id, title):
+    """Delete a post. Only post request allowed, if no request throw 404. Request are made using jquery ajax
+    
+    onsuccess: Go to post home
+    onfail: Alert fail using jquery
+    """
+    # Check if user is logged in and it's the post owner
+    if request.method == 'POST': # If a request is made
+        mode = request.POST.get('mode')
+        user = request.user
+        post = Artikel.objects.get(id=id)
+
+        if not user.is_superuser:
+            if user != post.user:
+                messages.info(request, 'Need to login first!')
+                dataJson = {'status': 'error', 'message': 'Need to login first!'}
+                return HttpResponse(json.dumps(dataJson))
+
+        # If delete mode admin send notification to the user
+        if mode == 'admin' and user.is_superuser:
+            if post.user != None: # Check if post user's account still exist
+                # Check if the deleted comment's user is admin, if admin then dont send notification
+                if not post.user.is_superuser:
+                    # Get reason for deletion by admin
+                    reason = request.POST.get('reason')
+                    # Send notification to user
+                    notification = Notification(user=post.user, notification_Content='Your post has been deleted by admin (' + user.username + '). Reason: ' + reason)
+                    notification.save()
+
+        # Delete the post
+        post.delete()
+
+        # Return success
+        dataJson = {'status': 'success', 'message': 'The post has been deleted successfully!'}
+        return HttpResponse(json.dumps(dataJson))
+    else: # If no request, throw 404
+        raise Http404

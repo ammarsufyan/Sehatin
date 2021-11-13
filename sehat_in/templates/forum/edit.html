@@ -42,11 +42,11 @@
             {% endif %}
         </select>
         <br>
-        <input type="submit" value="Edit" onclick="editPost()">
+        <input type="submit" value="Edit" onclick="editThePost()">
     </div>
 
     <script>
-        function editPost() {
+        function editThePost() {
             /* send ajax, if sucess go to the post, if fail reload the page */
             if (!validateForm()){
                 return;

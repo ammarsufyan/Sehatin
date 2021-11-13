@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+  {% load static %}
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Artikel</title>
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="{% static 'css/style.css' %}"
+    />
+    <script
+      type="text/javascript"
+      src="{% static 'js/jquery-3.6.0.min.js' %}"
+    ></script>
+    <link
+      href="https://cdn.quilljs.com/1.3.6/quill.snow.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    {% include 'templates/header.html' %}
+
+    <div class="post-form">
+        {% csrf_token %}
+        <p>Title</p>
+        <input type="text" name="title" placeholder="{{post.title}}" readonly/>
+        <p>Thumbnail</p>
+        <input type="text" name="thumbnail_url" value="{{post.thumbnail_url}}" />
+        <p>Content</p>
+        <div id="editor"></div>
+        <p>Tag</p>
+        <select name="tag" id="tag">
+          {% for tag in tags %} {% if tag.id == post.tag_id %}
+          <option value="{{ tag.name }}" selected>{{ tag.name }}</option>
+          {% else %}
+          <option value="{{ tag.name }}">{{ tag.name }}</option>
+          {% endif %} {% endfor %}
+        </select>
+        <br />
+        <input type="submit" value="Edit" onclick="editThePost()" />
+    </div>
+
+    <script>
+      function editThePost() {
+        /* send ajax, if sucess go to the post, if fail reload the page */
+        if (!validateForm()) {
+          return;
+        }
+
+        if (confirm("Are you sure?")) {
+          // send ajax
+          var content = document.getElementById("editor").children[0].innerHTML;
+          var tag = $("#tag").val();
+          var thumbnail = document.getElementsByName('thumbnail_url')[0].value;
+          var csrf = $("input[name=csrfmiddlewaretoken]").val();
+          var title = "{{ post.title }}";
+          var id = "{{ post.id }}";
+          $.ajax({
+            url: "/artikel/" + id + "/" + title.replaceAll(" ", "-") + "/edit",
+            type: "POST",
+            data: {
+              csrfmiddlewaretoken: csrf,
+              thumbnail_url: thumbnail.trim(),
+              content: content.trim(),
+              tag: tag,
+            },
+            success: function (data) {
+              // on success return success
+              if (data == "success") {
+                window.location.href =
+                  "/artikel/" + id + "/" + title.replaceAll(" ", "-");
+              } else if (data == "limit") {
+                alert("Character length invalid!");
+              } else {
+                alert("Error: " + data);
+              }
+            },
+          });
+        }
+      }
+
+      function validateForm() {
+        // get value from quill
+        var content = document.getElementById("editor").children[0].innerHTML;
+        var thumbnail = document.getElementsByName('thumbnail_url')[0].value;
+
+        // Content min 25
+        if (content.length < 25) {
+            alert("Content too short! Min content including formatting are 25 characters long");
+            return false;
+        }
+        // content max 40k
+        if (content.length > 40000) {
+            alert("Content too long! Max content including formatting are 40,000 characters long");
+            return false;
+        }
+
+        if (!(thumbnail.startsWith('https://') && (thumbnail.endsWith('.png') || thumbnail.endsWith('.jpg') || thumbnail.endsWith('.jpeg')))) {
+            // Check if img is http
+            if (thumbnail.startsWith('http://')) {
+                alert('Image linked needs to be secured (HTTPS)!');
+            } else {
+                alert('Invalid linked image! Image must be a png, jpg or jpeg!');
+            }
+            return false;
+        }
+
+        return true;
+      }
+    </script>
+
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script
+      type="text/javascript"
+      src="{% static 'js/artikelHandler.js' %}"
+    ></script>
+    {% autoescape off %}
+    <div style="display: none; visibility: hidden" id="content-hidden">
+      {{ post.content }}
+    </div>
+    {% endautoescape %}
+    <script>
+      var quill = new Quill("#editor", {
+        theme: "snow",
+        placeholder: "Post content...",
+        modules: {
+          toolbar: {
+            container: myToolbar,
+            handlers: {
+              image: imageHandler,
+            },
+          },
+        },
+      });
+
+      const value = document.getElementById("content-hidden").innerHTML;
+      quill.root.innerHTML = value.trim();
+    </script>
+
+    {% include 'templates/footer.html' %}
+  </body>
+</html>
