@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/login.css">
+    <title>Login sehatin</title>
+</head>
+<body>
+
+    <div class="container">
+        <div>
+            <img class="login__image" src="assets/img/login-image.svg" alt="image">
+        </div>
+
+        <div class="login__section">
+            <a href="#" class="login__back button--flex">
+                <i class="uil uil-step-backward-alt">Back to home</i>
+            </a>
+
+            <div class="login__form">
+                <form action="login" method="POST">
+                    <div class="login__title">
+                        <h2>Login dulu yuk</h2>
+                        <p>Belum punya akun? <a href="#">Yuk daftar</a> </p>
+                    </div>
+                    <input type="text" name="username" placeholder="Username"><br>
+                    <input type="password" name="password" placeholder="Password"><br>
+                    <button class="button button--flex" id="submit" type="submit">
+                        Masuk
+                    </button>
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+    
+</body>
+</html>
