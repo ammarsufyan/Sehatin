@@ -1,3 +1,62 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap');
+
+:root {
+    --header-height: 3rem;
+
+    --hue-color: 215; 
+
+    --first-color: hsl(var(--hue-color), 69%, 61%);
+    --first-color-second: hsl(var(--hue-color), 69%, 61%);
+    --first-color-alt: hsl(var(--hue-color), 57%, 53%);
+    --first-color-lighter: hsl(var(--hue-color), 92%, 85%);
+    --title-color: hsl(var(--hue-color), 8%, 15%);
+    --text-color: hsl(var(--hue-color), 8%, 45%);
+    --text-color-light: hsl(var(--hue-color), 8%, 65%);
+    --input-color: hsl(var(--hue-color), 70%, 96%); 
+    --body-color: hsl(var(--hue-color), 60%, 99%);
+    --container-color: #FFF;
+    --scroll-bar-color: hsl(var(--hue-color), 12%, 90%);
+    --scroll-thumb-color: hsl(var(--hue-color), 12%, 80%);
+
+    --body-font: 'Poppins', sans-serif;
+
+    --big-font-size: 2rem;
+    --h1-font-size: 1.5rem;
+    --h2-font-size: 1.25rem;
+    --h3-font-size: 1.125rem;
+    --normal-font-size: .938rem;
+    --small-font-size: .813rem;
+    --smaller-font-size: .75rem;
+
+    --font-medium: 500;
+    --font-semi-bold: 600;
+
+    --mb-0-25: .25rem;
+    --mb-0-5: .5rem;
+    --mb-0-75: .75rem;
+    --mb-1: 1rem;
+    --mb-1-5: 1.5rem;
+    --mb-2: 2rem;
+    --mb-2-5: 2.5rem;
+    --mb-3: 3rem;
+
+    --z-tooltip: 10;
+    --z-fixed: 100;
+    --z-modal: 1000;
+}
+
+@media screen and (min-width: 968px) {
+    :root {
+        --big-font-size: 3rem;
+        --h1-font-size: 2.25rem;
+        --h2-font-size: 1.5rem;
+        --h3-font-size: 1.25rem;
+        --normal-font-size: 1rem;
+        --small-font-size: .875rem;
+        --smaller-font-size: 813rem;
+    }
+}
+
 *{
     box-sizing: border-box;
     padding: 0;
@@ -37,13 +96,13 @@ img {
 
 .container {
     max-width: 1024px;
-    height: 100vh;
+    height: 90vh;
 }
 
 .login__image {
     height: 50%;
     bottom: 0;
-    position: fixed;
+    position: relative;
 }
 
 .login__back {
@@ -55,6 +114,7 @@ img {
 
 .login__section {
     display: flex;
+    flex-direction: column;
 }
 
 .login__form {
@@ -80,22 +140,108 @@ img {
 }
 
 input {
-    width: 150%;
+    width: 100%;
     padding: 16px 20px;
     margin: 10px 0;
     display: inline-block;
-    border: 1px solid #61AEF2;
+    border: 1px solid #B7B7B7;
     border-radius: 10px;
     box-sizing: border-box;
     background-color: white;
+    
+}
+
+input:focus {
+    outline: none !important;
+    border-color: #61AEF2
 }
 
 .login__title {
     margin-bottom: 2rem;
+    
 }
 
 .login__form button{
-    margin-top: 1rem;
-    width: 50%;
-    background-color: red;
+    margin-top: 2rem;
+    width: 100%;
+    display: inline-block;
+    background-color: var(--first-color);
+    color: #fff;
+    padding: var(--mb-0-75);
+    border-radius: 10px;
+    font-size: var(--mb-1);
+    text-align: center;
+    font-weight: var(--font-medium);
+    cursor: pointer;
+    border: none; 
+}
+
+.lupa__password {
+    font-size: 0.8rem;
+    color: #B7B7B7;
+    justify-content: end;
+    display: flex;
+    width: 100%;
+}
+
+
+@media screen and (max-width: 350px) {
+    .container {
+        margin-left: var(--mb-1);
+        margin-right: var(--mb-1);
+    }
+
+    .login__back {
+        margin-bottom: 2rem;
+    }
+
+    .login__image {
+        position: relative;
+        margin-top: 4rem;
+    }
+
+    .login__section {
+        flex-direction: column;
+    }
+
+    .login__form {
+        height: 100%;
+        
+    }
+
+    input {
+        width: 100%;
+    }
+
+    .lupa__password {
+        width: 100%;
+    }
+}
+
+@media screen and (min-width:768px) {
+    .login__image {
+        position: fixed;
+    }
+
+    .login__back {
+        margin-bottom: 2rem;
+    }
+
+    .login__section {
+        display: flex;
+        flex-direction: row;
+    }
+
+    input {
+        width: 150%;
+    }
+
+    .lupa__password {
+        width: 150%;
+    }
+
+    .login__form {
+        height: 100vh;
+    }
+
 }
