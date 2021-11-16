@@ -201,7 +201,7 @@ img {
 
 .nav__logo {
     margin-left: var(--mb-2);
-
+    width: 5rem;
 }
 
 .nav__logo, .nav__toggle {

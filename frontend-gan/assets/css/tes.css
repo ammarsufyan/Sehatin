@@ -1,0 +1,151 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap');
+
+:root {
+    --header-height: 3rem;
+
+    --hue-color: 215; 
+
+    --first-color: hsl(var(--hue-color), 69%, 61%);
+    --first-color-second: hsl(var(--hue-color), 69%, 61%);
+    --first-color-alt: hsl(var(--hue-color), 57%, 53%);
+    --first-color-lighter: hsl(var(--hue-color), 92%, 85%);
+    --title-color: hsl(var(--hue-color), 8%, 15%);
+    --text-color: hsl(var(--hue-color), 8%, 45%);
+    --text-color-light: hsl(var(--hue-color), 8%, 65%);
+    --input-color: hsl(var(--hue-color), 70%, 96%); 
+    --body-color: hsl(var(--hue-color), 60%, 99%);
+    --container-color: #FFF;
+    --scroll-bar-color: hsl(var(--hue-color), 12%, 90%);
+    --scroll-thumb-color: hsl(var(--hue-color), 12%, 80%);
+
+    --body-font: 'Poppins', sans-serif;
+
+    --big-font-size: 2rem;
+    --h1-font-size: 1.5rem;
+    --h2-font-size: 1.25rem;
+    --h3-font-size: 1.125rem;
+    --normal-font-size: .938rem;
+    --small-font-size: .813rem;
+    --smaller-font-size: .75rem;
+
+    --font-medium: 500;
+    --font-semi-bold: 600;
+
+    --mb-0-25: .25rem;
+    --mb-0-5: .5rem;
+    --mb-0-75: .75rem;
+    --mb-1: 1rem;
+    --mb-1-5: 1.5rem;
+    --mb-2: 2rem;
+    --mb-2-5: 2.5rem;
+    --mb-3: 3rem;
+
+    --z-tooltip: 10;
+    --z-fixed: 100;
+    --z-modal: 1000;
+}
+
+@media screen and (min-width: 968px) {
+    :root {
+        --big-font-size: 3rem;
+        --h1-font-size: 2.25rem;
+        --h2-font-size: 1.5rem;
+        --h3-font-size: 1.25rem;
+        --normal-font-size: 1rem;
+        --small-font-size: .875rem;
+        --smaller-font-size: 813rem;
+    }
+}
+
+*{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0 0 var(--header-height) 0;
+    font-family: var(--body-font);
+    font-size: var(--normal-font-size);
+    background-color: var(--body-color);
+    color: var(--text-color);
+}
+
+.tes__section {
+    margin-top: 4rem;
+    max-width: 820px;
+}
+
+.section__title {
+    margin-top: 7rem;
+
+}
+
+.section__title h2 {
+    font-weight: 400;
+    font-size: var(--mb-1-5);
+    margin-bottom: 2rem;
+    text-align: left;
+}
+
+.container__tes {
+    margin-top: 7rem;
+    width: 60rem;
+    height: 35rem;
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.25);
+    display: flex;
+    background-color: #fff;
+    border-radius: 25px;
+
+}
+
+.penjelasan__tes {
+    font-size: .8rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.tes__title {
+    padding: 2rem 1.5rem 1rem 2rem;
+}
+
+.tes__title p {
+    font-weight: 400;
+}
+
+.tes__panduan {
+    padding: 0 2rem 1rem 3rem;
+}
+
+.img__wrapper {
+    width: 25rem;
+    height: 100%;
+    background: #F1FAEE;
+    border-radius: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.thumbnail {
+    width: 50%;
+    height: 50%;
+}
+
+.btn__mulai {
+    background-color: var(--first-color);
+    color: #fff;
+    padding: .7rem 5rem;
+    border-radius: 1rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-style: none;
+    cursor: pointer;
+    margin: ;
+}
