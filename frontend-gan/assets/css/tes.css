@@ -147,5 +147,32 @@ body {
     font-weight: 600;
     border-style: none;
     cursor: pointer;
-    margin: ;
+}
+
+
+@media screen and (max-width: 350px) {
+    .container {
+        margin-left: var(--mb-1);
+        margin-right: var(--mb-1);
+    }
+
+    .container__tes {
+        width: 19rem;
+        height: 52rem;
+        flex-direction: column;
+        margin-top: 2rem;
+    }
+
+    .img__wrapper {
+        width: 19rem;
+        height: 100%;
+        margin-top: 2rem;
+    }
+
+
+}
+
+@media screen and (min-width:768px) {
+
+
 }
