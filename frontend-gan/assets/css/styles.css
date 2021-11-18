@@ -396,11 +396,6 @@ img {
     background-color: var(--first-color-alt);
 }
 
-/* Change background header */
-.scroll-header {
-
-}
-
 ::-webkit-scrollbar {
     width: .60rem;
     background-color: var(--scroll-bar-color);
