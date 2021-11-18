@@ -62,17 +62,6 @@
     align-items: center;
 }
 
-.change-theme {
-    font-size: 1.25rem;
-    color: var(--title-color);
-    margin-right: var(--mb-1);
-    cursor: pointer;
-}
-
-.change-theme:hover {
-    color: var(--first-color);
-}
-
 *{
     box-sizing: border-box;
     padding: 0;
@@ -146,6 +135,7 @@ img {
     left: 0;
     z-index: var(--z-fixed);
     background-color: var(--body-color);
+    box-shadow: 0 -1px 4px 0 rgba(0,0,0, .15);
 }
 
 /*==================== BUTTONS ====================*/
@@ -402,9 +392,13 @@ img {
     font-weight: var(--font-medium);
 }
 
+.tes__button:hover {
+    background-color: var(--first-color-alt);
+}
+
 /* Change background header */
 .scroll-header {
-    box-shadow: 0 -1px 4px 0 rgba(0,0,0, .15);
+
 }
 
 ::-webkit-scrollbar {
@@ -512,6 +506,7 @@ img {
         display: flex;
         column-gap: 2rem;
     }
+
     
 }
 
