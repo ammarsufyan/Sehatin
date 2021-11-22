@@ -396,6 +396,24 @@ img {
     background-color: var(--first-color-alt);
 }
 
+.about {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.about img {
+    width: 60%;
+}
+
+.about p {
+    margin-top: 2rem;
+}
+
+
+
+
+
 ::-webkit-scrollbar {
     width: .60rem;
     background-color: var(--scroll-bar-color);
@@ -500,6 +518,16 @@ img {
     .nav__list{
         display: flex;
         column-gap: 2rem;
+    }
+
+    .about {
+        display: flex;
+        flex-direction: row;
+    }
+    
+    .about p {
+        margin-left: 5rem;
+        margin-top: 0;
     }
 
     
