@@ -410,8 +410,46 @@ img {
     margin-top: 2rem;
 }
 
+.search__container {
+    margin-top: 7rem;
+}
 
+.search__container input[type=text] {
+    padding: 1rem 2rem;
+    font-size: 17px;
+    border: 1px solid #989898;
+    box-sizing: border-box;
+    border-radius: 1rem;
+    width: 80%;
+}
 
+input[type=text]:active {
+    border: 1px solid #2196F3;
+    color: white;
+}
+
+.search__container button {
+    float: right;
+    padding: 1rem 3rem;
+    background: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    border: 1px solid #989898;
+    box-sizing: border-box;
+    border-radius: 1rem;
+    width: 19%;
+  }
+
+  .search__container button:hover {
+    background: var(--first-color);
+    color: #FFF;
+    border: none;
+  }
+
+  .artikel__link {
+      margin-top: 7rem;
+      margin-bottom: 2rem;
+  }
 
 
 ::-webkit-scrollbar {
