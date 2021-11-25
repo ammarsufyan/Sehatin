@@ -183,3 +183,15 @@ footer {
     font-weight:600
   }
 }
+
+@media screen and (max-width: 350px) {
+
+  .row {
+    flex-direction: column;
+  }
+}
+
+@media screen and (min-width:768px) {
+
+
+}
