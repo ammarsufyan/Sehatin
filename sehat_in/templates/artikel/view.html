@@ -1,41 +1,76 @@
 <!DOCTYPE html>
 {% load static %}
 {% load space_to_dash %}
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ post.title }}</title>
 
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+
+    <link rel="icon" 
+        type="image/png" 
+        href="{% static 'img/favicon/favicon.ico' %}" 
+    />
+
     <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <title>{{ post.title }} | Artikel Sehatin</title>
 </head>
 <body>
     {% include 'templates/header.html' %}
 
-    <div class="post">
-        <h1>{{ post.title }}</a></h1>
-        <p>Tag: <a href="/artikel/tag/{{ post.tag.name|space_to_dash }}">{{ post.tag.name }}</a></p>
-        <div id="post-thumbnail">
-            <img src="{% if post.thumbnail_url %}{{post.thumbnail_url}}{% else %}/static/img/no_image.png{% endif %}" onerror="this.onerror=null; this.src='/static/img/no_image.png'" alt="{{ post.title }}">
-        </div>
-        {% autoescape off %}
-        {{ post.content }}
-        {% endautoescape %}
-        <p> Author: {% if post.user == null %}deleted{% else %}{{ post.user }}{% endif %} - Created at {{ post.created_at }} - last updated at {{ post.updated_at }}</p>
+    <main class="container">
 
-        {% if post.user.id == user.id %}
-            <button class="button edit" onclick="editPost('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}')">Edit</button>
-            <button class="button delete" onclick="deletePost('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ csrf_token }}', 'user')">Delete</button>
-        {% endif %}
-        {% if user.is_staff %}
-            <button onclick="deletePost('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ csrf_token }}', 'admin')">Delete (Admin Mode)</button>
-        {% endif %}
-    </div>
+        <section>
+            <div class="artikel__link">
+                <a href="/">Home</a> / 
+                <a href="/artikel">Artikel</a> / 
+                <a href="/artikel/{{ post.id }}/{{ post.title }}">{{ post.title }}</a>
+            </div>
 
+            <div>
+                {% if messages %}
+                    <div class="message-alert">
+                        {% for message in messages %}
+                        <div class="message-alert-content">
+                            <p style="color:red">{{ message.message }}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <h1>{{ post.title }}</h1>
+                <p>Tag: <a href="/artikel/tag/{{ post.tag.name|space_to_dash }}">{{ post.tag.name }}</a></p>
+ 
+                <img src="{% if post.thumbnail_url %}{{post.thumbnail_url}}{% else %}/static/img/no_image.png{% endif %}" onerror="this.onerror=null; this.src='/static/img/no_image.png'" alt="{{ post.title }}">
+
+                {% autoescape off %}
+                {{ post.content }}
+                {% endautoescape %}
+
+                <br>
+                <p> Author: {% if post.user == null %}deleted{% else %}{{ post.user }}{% endif %}<br>Created at {{ post.created_at }} - last updated at {{ post.updated_at }}</p>
+                <br>
+                {% if post.user.id == user.id %}
+                    <button class="button edit" onclick="editPost('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}')">Edit</button>
+                    <button class="button delete" onclick="deletePost('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ csrf_token }}', 'user')">Delete</button>
+                {% endif %}
+                {% if user.is_staff %}
+                    <button onclick="deletePost('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ csrf_token }}', 'admin')">Delete (Admin Mode)</button>
+                {% endif %}
+            </div>
+        </section>
+
+    </main>
+
+    <script src="assets/js/swiper-bundle.min.js"></script>
+    <script src="assets/js/main.js"></script>
     <script type="text/javascript" src="{% static 'js/artikelHandler.js' %}"></script>
 
     {% include 'templates/footer.html' %}
