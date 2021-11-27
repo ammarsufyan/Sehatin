@@ -43,7 +43,9 @@
             <section class="container home__tes">
                 <div class="tes__header">
                     <h1>Artikel Populer</h1>
-                        
+                    {% if user.is_staff %}
+                        <a href="/forum/create">Create Post</a>
+                    {% endif %}
                 </div>
                 <div class="tes__container">
                     {% for post in popular_artikel %}
@@ -72,6 +74,9 @@
         <section class="container home__tes">
             <div class="tes__header">
                 <h1>{% if not searching %}Artikel Terbaru{% else %}Hasil Search Artikel{% endif %}</h1>
+                {% if user.is_staff %}
+                    <a href="/forum/create">Create Post</a>
+                {% endif %}
             </div>
             <div class="tes__container">
                 {% for post in posts %}
