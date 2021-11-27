@@ -1,62 +1,69 @@
 <!DOCTYPE html>
-<html lang="en">
 {% load static %}
-
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register Account</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
+
+    <link rel="icon" 
+        type="image/png" 
+        href="{% static 'img/favicon/favicon.ico' %}" 
+    />
     <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+    <title>Signup sehatin</title>
 </head>
-
 <body>
-    {% include 'templates/header.html' %}
+    <div class="container">
+        <div class="login__section">
+            <a href="/" class="login__back button--flex">
+                <i class="uil uil-arrow-left">Back to home</i>
+            </a>
 
-    <h1>Register Account</h1>
-    <form name="registration" method="post" action="register" onsubmit="return validateForm()">
-        {% csrf_token %}
-        <p>First name</p>
-        <input type="text" name="first_name" placeholder="First name" required>
-        
-        <p>Last name</p>
-        <input type="text" name="last_name" placeholder="Last name" required>
-        
-        <p>Username: </p>
-        <input type="text" name="username" id="username" placeholder="Username" minlength="5" maxlength="50" required>
-        
-        <p>Email: </p>
-        <input type="email" name="email" placeholder="Email" minlength="3"
-            pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="Please enter a valid email address" autocomplete="off" required>
-        
-        <p>Password: </p>
-        <input type="password" name="password" placeholder="Password" minlength="8"
-            pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Please match the valid password pattern"
-            autocomplete="off" required>
-        
-        <p>Password Confirmation: </p>
-        <input type="password" name="password_confirmation" placeholder="Confirm Password"
-            minlength="8" autocomplete="off" required><br>
-        <input type="submit" id="submit">
-    </form>
+            <div class="login__form">
+                <form name="registration" action="register" method="POST" onsubmit="return validateForm()">
+                    {% csrf_token %}
+                    <div class="login__title">
+                        <h2>Daftar dulu yuk!</h2>
+                        <p>Sudah punya akun? <a href="/auth/login">Yuk masuk</a> </p>
+                    </div>
+                    <input type="text" name="first_name" placeholder="First Name" required><br>
+                    <input type="text" name="last_name" placeholder="Last Name" required><br>
+                    <input type="text" name="username" placeholder="Username" minlength="5" maxlength="50" required><br>
+                    <input type="text" name="email" placeholder="Email" minlength="3" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="Please enter a valid email address" autocomplete="off" required><br>
+                    <input type="password" name="password" placeholder="Password" minlength="8" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Please match the valid password pattern" autocomplete="off" required><br>
+                    <input type="password" name="password_confirmation" placeholder="Konfirmasi Password" minlength="8" autocomplete="off" required><br>
+                    <button class="button button--flex" id="submit" type="submit">
+                        Signup
+                    </button>
+                </form>
+            </div>
 
-    <div id="message-password">
-        <h3>Password must contain the following:</h3>
-        <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
-        <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
-        <p id="number" class="invalid">A <b>number</b></p>
-        <p id="length" class="invalid">Minimum <b>8 characters</b></p>
+            <div id="message-password">
+            {% comment %} <h3>Password must contain the following:</h3>
+                <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
+                <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
+                <p id="number" class="invalid">A <b>number</b></p>
+                <p id="length" class="invalid">Minimum <b>8 characters</b></p> {% endcomment %}
+            </div>
+
+            <div id="message-password-confirmation">
+                {% comment %} <p id="confirm" class="invalid">Password match</p> {% endcomment %}
+            </div>
+
+        </div>
+
+        <div>
+            <img class="login__image" src="{% static 'img/login-image.svg' %}" alt="image">
+        </div>
+
     </div>
-
-    <div id="message-password-confirmation">
-        <p id="confirm" class="invalid">Password match</p>
-    </div>
-
-    <p>Already have an account? Login!</p>
-    <button><a href="/auth/login">Login</a></button>
-
-
+    
     {% if first_name %}
     <script>
         // If username or email already exists, show error message, redirect same page with previous value
@@ -199,9 +206,5 @@
             }
         }
     </script>
-
-    {% include 'templates/footer.html' %}
-
 </body>
-
 </html>
