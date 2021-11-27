@@ -31,6 +31,15 @@
                     <div class="login__title">
                         <h2>Daftar dulu yuk!</h2>
                         <p>Sudah punya akun? <a href="/auth/login">Yuk masuk</a> </p>
+                        {% if messages %}
+                            <div class="message-alert">
+                                {% for message in messages %}
+                                <div class="message-alert-content">
+                                    <p style="color:red">{{ message.message }}</p>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
                     </div>
                     <input type="text" name="first_name" placeholder="First Name" required><br>
                     <input type="text" name="last_name" placeholder="Last Name" required><br>

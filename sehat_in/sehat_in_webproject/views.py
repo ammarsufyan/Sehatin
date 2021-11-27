@@ -165,18 +165,25 @@ def logout(request):
 def forum(request):
     """See all post"""
     tags = Tag.objects.filter(type="Forum")
+    searching = False
     # Check if there is a search
     if request.GET.get('q'):
         query = request.GET.get('q')
         paginator = Paginator(Forum.objects.filter(title__icontains=query).order_by('-created_at'), 25)
         page = request.GET.get('page')
         posts = paginator.get_page(page)
+        searching = True
+
+        # Check if no result found
+        if paginator.count == 0:
+            messages.info(request, 'No result found')
+            return redirect('/forum')
     else:
         paginator = Paginator(Forum.objects.all().order_by('-created_at'), 25)
         page = request.GET.get('page')
         posts = paginator.get_page(page)
 
-    return render(request, 'forum/index.html', {'posts': posts, 'tags': tags})
+    return render(request, 'forum/index.html', {'posts': posts, 'tags': tags, 'searching': searching})
 
 def forum_Tag(request, tagName):
     """See post by tag"""
@@ -932,18 +939,25 @@ def report_Resolve(request, id):
 def konsultasi(request):
     """Open konsultasi view"""
     tags = Tag.objects.filter(type="Konsultasi")
+    searching = False
     # Check if there is a search
     if request.GET.get('q'):
         query = request.GET.get('q')
         paginator = Paginator(Konsultasi.objects.filter(title__icontains=query).order_by('-created_at'), 25)
         page = request.GET.get('page')
         konsultasi = paginator.get_page(page)
+        searching = True
+
+        # Check if no result found
+        if paginator.count == 0:
+            messages.info(request, 'No result found')
+            return redirect('/konsultasi')
     else:
         paginator = Paginator(Konsultasi.objects.all().order_by('-created_at'), 25)
         page = request.GET.get('page')
         konsultasi = paginator.get_page(page)
 
-    return render(request, 'konsultasi/index.html', {'post_konsul': konsultasi, 'tags': tags})
+    return render(request, 'konsultasi/index.html', {'post_konsul': konsultasi, 'tags': tags, 'searching': searching})
 
 def konsultasi_Create(request):
     """Create post, if no request open page like usual. Request are made using jquery ajax
@@ -1334,18 +1348,28 @@ def test_SehatMental_Result(request):
 def artikel(request):
     """See all artikel"""
     tags = Tag.objects.filter(type="Artikel")
+    searching = False
     # Check if there is a search
     if request.GET.get('q'):
         query = request.GET.get('q')
         paginator = Paginator(Artikel.objects.filter(title__icontains=query).order_by('-created_at'), 25)
         page = request.GET.get('page')
-        posts = paginator.get_page(page)
+        posts_artikel = paginator.get_page(page)
+        searching = True
+
+        # Check if no result found
+        if paginator.count == 0:
+            messages.info(request, 'No result found')
+            return redirect('/artikel')
     else:
         paginator = Paginator(Artikel.objects.all().order_by('-created_at'), 25)
         page = request.GET.get('page')
-        posts = paginator.get_page(page)
+        posts_artikel = paginator.get_page(page)
 
-    return render(request, 'artikel/index.html', {'posts': posts, 'tags': tags})
+    # Get top 3 popular artikel sorted by views
+    popular_artikel = Artikel.objects.all().order_by('-views')[:3]
+
+    return render(request, 'artikel/index.html', {'posts': posts_artikel, 'tags': tags, 'popular_artikel': popular_artikel, 'searching': searching})
 
 def artikel_tag(request, tagName):
     """See post by tag"""

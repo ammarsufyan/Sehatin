@@ -64,6 +64,16 @@
                 </div>
             </div>
             <div class="home__text">
+                {% if messages %}
+                    <div class="message-alert">
+                        {% for message in messages %}
+                        <div class="message-alert-content">
+                            <p style="color:red">{{ message.message }}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
                 <h3 class="home__title">
                     Anak muda khususnya gen z dan milenial adalah yang paling rentan terkena gangguan mental di era pandemi ini.
                 </h3>
