@@ -27,6 +27,7 @@ class Artikel(models.Model): # Post
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    views = models.IntegerField(default=0)
 
 class Konsultasi(models.Model): # Konsultasi
     id = models.AutoField(primary_key=True)

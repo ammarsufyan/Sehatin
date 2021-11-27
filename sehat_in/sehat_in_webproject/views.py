@@ -208,7 +208,7 @@ def forum_Url(request, id, title):
         if post is not None:
             comments = Comment.objects.filter(comment_Forum=post).order_by('created_at') # oldest to newest
             likes = Like.objects.filter(post=post)
-            
+
             return render(request, 'forum/view.html', {'post': post, 'comments': comments, 'likes': likes})
         else:
             raise Http404
@@ -1374,6 +1374,12 @@ def artikel_url(request, id, title):
             return redirect('/artikel/' + str(post.id) + '/' + post.title.replace(' ', '-').replace('?', ''))
         
         if post is not None:
+            # Increase the view of the post
+            post.views += 1
+
+            # Save the post
+            post.save()
+            
             return render(request, 'artikel/view.html', {'post': post})
         else:
             raise Http404
