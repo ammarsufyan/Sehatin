@@ -1,8 +1,10 @@
+/*==================== MENU SHOW Y HIDDEN ====================*/
 const navMenu = document.getElementById('nav-menu'),
     navToggle = document.getElementById('nav-toggle'),
     navClose = document.getElementById('nav-close')
+/*===== MENU SHOW =====*/
 
-//show menu
+
 /* Validate if constant exists */
 if(navToggle){
     navToggle.addEventListener('click', () =>{
@@ -10,7 +12,7 @@ if(navToggle){
     })
 }
 
-//menu hide
+/*===== MENU HIDDEN =====*/ 
 /* Validate if constant exists */
 if(navClose){
     navClose.addEventListener('click', () =>{
@@ -18,7 +20,7 @@ if(navClose){
     })
 }
 
-//remove menu mobile
+/*==================== REMOVE MENU MOBILE ====================*/
 const navLink = document.querySelectorAll('.nav__link')
 
 function linkAction(){
@@ -27,3 +29,4 @@ function linkAction(){
 } 
 
 navLink.forEach(n => n.addEventListener('click', linkAction))
+

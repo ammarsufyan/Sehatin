@@ -1,0 +1,64 @@
+main {
+    background-color: #F9F9F9;
+    height: 100%;
+    padding-top: 7rem;
+}
+
+.container__profile {
+    background: #FFFFFF;
+    box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.15);
+    border-radius: 5px;
+    display: flex;
+    color: black;
+}
+
+.info {
+    padding: 2rem;
+    text-align: center;
+}
+
+.info img {
+    max-width:4rem
+}
+
+.info .email {
+    font-size: .6rem;
+    color: #878787;
+}
+
+.button__container {
+    padding: 2rem;
+    font-size: .8rem;
+}
+
+.button__profile {
+    display: flex;
+    padding: .5rem;
+
+}
+
+.button__profile:hover {
+    background-color:  rgb(209, 209, 209);
+
+}
+
+.button__profile img {
+    max-width: 1rem;
+}
+
+.button__profile p {
+    margin-left: .5rem;
+}
+
+.profile {
+    padding: 1.5rem 3rem 3rem 1rem;
+}
+
+.profile h1 {
+    font-size: 1.2rem;
+}
+
+.profile__header {
+    display: flex;
+    margin: 1rem 0;
+}
