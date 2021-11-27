@@ -22,7 +22,7 @@ class Artikel(models.Model): # Post
     id = models.AutoField(primary_key=True)
     title = models.CharField(max_length=200)
     content = models.TextField()
-    thumbnail_url = models.CharField(max_length=200, blank=True, null=True)
+    thumbnail_url = models.TextField(blank=True, null=True)
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE, null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)

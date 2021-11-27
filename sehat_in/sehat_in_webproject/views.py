@@ -27,7 +27,13 @@ def error_403_view(request, exception):
 # Home
 def index(request):
     """Index page (Home)"""
-    return render(request, 'index.html')
+    # Get 3 latest articles
+    latest_articles = Artikel.objects.all().order_by('-created_at')[:3]
+
+    # Get 3 latest forum
+    latest_forum = Forum.objects.all().order_by('-created_at')[:3]
+
+    return render(request, 'index.html', {'latest_articles': latest_articles, 'latest_forum': latest_forum})
 
 # ----------------------------------------------------------------
 # Auth
