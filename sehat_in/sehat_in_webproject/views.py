@@ -165,9 +165,16 @@ def logout(request):
 def forum(request):
     """See all post"""
     tags = Tag.objects.filter(type="Forum")
-    paginator = Paginator(Forum.objects.all().order_by('-created_at'), 25)
-    page = request.GET.get('page')
-    posts = paginator.get_page(page)
+    # Check if there is a search
+    if request.GET.get('q'):
+        query = request.GET.get('q')
+        paginator = Paginator(Forum.objects.filter(title__icontains=query).order_by('-created_at'), 25)
+        page = request.GET.get('page')
+        posts = paginator.get_page(page)
+    else:
+        paginator = Paginator(Forum.objects.all().order_by('-created_at'), 25)
+        page = request.GET.get('page')
+        posts = paginator.get_page(page)
 
     return render(request, 'forum/index.html', {'posts': posts, 'tags': tags})
 
@@ -921,26 +928,20 @@ def report_Resolve(request, id):
         raise Http404
 
 # ----------------------------------------------------------------
-# Artikel
-def artikel(request):
-    """Open artikel view"""
-    # Get reqeuest split artikels to 25 per page
-    paginator = Paginator(Artikel.objects.all().order_by('-created_at'), 25)
-    page = request.GET.get('page')
-    artikels = paginator.get_page(page)
-
-    return render(request, 'artikel.html', {'artikels': artikels})
-
-
-# ----------------------------------------------------------------
 # Konsul
 def konsultasi(request):
     """Open konsultasi view"""
-    # Get reqeuest split konsultasis to 25 per page
-    paginator = Paginator(Konsultasi.objects.all().order_by('-created_at'), 25)
-    page = request.GET.get('page')
-    konsultasi = paginator.get_page(page)
     tags = Tag.objects.filter(type="Konsultasi")
+    # Check if there is a search
+    if request.GET.get('q'):
+        query = request.GET.get('q')
+        paginator = Paginator(Konsultasi.objects.filter(title__icontains=query).order_by('-created_at'), 25)
+        page = request.GET.get('page')
+        konsultasi = paginator.get_page(page)
+    else:
+        paginator = Paginator(Konsultasi.objects.all().order_by('-created_at'), 25)
+        page = request.GET.get('page')
+        konsultasi = paginator.get_page(page)
 
     return render(request, 'konsultasi/index.html', {'post_konsul': konsultasi, 'tags': tags})
 
@@ -1059,7 +1060,7 @@ def konsultasi_Url(request, id, title):
         
         if konsultasi is not None:
             comments = Comment.objects.filter(comment_Konsultasi=konsultasi).order_by('created_at') # oldest to newest
-            
+
             return render(request, 'konsultasi/view.html', {'post': konsultasi, 'comments': comments})
         else:
             raise Http404
@@ -1333,9 +1334,16 @@ def test_SehatMental_Result(request):
 def artikel(request):
     """See all artikel"""
     tags = Tag.objects.filter(type="Artikel")
-    paginator = Paginator(Artikel.objects.all().order_by('-created_at'), 25)
-    page = request.GET.get('page')
-    posts = paginator.get_page(page)
+    # Check if there is a search
+    if request.GET.get('q'):
+        query = request.GET.get('q')
+        paginator = Paginator(Artikel.objects.filter(title__icontains=query).order_by('-created_at'), 25)
+        page = request.GET.get('page')
+        posts = paginator.get_page(page)
+    else:
+        paginator = Paginator(Artikel.objects.all().order_by('-created_at'), 25)
+        page = request.GET.get('page')
+        posts = paginator.get_page(page)
 
     return render(request, 'artikel/index.html', {'posts': posts, 'tags': tags})
 
