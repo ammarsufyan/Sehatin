@@ -27,6 +27,7 @@
 </div>
 {% endif %} {% endcomment %}
     {% load static %}
+    {% load remove_unused %}
     <header class="header" id="header">
         <nav class="nav container scroll-header">
             <a href="/" class="nav__logo">
@@ -66,6 +67,45 @@
 
             <div class="nav__btns">
 
+                {% if user.is_authenticated %}
+                    <ul class="account">
+                        <li>
+                            <i class="uil uil-bell dropdown account__icon">
+                            {% if notifications %}
+                                <div class="dropdown-content">
+                                {% for notif in notifications %}
+                                    {% if not notif.read %}
+                                        {% if notif.post_Forum %}
+                                            <a href="/forum/{{ notif.post_Forum.id }}/{{ notif.post_Forum.title|remove_unused }}#comments-{{ notif.comment.id }}">{{ notif.notification_Content }}</a>
+                                        {% elif notif.post_Konsultasi %}
+                                            <a href="/tanya-jawab/{{ notif.post_Konsultasi.id }}/{{ notif.post_Konsultasi.title|remove_unused }}#comments-{{ notif.comment.id }}">{{ notif.notification_Content }}</a>
+                                        {% elif notif.comment %}
+                                            {% if notif.post_Forum %}
+                                                <a href="/forum/{{ notif.post.id }}/{{ notif.post.title|remove_unused }}#comments-{{ notif.comment.id }}">{{ notif.notification_Content }}</a>
+                                            {% else %}
+                                                <a href="/tanya-jawab/{{ notif.post.id }}/{{ notif.post.title|remove_unused }}#comments-{{ notif.comment.id }}">{{ notif.notification_Content }}</a>
+                                            {% endif %}
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                                </div>
+                            {% endif %}
+                            </i>
+                        </li>
+                        <li>
+                            <i class="uil uil-angle-down dropdown account__icon">
+                                <div class="dropdown-content">
+                                    <a href="/profile/{{user.username}}">Profile</a>
+                                    <a href="/profile/{{user.username}}/history">History</a>
+                                    <a href="/logout">Logout</a>
+                                </div>
+                            </i>
+                        </li>
+                        <li>
+                            <img src="{% static 'img/avatar.svg' %}" alt="">
+                        </li>
+                    </ul>
+                {% else %}
                 <ul class="login-signup">
                     <li class="sign__hide">
                         <a href="/auth/register" class="nav__link">
@@ -78,6 +118,7 @@
                         </a>
                     </li>
                 </ul>
+                {% endif %}
 
                 <div class="nav__toggle" id="nav-toggle">
                     <i class="uil uil-apps"></i>
