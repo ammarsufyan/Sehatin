@@ -1,58 +1,54 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
 
-    <title>Test Tingkat kementalan</title>
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/tes.css' %}">
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
+
+    <link rel="icon" 
+        type="image/png" 
+        href="{% static 'img/favicon/favicon.ico' %}" 
+    />
+    <title>Tes Kesehatan Mental</title>
 </head>
 <body>
     {% include 'templates/header.html' %}
 
-    <main class="main container-wrapper">
-        <div class="main-content">
-            <div class="test-container">
-                <div class="test-explanation">
-                    <div>
-                        <h1>Tes Mental mentalan</h1>
-                        <p>Kita main jauh-jauhan siapa yang bisa mentalin bola lebih jauh.</p>
-                    </div>
-        
-                    <div class="panduan">
-                        <h2>Panduan Pengisian</h2>
-                        <ol>
-                            <li>
-                                Isilah dengan jujur sesuai kepribadianmu.
-                            </li>
-                            <li>
-                                Cari tempat yang nyaman dan kondusif 
-                            </li>
-                            <li>
-                                Hasil tes bisa kamu dapatkan setelah mengisi semua pertanyaan dengan lengkap.
-                            </li>
-                        </ol>
-                    </div>
-
-                    <div class="btn-mulai-div">
-                        <a class="btn-mulai" href="/tests/health/kesehatan-mental/question">Mulai Test</a>
-                    </div>
-
-                    
+    <div>
+        <div class="container container__tes">
+            <div class="penjelasan__tes">
+                <div class="tes__title" style="margin-right: 10px;">  {% comment %} TEMPORARY STYLE {% endcomment %}
+                    <h2>Tes Kesehatan Mental</h2>
+                    <p>kita anak metal kita kalo joged sukanya Kita anak metal kalo goyuang Rasanya kesepian mental metal tabrak sana, tabrak sini seperti Em G D Am kuda binal kita bisa lincah walaupun cuma Em G D Am pakai sandal abis joged pegal2 E5 G5 F#5 F5 kita selalu optimis ayo semua ngangguk2 E5 G4 F#5 F5 apa saja kita setuju ayo semua ngangguk2</p>
                 </div>
-        
-                <div class="img-area">
-                    <div class="bg-img">
-                        <img class="thumbnail" src="" alt="">
-                    </div>
-
+                <div class="tes__panduan" style="margin-top: 10px;">
+                    <h3>Panduan Pengisian</h3>
+                    <ol>
+                        <li>Bacalah pernyataan-pernyataan pada lembar berikut.</li>
+                        <li>Jawablah setiap nomor dengan sungguh-sungguh sesuai dengan  keadaan yang sebenarnya. Setiap nomor harap diisi dan usahakan tidak ada yang terlewat. 
+                        <li>Tidak ada jawaban yang dianggap salah, semua jawaban adalah  benar jika diisi dengan jujur sesuai dengan keadaan saat ini. </li></li>        
+                        <li>Pilih salah satu dari empat pilihan jawaban yang ada, yang paling sesuai dengan mengklik pilihan tersebut</li>
+                    </ol>
                 </div>
+                
+                <a href="/tests/health/kesehatan-mental/question" class="btn__mulai">
+                    Mulai Tes
+                </a>
+            </div>
+            <div>
+                <div class="img__wrapper">
+                    <img class="thumbnail" src="{% static 'img/thumbnail_tes_kesepian.svg' %}" alt="">
+                </div>
+                
             </div>
         </div>
-    </main>
-
-    {% include 'templates/footer.html' %}
-    {% comment %} <script src="../assets/js/app.js"></script> {% endcomment %}
+    </div>
+    
 </body>
 </html>
