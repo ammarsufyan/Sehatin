@@ -1,50 +1,123 @@
 <!DOCTYPE html>
+{% load static %}
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    {% comment %} <link rel="stylesheet" href="assets/css/style.css"> {% endcomment %}
+
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/tes.css' %}">
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
 
-    <link rel="icon" type="image/png" href="assets/img/favicon.ico" />
-    <title>Ruangtumbuh</title>
+    <link rel="icon" 
+        type="image/png" 
+        href="{% static 'img/favicon/favicon.ico' %}" 
+    />
+    <title>Tes Psikologi Sehatin</title>
 </head>
-
 <body>
+
     {% include 'templates/header.html' %}
-
-    <main class="main">
-
-        <div class="text-main">
-            <h2 class="title">Tes Kesehatan</h2>
-            <p>Cek kesehatan anda dengan scam test ini</p>
-        </div>
-
-        <div class="rectangle-wrapper">
-            <div class="rectangle">
-                <div class="parent-img">
-                    <img src="" alt="">
+    
+    <div class="container tes__section">
+        <div>   
+            <div class="section__title">
+                <h2>Tes Terpopuler</h2>
+            </div>
+            <div class="tes__container">
+                <div class="tes__card">
+                    <div class="tes__wrapper">
+                        <img class="tes__image" src="{% static 'img/tes_image_1.svg' %}" alt="tes image">
+                        <div class="tes__wrapper__content">
+                            <a class="tes__category" href="/tests/health/kesehatan-mental">Tes Psikologi<a>
+                            <h2 class="tes__title">Tes Kesehatan Mental</h2>
+                            <p class="tes__description">Mental itu penting, tapi jangalah lupa mendarat. Ayo cek...</p>
+                            <a href="/test/health/kesehatan-mental" class="tes__button">
+                                Ikuti Tes
+                            </a>
+                        </div>
+                    </div>
                 </div>
-                <div class="rectangle-content">
-                    <h4>Tes Kesehatan mental</h4>
-                    <p>Mental itu penting, tapi jangan lupa mendarat</p>
-                    <a href="/tests/health/kesehatan-mental">
-                        <button class="button-test">
-                            <p>Test Sekarang</p>
-                            <i class="uil uil-arrow-right button-arrow"></i>
-                        </button>
-                    </a>
+
+                <div class="tes__card">
+                    <div class="tes__wrapper">
+                        <img class="tes__image" src="{% static 'img/tes_image_2.svg' %}" alt="tes image">
+                        <div class="tes__wrapper__content">
+                            <a class="tes__category" href="#">Tes Selamat Dunia Akhirat<a>
+                            <h2 class="tes__title">Tes x</h2>
+                            <p class="tes__description">Ayo cek...</p>
+                            <a href="#" class="tes__button">
+                                Ikuti Tes
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tes__card">
+                    <div class="tes__wrapper">
+                        <img class="tes__image" src="{% static 'img/tes_image_3.svg' %}" alt="tes image">
+                        <div class="tes__wrapper__content">
+                            <a class="tes__category" href="#">Tes Psikologi<a>
+                            <h2 class="tes__title">Tes Skinwalker</h2>
+                            <p class="tes__description">Ayo cek apakah tetanggamu merupakan skinwalker...</p>
+                            <a href="#" class="tes__button">
+                                Ikuti Tes
+                            </a>
+                        </div>
+                    </div>
                 </div>
             </div>
-
         </div>
-    </main>
 
-    {% include 'templates/footer.html' %}
+        <div>
+            <div class="section__title">
+                <h2>Tes Lainnya</h2>
+            </div>
+            <div class="tes__container">
+                <div class="tes__card">
+                    <div class="tes__wrapper">
+                        <img class="tes__image" src="{% static 'img/tes_image_1.svg' %}" alt="tes image">
+                        <div class="tes__wrapper__content">
+                            <a class="tes__category" href="#">Tes Kebohongan<a>
+                            <h2 class="tes__title">Tes Mr Krab</h2>
+                            <p class="tes__description">Ayo cek...</p>
+                            <a href="#" class="tes__button">
+                                Ikuti Tes
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="tes__card">
+                    <div class="tes__wrapper">
+                        <img class="tes__image" src="{% static 'img/tes_image_2.svg' %}" alt="tes image">
+                        <div class="tes__wrapper__content">
+                            <a class="tes__category" href="#">Tes la<a>
+                            <h2 class="tes__title">Mobile esemka</h2>
+                            <p class="tes__description">Ayo cek...📡</p>
+                            <a href="#" class="tes__button">
+                                Ikuti Tes
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div class="tes__card">
+                    <div class="tes__wrapper">
+                        <img class="tes__image" src="{% static 'img/tes_image_3.svg' %}" alt="tes image">
+                        <div class="tes__wrapper__content">
+                            <a class="tes__category" href="#">Tes Psikologi<a>
+                            <h2 class="tes__title">Tes x</h2>
+                            <p class="tes__description">Ayo cek...</p>
+                            <a href="#" class="tes__button">
+                                Ikuti Tes
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    {% comment %} <script src="assets/js/app.js"></script> {% endcomment %}
 </body>
-
 </html>
