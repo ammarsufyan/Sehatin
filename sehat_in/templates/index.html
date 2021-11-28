@@ -1,123 +1,28 @@
-{% comment %} <!DOCTYPE html>
-<html lang="en">
-{% load static %}
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-</head>
-
-<body>
-    {% include 'templates/header.html' %}
-
-    <h1>Hello worldo, こんいちわ</h1>
-    {% if user.is_authenticated %}
-    <p>Welcome {{ user.first_name }}!</p>
-    <p>Currently logged in as {{ user.username }}</p>
-    <p>Your email address is {{ user.email }}</p>
-    <p>Your full name is {{ user.first_name }} {{ user.last_name }}</p>
-    <p>Your user id is {{ user.id }}</p>
-    <p>Your staff status is {{ user.is_staff }}</p>
-    <p>Your perrmission is {{ user.get_user_permissions }}</p>
-    <p>Your date joined is {{ user.date_joined }}</p>
-    <p>Your last login is {{ user.last_login }}</p>
-    {% endif %}
-
-    {% include 'templates/footer.html' %}
-</body>
-
-</html> {% endcomment %}
-
 <!DOCTYPE html>
-<html lang="en">
 {% load static %}
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}">
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+
+    <link rel="icon" 
+        type="image/png" 
+        href="{% static 'img/favicon/favicon.ico' %}" 
+    />
+    <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
     <title>Sehatin</title>
 </head>
 <body>
-    <header class="header" id="header">
-        <nav class="nav container scroll-header">
-            <a href="#" class="nav__logo">Ini logo</a>
-            <div class="nav__menu" id="nav-menu">
-                <ul class="nav__list grid">
-                    <li class="nav__item">
-                        <a href="#home" class="nav__link active-link">
-                            <i class="uil uil-estate nav__icon"></i> Home
-                        </a>
-                    </li>
-                    <li class="nav__item">
-                        <a href="#quiz" class="nav__link">
-                            <i class="uil uil-pen nav__icon"></i> Quiz
-                        </a>
-                    </li>
-                    <li class="nav__item">
-                        <a href="http://127.0.0.1:8000/artikel" class="nav__link">
-                            <i class="uil uil-newspaper nav__icon"></i> Artikel
-                        </a>
-                    </li>
-                    <li class="nav__item">
-                        <a href="#forum" class="nav__link " >
-                            <i class="uil uil-comment-add nav__icon"></i> Forum
-                        </a>
-                    </li>
-                    <li class="nav__item">
-                        <a href="#about" class="nav__link">
-                            <i class="uil uil-info nav__icon"></i> About
-                        </a>
-                    </li>
-
-                </ul>
-                <i class="uil uil-times nav__close" id="nav-close"></i>
-            </div>
-
-            <div class="nav__btns">
-                {% if user.is_authenticated %}
-                <ul class="login-signup">
-                    <li>
-                        <a href="/profile/{{ user.username }}" class="nav__link">
-                            Profile
-                        </a>
-                    </li>
-                    <li class="sign__hide">
-                        <a href="{% url 'logout' %}" class="nav__link">
-                            Logout
-                        </a>
-                    </li>
-                </ul>                
-                {% else %}
-                <ul class="login-signup">
-                    <li class="sign__hide">
-                        <a href="/auth/register" class="nav__link">
-                            Signup
-                        </a>
-                    </li>
-                    <li>
-                        <a href="/auth/login" class="nav__link">
-                            Login
-                        </a>
-                    </li>
-                </ul>
-                {% endif %}
-
-                <div class="nav__toggle" id="nav-toggle">
-                    <i class="uil uil-apps"></i>
-                </div>
-            </div>
-        </nav>
-    </header>
-
+    {% include 'templates/header.html' %}
+    
     <main>
-
         <section class="container home__page">
             <div>
                 <div class="home">
@@ -125,13 +30,23 @@
                 </div>
             </div>
             <div class="home__text">
+                {% if messages %}
+                    <div class="message-alert">
+                        {% for message in messages %}
+                        <div class="message-alert-content">
+                            <p style="color:red">{{ message.message }}</p>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
                 <h3 class="home__title">
                     Anak muda khususnya gen z dan milenial adalah yang paling rentan terkena gangguan mental di era pandemi ini.
                 </h3>
                 <p class="home__subtitle">
                     Apakah kamu salah satunya? <br> Yuk cek keadaan mental mu dengan tes psikologi sehat.in
                 </p>
-                <a href="#tes" class="button button--flex">
+                <a href="/tests" class="button button--flex">
                     Tes Sekarang<i class="uil uil-message button__icon"></i>
                 </a>
             </div>
@@ -140,7 +55,7 @@
         <section class="container home__tes">
             <div class="tes__header">
                 <h1>Tes Psikologi</h1>
-                <a href="#">Lihat semua</a>
+                <a href="/tests">Lihat semua</a>
             </div>
             <div class="tes__container">
                 <div class="tes__card">
@@ -192,58 +107,119 @@
         <section class="container home__tes">
             <div class="tes__header">
                 <h1>Artikel</h1>
-                <a href="#">Lihat semua</a>
+                <a href="/artikel">Lihat semua</a>
             </div>
             <div class="tes__container">
-                <div class="tes__card">
-                    <div class="tes__wrapper">
-                        <img class="tes__image" src="{% static 'img/tes_image_1.svg' %}" alt="tes image">
-                        <div class="tes__wrapper__content">
-                            <a class="tes__category" href="">Tes Psikologi<a>
-                            <h2 class="tes__title">Tes Tingkat Rasa Kesepian: Loneliness Scale</h2>
-                            <p class="tes__description">Rasa kesepian yang tinggi dikhawatirkan dapat memicu masalah terhadap kesehatan mental kamu.Cek tingkat...</p>
-                             <a href="#tes" class="tes__button">
-                                Tes Sekarang
-                            </a>
+                {% for post in latest_articles %}
+                <a href="artikel/{{ post.id }}">
+                    <div class="tes__card">
+                        <div class="tes__wrapper">
+                            <img class="tes__image" src="{% if post.thumbnail_url %}{{post.thumbnail_url}}{% else %}/static/img/no_image.png{% endif %}" onerror="this.onerror=null; this.src='/static/img/no_image.png'" alt="{{ post.title }}">
+                            <div class="tes__wrapper__content">
+                                <a class="tes__category" href="/artikel/tag/{{ post.tag.name }}">{{ post.tag.name }}</a>
+                                <h2 class="tes__title">{{ post.title }}</h2>
+                                <div id="desc-{{ post.id }}">{% autoescape off %}{{ post.content|slice:"0:50" }}...{% endautoescape %}</div>
+                                <script>
+                                x = document.getElementById("desc-{{ post.id }}").getElementsByTagName("P")[0];
+                                x.classList.add("tes__description");
+                                </script>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </a>
+                {% endfor %}
+            </div>
 
-                <div class="tes__card">
-                    <div class="tes__wrapper">
-                        <img class="tes__image" src="assets/img/tes_image_2.svg" alt="tes image">
-                        <div class="tes__wrapper__content">
-                            <a class="tes__category" href="">Tes Psikologi<a>
-                            <h2 class="tes__title">Tes Mindfulness: Menemukan hidup yang lebih bermakna</h2>
-                            <p class="tes__description">Mindfulness banyak dikaitkan dengan kebahagiaan, kesehatan, dan ketentraman pikiran, tetapi banyak dari kita mungkin...</p>
-                             <a href="#tes" class="tes__button">
-                                Tes Sekarang
-                            </a>
-                        </div>
-                    </div>
-                </div>
+        </section>
 
-                <div class="tes__card">
-                    <div class="tes__wrapper">
-                        <img class="tes__image" src="assets/img/tes_image_3.svg" alt="tes image">
-                        <div class="tes__wrapper__content">
-                            <a class="tes__category" href="">Tes Psikologi<a>
-                            <h2 class="tes__title">Tes Kepribadian MBTI: Kenali dirimu</h2>
-                            <p class="tes__description">MBTI adalah singkatan dari The Myers-Briggs Type Indicator. MBTI merupakan sebuah instrumen untuk melakukan assesment atau</p>
-                             <a href="#tes" class="tes__button">
-                                Tes Sekarang
-                            </a>
+        
+        <section class="container home__tes">
+            <div class="tes__header">
+                <h1>Forum</h1>
+                <a href="/forum">Lihat semua</a>
+            </div>
+             <div class="tes__container">
+                <a href="/forum/{{ latest_forum.0.id }}">
+                    <div class="tes__card">
+                        <div class="tes__wrapper">
+                            <img class="tes__image" src="{% static 'img/forum1.svg' %}" alt="forum-{{ latest_forum.0.id }}">
+                            <div class="tes__wrapper__content">
+                                <a class="tes__category" href="">{{ latest_forum.0.tag.name }}<a>
+                                <h2 class="tes__title">{{ latest_forum.0.title }}</h2>
+                                <div id="forum-{{ latest_forum.0.id }}">{% autoescape off %}{{ latest_forum.0.content|slice:"0:50" }}...{% endautoescape %}</div>
+                                <script>
+                                x = document.getElementById("forum-{{ latest_forum.0.id }}").getElementsByTagName("P")[0];
+                                x.classList.add("tes__description");
+                                </script>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </a>
+
+                <a href="/forum/{{ latest_forum.1.id }}">
+                    <div class="tes__card">
+                        <div class="tes__wrapper">
+                            <img class="tes__image" src="{% static 'img/forum2.svg' %}" alt="forum-{{ latest_forum.1.id }}">
+                            <div class="tes__wrapper__content">
+                                <a class="tes__category" href="">{{ latest_forum.1.tag.name }}<a>
+                                <h2 class="tes__title">{{ latest_forum.1.title }}</h2>
+                                <div id="forum-{{ latest_forum.1.id }}">{% autoescape off %}{{ latest_forum.1.content|slice:"0:50" }}...{% endautoescape %}</div>
+                                <script>
+                                x = document.getElementById("forum-{{ latest_forum.1.id }}").getElementsByTagName("P")[0];
+                                x.classList.add("tes__description");
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="/forum/{{ latest_forum.2.id }}">
+                    <div class="tes__card">
+                        <div class="tes__wrapper">
+                            <img class="tes__image" src="{% static 'img/forum3.svg' %}" alt="forum-{{ latest_forum.2.id }}">
+                            <div class="tes__wrapper__content">
+                                <a class="tes__category" href="">{{ latest_forum.2.tag.name }}<a>
+                                <h2 class="tes__title">{{ latest_forum.2.title }}</h2>
+                                <div id="forum-{{ latest_forum.2.id }}">{% autoescape off %}{{ latest_forum.2.content|slice:"0:50" }}...{% endautoescape %}</div>
+                                <script>
+                                x = document.getElementById("forum-{{ latest_forum.2.id }}").getElementsByTagName("P")[0];
+                                x.classList.add("tes__description");
+                                </script>
+                            </div>
+                        </div>
+                    </div>
+                </a>
             </div>
         </section>
+
+        
+        <section class="container home__tes">
+            <div class="tes__header">
+                <h1>Singkat mengenai Sehatin</h1>
+            </div>
+
+            <div class="about">
+                <img src="{% static 'img/logo.svg' %}" alt="">
+                <p>
+                    Sehat.in adalah platform kesehatan mental remaja Indonesia berbasis Web yang berfokus kepada kesadaran para remaja terhadap fenomena-fenomena psikologis dalam diri. 
+                    <br><br>
+                    Tujuan besar kami adalah agar makin banyak remaja yang meningkat kesadaran dirinya dan lebih mengenal dirinya sendiri, apa yang sedang terjadi dalam diri mereka dan tentunya agar kesehatan mental mereka makin membaik seiring berjalannya waktu.
+                </p>
+            </div>
+
+        </section>
+
     </main>
 
+    {% include 'templates/footer.html' %}
 
+    <script>
+    var change = document.getElementById("home");
+    change.classList.add("active-link");
+    change.href = "#";
+    </script>
 
-    
-
+    <script src="{% static 'js/swiper-bundle.min.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>

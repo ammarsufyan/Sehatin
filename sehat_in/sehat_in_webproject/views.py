@@ -27,7 +27,20 @@ def error_403_view(request, exception):
 # Home
 def index(request):
     """Index page (Home)"""
-    return render(request, 'index.html')
+    # Get 3 latest articles
+    latest_articles = Artikel.objects.all().order_by('-created_at')[:3]
+
+    # Get 3 latest forum
+    latest_forum = Forum.objects.all().order_by('-created_at')[:3]
+
+    # if user is authenticated
+    if request.user.is_authenticated:
+        # Get user's notification
+        notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+    else:
+        notifications = None
+
+    return render(request, 'index.html', {'latest_articles': latest_articles, 'latest_forum': latest_forum, 'notifications': notifications})
 
 # ----------------------------------------------------------------
 # Auth
@@ -159,20 +172,49 @@ def logout(request):
 def forum(request):
     """See all post"""
     tags = Tag.objects.filter(type="Forum")
-    paginator = Paginator(Forum.objects.all().order_by('-created_at'), 25)
-    page = request.GET.get('page')
-    posts = paginator.get_page(page)
 
-    return render(request, 'forum/index.html', {'posts': posts, 'tags': tags})
+    # if user is authenticated
+    if request.user.is_authenticated:
+        # Get user's notification
+        notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+    else:
+        notifications = None
+
+    searching = False
+    # Check if there is a search
+    if request.GET.get('q'):
+        query = request.GET.get('q')
+        paginator = Paginator(Forum.objects.filter(title__icontains=query).order_by('-created_at'), 25)
+        page = request.GET.get('page')
+        posts = paginator.get_page(page)
+        searching = True
+
+        # Check if no result found
+        if paginator.count == 0:
+            messages.info(request, 'No result found')
+            return redirect('/forum')
+    else:
+        paginator = Paginator(Forum.objects.all().order_by('-created_at'), 25)
+        page = request.GET.get('page')
+        posts = paginator.get_page(page)
+
+    return render(request, 'forum/index.html', {'posts': posts, 'tags': tags, 'searching': searching, 'notifications': notifications})
 
 def forum_Tag(request, tagName):
     """See post by tag"""
     tag = Tag.objects.get(name=tagName.replace('-', ' '))
     if tag is not None and tag.type == 'Forum':
+        # if user is authenticated
+        if request.user.is_authenticated:
+            # Get user's notification
+            notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+        else:
+            notifications = None
+
         paginator = Paginator(Forum.objects.filter(tag=tag).order_by('-created_at'), 25)
         page = request.GET.get('page')
         posts = paginator.get_page(page)
-        return render(request, 'forum/tag.html', {'posts': posts, 'tag': tag})
+        return render(request, 'forum/tag.html', {'posts': posts, 'tag': tag, 'notifications': notifications})
     else:
         raise Http404
 
@@ -195,6 +237,13 @@ def forum_Url(request, id, title):
     # Title in the link is just for vanity url
     if id is not None and title is not None:
         post = Forum.objects.get(id=id)
+        # if user is authenticated
+        if request.user.is_authenticated:
+            # Get user's notification
+            notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+        else:
+            notifications = None
+
         # To ensure the vanity url is always exactly the title
         if title.replace('-', ' ') != post.title.replace('?', ''):
             return redirect('/forum/' + str(post.id) + '/' + post.title.replace(' ', '-').replace('?', ''))
@@ -202,8 +251,8 @@ def forum_Url(request, id, title):
         if post is not None:
             comments = Comment.objects.filter(comment_Forum=post).order_by('created_at') # oldest to newest
             likes = Like.objects.filter(post=post)
-            
-            return render(request, 'forum/view.html', {'post': post, 'comments': comments, 'likes': likes})
+
+            return render(request, 'forum/view.html', {'post': post, 'comments': comments, 'likes': likes, 'notifications': notifications})
         else:
             raise Http404
     else:
@@ -261,8 +310,10 @@ def forum_Create(request):
             getPost = Forum.objects.get(title=title, content=content, user=user)
             return HttpResponse(getPost.id)
         else: # user enter normally
+            # if user is authenticated
+            notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
             tags = Tag.objects.filter(type="Forum")
-            return render(request, 'forum/create.html', {'tags': tags})
+            return render(request, 'forum/create.html', {'tags': tags, 'notifications': notifications})
     else: # user is not logged in
         messages.info(request, 'Need to login first!')
         return redirect('/auth/login')
@@ -308,11 +359,12 @@ def forum_Edit(request, id, title):
         else: # If user enter the edit page
             post = Forum.objects.get(id=id)
             tag = Tag.objects.filter(type="Forum")
+            notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
 
             if title.replace('-', ' ') != post.title: # Ensure the title is exactly the same
                 return redirect('/forum/' + str(post.id) + '/' + post.title.replace(' ', '-') + '/edit')
 
-            return render(request, 'forum/edit.html', {'post': post, 'tags': tag})
+            return render(request, 'forum/edit.html', {'post': post, 'tags': tag, 'notifications': notifications})
     else: # Double check, this shouldn't actually happen
         messages.info(request, 'Need to login first!')
         return HttpResponse('error')
@@ -701,7 +753,14 @@ def profile(request, username):
         # get the user comments
         comments = Comment.objects.filter(user=user)
 
-        return render(request, 'profile/index.html', {'theUser': user, 'user_profile': user_profile, 'posts': posts, 'comments': comments})
+        # if user is authenticated
+        if request.user.is_authenticated:
+            # Get user's notification
+            notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+        else:
+            notifications = None
+
+        return render(request, 'profile/index.html', {'theUser': user, 'user_profile': user_profile, 'posts': posts, 'comments': comments, 'notifications': notifications})
     else:
         raise Http404
 
@@ -717,7 +776,14 @@ def profile_Posts(request, username):
         page = request.GET.get('page')
         posts = paginator.get_page(page)
 
-        return render(request, 'profile/posts.html', {'theUser': user, 'posts': posts})
+        # if user is authenticated
+        if request.user.is_authenticated:
+            # Get user's notification
+            notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+        else:
+            notifications = None
+
+        return render(request, 'profile/posts.html', {'theUser': user, 'posts': posts, 'notifications': notifications})
     else:
         raise Http404
 
@@ -733,10 +799,19 @@ def profile_Comments(request, username):
         page = request.GET.get('page')
         comments = paginator.get_page(page)
 
-        return render(request, 'profile/comments.html', {'theUser': user, 'comments': comments})
+        # if user is authenticated
+        if request.user.is_authenticated:
+            # Get user's notification
+            notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+        else:
+            notifications = None
+
+        return render(request, 'profile/comments.html', {'theUser': user, 'comments': comments, 'notifications': notifications})
     else:
         raise Http404
 
+
+# INi buat apaan ya??? kaga kepake gw lupa dulu mau bakal apa, tp di keep aja dulu mungkin
 def profile_Liked_Commented_Posts(request, username):
     """Get all liked and commented posts of a user"""
     # get the user profile
@@ -805,7 +880,9 @@ def profile_Settings(request, username):
                 messages.info(request, 'Profile updated successfully!')
                 return redirect('/profile/' + user.username + '/settings')
             else: # If Open normally
-                return render(request, 'profile/settings.html', {'UserProfile': UserProfile.objects.get(user=request.user)})
+                notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+
+                return render(request, 'profile/settings.html', {'UserProfile': UserProfile.objects.get(user=request.user), 'notifications': notifications})
         else: # If not the user
             raise PermissionDenied()
     else: # If user is not logged in
@@ -872,8 +949,10 @@ def profile_history(request, username):
         history = History.objects.filter(user=user)
         paginator = Paginator(history.order_by('created_at'), 10)
         get_history = paginator.get_page(request.GET.get('page')) 
+        notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
 
-        return render(request, 'profile/history.html', {'theUser': user, 'history': get_history})
+
+        return render(request, 'profile/history.html', {'theUser': user, 'history': get_history, 'notifications': notifications})
     else:
         raise PermissionDenied()
 
@@ -886,8 +965,9 @@ def report(request):
         paginator = Paginator(Report.objects.all().order_by('-created_at'), 25)
         page = request.GET.get('page')
         reports = paginator.get_page(page)
+        notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
 
-        return render(request, 'report.html', {'reportsPaged': reports})
+        return render(request, 'report.html', {'reportsPaged': reports, 'notifications': notifications})
     else:
         raise PermissionDenied()
 
@@ -915,28 +995,35 @@ def report_Resolve(request, id):
         raise Http404
 
 # ----------------------------------------------------------------
-# Artikel
-def artikel(request):
-    """Open artikel view"""
-    # Get reqeuest split artikels to 25 per page
-    paginator = Paginator(Artikel.objects.all().order_by('-created_at'), 25)
-    page = request.GET.get('page')
-    artikels = paginator.get_page(page)
-
-    return render(request, 'artikel.html', {'artikels': artikels})
-
-
-# ----------------------------------------------------------------
 # Konsul
 def konsultasi(request):
     """Open konsultasi view"""
-    # Get reqeuest split konsultasis to 25 per page
-    paginator = Paginator(Konsultasi.objects.all().order_by('-created_at'), 25)
-    page = request.GET.get('page')
-    konsultasi = paginator.get_page(page)
+    # if user is authenticated
+    if request.user.is_authenticated:
+        # Get user's notification
+        notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+    else:
+        notifications = None
     tags = Tag.objects.filter(type="Konsultasi")
+    searching = False
+    # Check if there is a search
+    if request.GET.get('q'):
+        query = request.GET.get('q')
+        paginator = Paginator(Konsultasi.objects.filter(title__icontains=query).order_by('-created_at'), 25)
+        page = request.GET.get('page')
+        konsultasi = paginator.get_page(page)
+        searching = True
 
-    return render(request, 'konsultasi/index.html', {'post_konsul': konsultasi, 'tags': tags})
+        # Check if no result found
+        if paginator.count == 0:
+            messages.info(request, 'No result found')
+            return redirect('/konsultasi')
+    else:
+        paginator = Paginator(Konsultasi.objects.all().order_by('-created_at'), 25)
+        page = request.GET.get('page')
+        konsultasi = paginator.get_page(page)
+
+    return render(request, 'konsultasi/index.html', {'post_konsul': konsultasi, 'tags': tags, 'searching': searching, 'notifications': notifications})
 
 def konsultasi_Create(request):
     """Create post, if no request open page like usual. Request are made using jquery ajax
@@ -990,7 +1077,8 @@ def konsultasi_Create(request):
             return HttpResponse(getPost.id)
         else: # user enter normally
             tags = Tag.objects.filter(type="Konsultasi")
-            return render(request, 'konsultasi/create.html', {'tags': tags})
+            notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+            return render(request, 'konsultasi/create.html', {'tags': tags, 'notifications': notifications})
     else: # user is not logged in
         messages.info(request, 'Need to login first!')
         return redirect('/auth/login')
@@ -1002,7 +1090,8 @@ def konsultasi_Tag(request, tagName):
         paginator = Paginator(Konsultasi.objects.filter(tag=tag).order_by('-created_at'), 25)
         page = request.GET.get('page')
         posts = paginator.get_page(page)
-        return render(request, 'konsultasi/tag.html', {'post_konsul': posts, 'tag': tag})
+        notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+        return render(request, 'konsultasi/tag.html', {'post_konsul': posts, 'tag': tag, 'notifications': notifications})
     else:
         raise Http404
 
@@ -1047,14 +1136,20 @@ def konsultasi_Url(request, id, title):
     # Title in the link is just for vanity url
     if id is not None and title is not None:
         konsultasi = Konsultasi.objects.get(id=id)
+        # if user is authenticated
+        if request.user.is_authenticated:
+            # Get user's notification
+            notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+        else:
+            notifications = None
         # To ensure the vanity url is always exactly the title
         if title.replace('-', ' ') != konsultasi.title.replace('?', ''):
             return redirect('/tanya-jawab/' + str(konsultasi.id) + '/' + konsultasi.title.replace(' ', '-').replace('?', ''))
         
         if konsultasi is not None:
             comments = Comment.objects.filter(comment_Konsultasi=konsultasi).order_by('created_at') # oldest to newest
-            
-            return render(request, 'konsultasi/view.html', {'post': konsultasi, 'comments': comments})
+
+            return render(request, 'konsultasi/view.html', {'post': konsultasi, 'comments': comments, 'notifications': notifications})
         else:
             raise Http404
     else:
@@ -1214,17 +1309,35 @@ def konsultasi_Comment_Edit(request, id, title, comment_id):
 # Tests menu
 def tests(request):
     """Tests menu"""
-    return render(request, 'tests/index.html')
+    # if user is authenticated
+    if request.user.is_authenticated:
+        # Get user's notification
+        notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+    else:
+        notifications = None
+    return render(request, 'tests/index.html', {'notifications': notifications})
 
 # ------------------------------
 # Test Kesehatan mental
 def test_SehatMental(request):
     """Test kesehatan mental"""
-    return render(request, 'tests/health/kesehatan-mental/index.html')
+    # if user is authenticated
+    if request.user.is_authenticated:
+        # Get user's notification
+        notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+    else:
+        notifications = None
+    return render(request, 'tests/health/kesehatan-mental/index.html', {'notifications': notifications})
 
 def test_SehatMental_Question(request):
     """Halaman pertanyaan test kesehatan mental"""
-    return render(request, 'tests/health/kesehatan-mental/question.html')
+    # if user is authenticated
+    if request.user.is_authenticated:
+        # Get user's notification
+        notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+    else:
+        notifications = None
+    return render(request, 'tests/health/kesehatan-mental/question.html', {'notifications': notifications})
 
 def test_SehatMental_Result(request):
     """Halaman hasil test kesehatan mental"""
@@ -1315,9 +1428,12 @@ def test_SehatMental_Result(request):
             # Save to history
             history = History(user=user, quiz_type='Test Kesehatan Mental', res_type=resultType, res_data=result_data[resultKey])
             history.save()
-
+        
+            notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+        else:
+            notifications = None
         # Nanti bisa di return banyak, style json -> title, hasil text, apa2 lah
-        return render(request, 'tests/result.html', {'res_type': resultType, 'res_data': result_data[resultKey]})
+        return render(request, 'tests/result.html', {'res_type': resultType, 'res_data': result_data[resultKey], 'notifications': notifications})
     else:
         messages.info(request, 'You have to take the test first!')
         return redirect('/tests/health/kesehatan-mental')
@@ -1327,20 +1443,49 @@ def test_SehatMental_Result(request):
 def artikel(request):
     """See all artikel"""
     tags = Tag.objects.filter(type="Artikel")
-    paginator = Paginator(Artikel.objects.all().order_by('-created_at'), 25)
-    page = request.GET.get('page')
-    posts = paginator.get_page(page)
+    # if user is authenticated
+    if request.user.is_authenticated:
+        # Get user's notification
+        notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+    else:
+        notifications = None
+    searching = False
+    # Check if there is a search
+    if request.GET.get('q'):
+        query = request.GET.get('q')
+        paginator = Paginator(Artikel.objects.filter(title__icontains=query).order_by('-created_at'), 25)
+        page = request.GET.get('page')
+        posts_artikel = paginator.get_page(page)
+        searching = True
 
-    return render(request, 'artikel/index.html', {'posts': posts, 'tags': tags})
+        # Check if no result found
+        if paginator.count == 0:
+            messages.info(request, 'No result found')
+            return redirect('/artikel')
+    else:
+        paginator = Paginator(Artikel.objects.all().order_by('-created_at'), 25)
+        page = request.GET.get('page')
+        posts_artikel = paginator.get_page(page)
+
+    # Get top 3 popular artikel sorted by views
+    popular_artikel = Artikel.objects.all().order_by('-views')[:3]
+
+    return render(request, 'artikel/index.html', {'posts': posts_artikel, 'tags': tags, 'popular_artikel': popular_artikel, 'searching': searching, 'notifications': notifications})
 
 def artikel_tag(request, tagName):
     """See post by tag"""
     tag = Tag.objects.get(name=tagName.replace('-', ' '))
+    # if user is authenticated
+    if request.user.is_authenticated:
+        # Get user's notification
+        notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+    else:
+        notifications = None
     if tag is not None and tag.type == 'Artikel':
         paginator = Paginator(Artikel.objects.filter(tag=tag).order_by('-created_at'), 25)
         page = request.GET.get('page')
         posts = paginator.get_page(page)
-        return render(request, 'artikel/tag.html', {'posts': posts, 'tag': tag})
+        return render(request, 'artikel/tag.html', {'posts': posts, 'tag': tag, 'notifications': notifications})
     else:
         raise Http404
 
@@ -1363,12 +1508,24 @@ def artikel_url(request, id, title):
     # Title in the link is just for vanity url
     if id is not None and title is not None:
         post = Artikel.objects.get(id=id)
+            # if user is authenticated
+        if request.user.is_authenticated:
+            # Get user's notification
+            notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+        else:
+            notifications = None
         # To ensure the vanity url is always exactly the title
         if title.replace('-', ' ') != post.title.replace('?', ''):
             return redirect('/artikel/' + str(post.id) + '/' + post.title.replace(' ', '-').replace('?', ''))
         
         if post is not None:
-            return render(request, 'artikel/view.html', {'post': post})
+            # Increase the view of the post
+            post.views += 1
+
+            # Save the post
+            post.save()
+            
+            return render(request, 'artikel/view.html', {'post': post, 'notifications': notifications})
         else:
             raise Http404
     else:
@@ -1428,7 +1585,8 @@ def artikel_create(request):
             return HttpResponse(getPost.id)
         else: # user enter normally
             tags = Tag.objects.filter(type="Artikel")
-            return render(request, 'artikel/create.html', {'tags': tags})
+            notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+            return render(request, 'artikel/create.html', {'tags': tags, 'notifications': notifications})
     else: # user is not logged in
         messages.info(request, 'Need to login first!')
         return redirect('/auth/login')
@@ -1480,7 +1638,9 @@ def artikel_edit(request, id, title):
             if title.replace('-', ' ') != post.title: # Ensure the title is exactly the same
                 return redirect('/artikel/' + str(post.id) + '/' + post.title.replace(' ', '-') + '/edit')
 
-            return render(request, 'artikel/edit.html', {'post': post, 'tags': tag})
+            notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+
+            return render(request, 'artikel/edit.html', {'post': post, 'tags': tag, 'notifications': notifications})
     else: # Double check, this shouldn't actually happen
         messages.info(request, 'Need to login first!')
         return HttpResponse('error')

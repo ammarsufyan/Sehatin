@@ -1,59 +1,81 @@
 <!DOCTYPE html>
-<html lang="en">
 {% load static %}
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ theUser.username }}'s Profile</title>
 
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
+    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+
+    <link rel="icon" 
+        type="image/png" 
+        href="{% static 'img/favicon/favicon.ico' %}" 
+    />
+    <title>{{ theUser.username }}'s Profile</title>
 </head>
 <body>
     {% include 'templates/header.html' %}
-    <p>{{ theUser.username }}'s Profile</p>
-    {% if theUser.username == user.username %}
-    <a class="button history-test" href="/profile/{{ theUser.username }}/history">History</a>
-    <a class="button settings" href="/profile/{{ theUser.username }}/settings">Settings</a>
-    {% endif %}
+
+    <main>
+        <div class="container">
+            <div class="container__profile">
+                <div class="navigation">
+                    <div class="info">
+                        <img src="{% static 'img/avatar-big.svg' %}" alt="profile-pict">
+                        <p><b>{{ theUser.first_name }} {{ theUser.last_name }}</b></p>
+                        <p class="email">{{ theUser.email }}</p>
+                    </div>
+                    <div class="button__container">
+                        <div>
+                            <a class="button__profile" href="/profile/{{ theUser.username }}">
+                                <img src="{% static 'img/my_profile_icon.svg' %}" alt="icon">
+                                <p>My Profile</p>
+                            </a>
+                        </div>
+                        <div>
+                            <a class="button__profile" href="/profile/{{ theUser.username }}/history">
+                                <img src="{% static 'img/tes_history_icon.svg' %}" alt="icon">
+                                <p>My Test History</p>
+                            </a>
+                        </div>
+                        <div>
+                            <a class="button__profile" href="/profile/{{ theUser.username }}/settings">
+                                <img src="{% static 'img/edit_icon.svg' %}" alt="icon">
+                                <p>Edit Profile</p>
+                            </a>
+                        </div>
+                        <div>
+                            <a class="button__profile logout" href="/logout">
+                                <img src="{% static 'img/logout_icon.svg' %}" alt="icon">
+                                <p>Logout</p>
+                            </a>
+                        </div>
+                    </div>
     
-    <p>First Name: {{ theUser.first_name }}</p> 
-    <p>Last Name: {{ theUser.last_name }}</p>
-    <p>Bio: 
-        {% if user_profile.bio is None or user_profile.bio == '' %}
-            -
-        {% else %}
-            {{ user_profile.bio }}
-        {% endif %}
-    </p>
-    <p>Location: 
-        {% if user_profile.location is None or user_profile.location == '' %}
-            -
-        {% else %}
-            {{ user_profile.location }}
-        {% endif %}
-    </p>
-    <p>Role: 
-        {% if user_profile.role %}
-            {{ user_profile.role }}
-        {% else %}
-            User
-        {% endif %}
-    </p>
+                </div>
+                <div class="profile">
+                    <h1>My Profile</h1>
+                    <div class="profile__header">
+                        <img src="{% static 'img/avatar-big.svg' %}" alt="profile-pict">
+                        <div>
+                            <p>{{ theUser.first_name }} {{ theUser.last_name }}</p>
+                            <p>Role: {% if user_profile.role %}{{ user_profile.role }}{% else %}User{% endif %}</p>
+                        </div>
+                    </div>
+                    <p>{% if user_profile.bio is None or user_profile.bio == '' %}...{% else %}{{ user_profile.bio }}{% endif %}</p>
+                    <br>
+                    <p>Location: {% if user_profile.location is None or user_profile.location == '' %}...{% else %}{{ user_profile.location }}{% endif %}</p>
+                </div>
+            </div>
+        </div>
+    </main>
 
-    <a href="/profile/{{ theUser.username }}/posts">{{ theUser.username }}'s posts</a> <a href="/profile/{{ theUser.username }}/comments">{{ theUser.username }}'s comments</a> 
-
-    {% for post in posts %}
-    <div class="post-lists" id="post-id-{{ post.id }}">
-        <h1><a href="/post/{{ post.id }}">{{ post.title }}</a></h1>
-        <p>Tag: <a href="/post/tag/{{ post.tag.name }}">{{ post.tag.name }}</a></p>
-        {% autoescape off %}
-        <p>{{ post.content }}</p>
-        {% endautoescape %}
-        <p>Created at {{ post.created_at }} - last updated at {{ post.updated_at }}</p>
-    </div>
-    {% endfor %}
-
-    {% include 'templates/footer.html' %}
+    <script src="{% static 'js/swiper-bundle.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>

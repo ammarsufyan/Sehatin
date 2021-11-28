@@ -15,10 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.views.generic.base import RedirectView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('sehat_in_webproject.urls')),
+    path('favicon.ico', RedirectView.as_view(url='/static/img/favicon/favicon.ico'))
 ]
 
 handler404 = 'sehat_in_webproject.views.error_404_view'
