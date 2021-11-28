@@ -10,6 +10,11 @@ main {
     border-radius: 5px;
     display: flex;
     color: black;
+    padding: 2rem 1rem;
+}
+
+.navigation {
+    min-width: 16rem;
 }
 
 .info {
@@ -62,3 +67,34 @@ main {
     display: flex;
     margin: 1rem 0;
 }
+
+.profile__header img {
+    max-width: 6rem;
+}
+
+.biodata p {
+    margin-bottom: 1.5rem;
+}
+
+.container_name_role {
+    margin-left: 3rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.name {
+    color: #00267B;
+    font-size: 1.5rem;
+    font-weight: 600;
+}
+
+.role {
+    font-size: 1.2rem;
+    color: #3B8EE4;
+}
+
+.change__profile__pict {
+    max-width: 3rem;
+}
+
