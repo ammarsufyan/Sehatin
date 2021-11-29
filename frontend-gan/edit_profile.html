@@ -130,16 +130,27 @@
                     <h1>My Profile</h1>
                     <div class="profile__header">
                         <img class="change__profile__pict" src="assets/img/change_avatar.svg" alt="profile-pict-change">
-                        <div>
-                            <p>Ammar Sufyan</p>
-                            <p>Role: Dokter</p>
+                        <div class="container_name_role">
+                            <p class="name">Ammar Sufyan</p>
+                            <p class="role">Role: Dokter</p>
                         </div>
                     </div>
-                    <input class="bio" type="text" placeholder="Biodata">
+                    <textarea class="bio" type="text" placeholder="Biodata"></textarea>
                     <input class="first__name" type="text" placeholder="First Name">
                     <input class="last__name" type="text" placeholder="Last Name">
-                    <input class="prov" type="text" placeholder="EmailProvinsi">
-                    
+                    <select class="provinsi" id="prov">
+                        <option value="aceh">Aceh</option>
+                        <option value="sumut">Sumatra Utara</option>
+                        <option value="sumbar">Sumatra Barat</option>
+                        <option value="banten" selected>Banten</option>
+                    </select>
+
+                    <div class="cancel__apply">
+                        <button class="button button--flex cancel">Cancel</button>
+                        <button class="button button--flex">Apply</button>
+                    </div>
+                      
+
                 </div>
             </div>
     

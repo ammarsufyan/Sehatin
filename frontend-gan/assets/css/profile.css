@@ -1,6 +1,10 @@
+
+
+
+
 main {
     background-color: #F9F9F9;
-    height: 100%;
+    height: 100vh;
     padding-top: 7rem;
 }
 
@@ -72,7 +76,7 @@ main {
     max-width: 6rem;
 }
 
-.biodata p {
+.data__diri p {
     margin-bottom: 1.5rem;
 }
 
@@ -98,3 +102,43 @@ main {
     max-width: 3rem;
 }
 
+.bio {
+    padding: 1rem;
+    width: 100%;
+    margin-bottom: .5rem;
+}
+
+.first__name {
+    padding: .5rem .5rem .5rem 1rem;
+    width: 100%;
+    margin-bottom: .8rem;
+}
+.last__name {
+    padding: .5rem .5rem .5rem 1rem;
+    width: 100%;
+    margin-bottom: .8rem;
+}
+
+.provinsi {
+    padding: .5rem .5rem .5rem 1rem;
+    margin-bottom: .5rem;
+    width: 100%;
+}
+
+.cancel__apply {
+    margin-top: 1rem;
+}
+
+.button {
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem 2rem;
+}
+
+.cancel {
+    background-color: #F26161;
+}
+
+.cancel:hover {
+    background-color: #bd5757;
+}
