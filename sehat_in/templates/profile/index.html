@@ -31,6 +31,7 @@
                         <p class="email">{{ theUser.email }}</p>
                     </div>
                     <div class="button__container">
+                        {% if request.user == theUser %}                        
                         <div>
                             <a class="button__profile" href="/profile/{{ theUser.username }}">
                                 <img src="{% static 'img/my_profile_icon.svg' %}" alt="icon">
@@ -55,6 +56,7 @@
                                 <p>Logout</p>
                             </a>
                         </div>
+                        {% endif %}
                     </div>
     
                 </div>
@@ -62,9 +64,9 @@
                     <h1>My Profile</h1>
                     <div class="profile__header">
                         <img src="{% static 'img/avatar-big.svg' %}" alt="profile-pict">
-                        <div>
-                            <p>{{ theUser.first_name }} {{ theUser.last_name }}</p>
-                            <p>Role: {% if user_profile.role %}{{ user_profile.role }}{% else %}User{% endif %}</p>
+                        <div class="container_name_role">
+                            <p class="name">{{ theUser.first_name }} {{ theUser.last_name }}</p>
+                            <p class="role">Role: {% if user_profile.role %}{{ user_profile.role }}{% else %}User{% endif %}</p>
                         </div>
                     </div>
                     <p>{% if user_profile.bio is None or user_profile.bio == '' %}...{% else %}{{ user_profile.bio }}{% endif %}</p>
