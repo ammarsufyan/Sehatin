@@ -150,6 +150,7 @@ img {
 
 .button:hover {
     background-color: var(--first-color-alt);
+    transition: background 0.2s;
 }
 
 .button__icon{
@@ -290,6 +291,7 @@ img {
 
 .tes__button:hover {
     background-color: var(--first-color-alt);
+    transition: background 0.2s;
 }
 
 .about {
@@ -319,9 +321,9 @@ img {
     width: 80%;
 }
 
-input[type=text]:active {
-    border: 1px solid #2196F3;
-    color: white;
+input[type=text]:focus {
+    outline: none !important;
+    border-color: #61AEF2
 }
 
 .search__container button {
@@ -340,6 +342,7 @@ input[type=text]:active {
     background: var(--first-color);
     color: #FFF;
     border: none;
+    transition: background 0.2s;
   }
 
   .artikel__link {
@@ -361,6 +364,7 @@ input[type=text]:active {
 
 ::-webkit-scrollbar-thub:hover{
     background-color: var(--text-color-light);
+    transition: background 0.2s;
 }
 
 /*==================== MEDIA QUERIES ====================*/
