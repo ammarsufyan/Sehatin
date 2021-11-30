@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+
+    <link rel="icon" 
+        type="image/png" 
+        href="{% static 'img/favicon/favicon.ico' %}" 
+    />
+    <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+    <title>FAQ | Sehat.in</title>
+</head>
+<body>
+    {% include 'templates/header.html' %}
+    
+    <main  class="container">
+        <div style="margin-top: 100px;">
+            <h1>Frequently Ask questions Sehatin</h1><br>
+            
+            <h3>Q: Apakah mental health sangat penting sehingga website ini diadakan?</h3>
+            <p>A: Dari pandangan kami, kesehatan mental remaja Indonesia sangatlah penting. Riset membuktikan bahwa 46% dari 977 orang tua para remaja mengatakan bahwa anak mereka menunjukkan kondisi kesehatan mental yang muncul bahkan memburuk sejak awal pandemi.
+            Tujuan dan harapan kami dalam membuat website Sehat.in ini, remaja Indonesia akan lebih mengetahui dirinya dan lebih menyadari pentingnya kondisi kejiwaan dalam setiap individu.</p>
+            <br>
+
+            <h3>Q: Bagaimana cara mengikuti tes pada website Sehat.in?</h3>
+            <p>A: Pertama, buka terlebih dahulu website kami. Klik buat akun, lalu terdapat variasi tes kesehatan mental yang dapat kamu ikuti sesuai dengan kebutuhanmu.</p>
+            <br>
+
+            <h3>Q: Siapa yang merancang website Sehat.in?</h3>
+            <p>A: Kami adalah mahasiswa mahasiswi yang sekarang berkuliah di UIN Syarif Hidayatullah Jakarta semester 3 program studi Teknik Informatika.</p>
+            <br>
+
+            <h3>Q: Apakah data pada tes yang dimunculkan di website Sehat.in akurat?</h3>
+            <p>A: Untuk pengambilan data tes sendiri, kami memilih menggunakan kuisioner, yang mana pada hakikatnya adalah metode yang digunakan pengumpulan data penelitian. Referensi yang kami gunakan untuk mengambil data pada tes di antaranya: Positive Psychology Center University of Pennsylvania, UCLA Loneliness Scale, dan Duke University, serta kami bekerja sama dengan mahasiswi Psikologi yang dapat mendukung pernyataan bahwa tes kami akurat.</p>
+            <br>
+
+            <h3>Q: Apakah tes yang terdapat pada website dapat digunakan  sebagai pengganti dokter?</h3>
+            <p>A: Walaupun data memiliki referensi yang akurat, namun kami tidak dapat mengatakan bahwa tes kami dapat menggantikan dokter. Sebab, website kami pada dasarnya merupakan realisasi dari pengaplikasian web design yang fungsional. Jadi, jawabannya adalah tidak.</p>
+            <br>
+
+            <h3>Q: Apakah website Sehat.in dapat menjaga keamanan data penggunanya?</h3>
+            <p>A: Setiap data yang masuk tersimpan di database dengan aman karena password sudah terenkripsi dan hanya admin yang bisa masuk ke database.</p>
+            <br>
+
+            <h3>Q: Akankah website ini berkembang menjadi mobile application?</h3>
+            <p>A: Kami belum memikirkannya untuk saat ini, tetapi jika ada kesempatan dengan ilmu yang matang kami akan mencoba membuatnya.</p>
+        </div>
+    </main>
+    {% include 'templates/footer.html' %}
+
+    <script src="{% static 'js/swiper-bundle.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+</body>
+</html>

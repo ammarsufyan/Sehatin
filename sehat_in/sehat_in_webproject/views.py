@@ -1387,7 +1387,7 @@ def test_SehatMental_Result(request):
             sosial = 1
         elif 26 <= score_Sosial <= 37:
             sosial = 2
-        elif 38 <= score_Sosial <= 49:
+        elif 38 <= score_Sosial <= 52:
             sosial = 3
         
         # Result
@@ -1714,3 +1714,21 @@ def artikel_delete(request, id, title):
         return HttpResponse(json.dumps(dataJson))
     else: # If no request, throw 404
         raise Http404
+
+#quick links privacy policy
+def privacy_policy(request):
+    if request.user.is_authenticated:
+        # Get user's notification
+        notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+    else:
+        notifications = None
+    return render(request, 'privacy-policy.html', {'notifications': notifications})
+
+#quick links faq
+def faq(request):
+    if request.user.is_authenticated:
+        # Get user's notification
+        notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+    else:
+        notifications = None
+    return render(request, 'faq.html', {'notifications': notifications})

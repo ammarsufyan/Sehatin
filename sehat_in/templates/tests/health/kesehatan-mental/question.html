@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+{% comment %} <!DOCTYPE html>
 <html lang="en">
 {% load static %}
 <head>
@@ -44,6 +44,135 @@
         </div>
     </main>
     
+    {% include 'templates/footer.html' %}
+    
+    <script>
+        var csrftoken = '{{ csrf_token }}';
+    </script>
+    <script src="{% static 'js/tests/kesehatan-mental/questions.js' %}"></script>
+</body>
+</html> {% endcomment %}
+
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/question.css' %}">
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+
+    <link rel="icon" 
+        type="image/png" 
+        href="{% static 'img/favicon/favicon.ico' %}" 
+    />
+    <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+    <script id="prevent-leave">
+        window.onbeforeunload = function() { return "Your work will be lost."; };
+    </script>
+
+    <title>Tes Kesehatan Mental | Sehat.in</title>
+</head>
+<body>
+    {% include 'templates/header.html' %}
+
+    <main class="container">
+
+        <div class="question__container">
+            <div class="question" id="question-1">
+            </div>
+            <div class="choice">
+                <p>Sesuai</p>
+                <span class="dot blue choice-text" data-number="4" data-id="1"></span>
+                <span class="dot blue sedang choice-text" data-number="3" data-id="1"></span>
+                <span class="dot green sedang choice-text" data-number="2" data-id="1"></span>
+                <span class="dot green choice-text" data-number="1" data-id="1"></span>
+                <p>Tidak<br>Sesuai</p>
+            </div>
+
+            <hr>
+
+        </div>
+
+        <div class="question__container">
+            <div class="question" id="question-2">
+            </div>
+            <div class="choice">
+                <p>Sesuai</p>
+                <span class="dot blue choice-text" data-number="4" data-id="2"></span>
+                <span class="dot blue sedang choice-text" data-number="3" data-id="2"></span>
+                <span class="dot green sedang choice-text" data-number="2" data-id="2"></span>
+                <span class="dot green choice-text" data-number="1" data-id="2"></span>
+                <p>Tidak<br>Sesuai</p>
+            </div>
+
+            <hr>
+
+        </div>
+
+        <div class="question__container">
+            <div class="question" id="question-3">
+            </div>
+            <div class="choice">
+                <p>Sesuai</p>
+                <span class="dot blue choice-text" data-number="4" data-id="3"></span>
+                <span class="dot blue sedang choice-text" data-number="3" data-id="3"></span>
+                <span class="dot green sedang choice-text" data-number="2" data-id="3"></span>
+                <span class="dot green choice-text" data-number="1" data-id="3"></span>
+                <p>Tidak<br>Sesuai</p>
+            </div>
+
+            <hr>
+
+        </div>
+
+        <div class="question__container">
+            <div class="question" id="question-4">
+            </div>
+            <div class="choice">
+                <p>Sesuai</p>
+                <span class="dot blue choice-text" data-number="4" data-id="4"></span>
+                <span class="dot blue sedang choice-text" data-number="3" data-id="4"></span>
+                <span class="dot green sedang choice-text" data-number="2" data-id="4"></span>
+                <span class="dot green choice-text" data-number="1" data-id="4"></span>
+                <p>Tidak<br>Sesuai</p>
+            </div>
+
+            <hr>
+
+        </div>
+
+        <div class="question__container">
+            <div class="question" id="question-5">
+            </div>
+            <div class="choice">
+                <p>Sesuai</p>
+                <span class="dot blue choice-text" data-number="4" data-id="5"></span>
+                <span class="dot blue sedang choice-text" data-number="3" data-id="5"></span>
+                <span class="dot green sedang choice-text" data-number="2" data-id="5"></span>
+                <span class="dot green choice-text" data-number="1" data-id="5"></span>
+                <p>Tidak<br>Sesuai</p>
+            </div>
+
+            <hr>
+
+        </div>
+
+        <a class="tes__button" id="btn-next" style="cursor: pointer;">
+            Next
+        </a>
+
+    </main>
+
+
+    <script src="{% static 'js/swiper-bundle.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
+
     {% include 'templates/footer.html' %}
     
     <script>

@@ -78,4 +78,12 @@ urlpatterns = [
 
     # Hasil test, data ditentukan dari backend
     path('tests/result', views.test_Result, name='tests/result'),
+
+    # Quick Links Privacy Policy
+    path('privacy-policy', views.privacy_policy, name='privacy-policy'),
+    path('privacy-policy/', views.privacy_policy, name='privacy-policy'),
+
+    # Quick Links FAQ
+    path('faq', views.faq, name='faq'),
+    path('faq/', views.faq, name='faq'),
 ]
