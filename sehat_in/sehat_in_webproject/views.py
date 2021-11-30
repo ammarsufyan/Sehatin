@@ -965,7 +965,7 @@ def profile_history(request, username):
             return HttpResponse(json.dumps({'status': 'success'}))
         else:
             user = User.objects.get(username=username)
-            history = History.objects.filter(user=user)
+            history = History.objects.filter(user=user).order_by('-created_at')
             notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
 
             return render(request, 'profile/history.html', {'theUser': user, 'history': history, 'notifications': notifications})
@@ -1355,7 +1355,7 @@ def test_SehatMental_Question(request):
         notifications = None
     return render(request, 'tests/health/kesehatan-mental/question.html', {'notifications': notifications})
 
-def test_SehatMental_Submit(request):
+def test_SehatMental_Result(request):
     """Halaman hasil test kesehatan mental"""
     # Check if there is post request
     if request.method == 'POST':
