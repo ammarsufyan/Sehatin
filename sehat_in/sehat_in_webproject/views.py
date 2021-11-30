@@ -850,18 +850,21 @@ def profile_Settings(request, username):
                 user = User.objects.get(username=request.user.username)
                 user.first_name = request.POST.get('firstName')
                 user.last_name = request.POST.get('lastName')
-                user.email = request.POST.get('email')
 
-                # Check email
-                regex = "[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
-                if not re.search(regex, user.email) or len(user.email) < 3:
-                    messages.info(request, 'Invalid email address!')
-                    return redirect('/auth/register')
+                # No changing email
+                # user.email = request.POST.get('email')
+
+                # # Check email
+                # regex = "[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
+                # if not re.search(regex, user.email) or len(user.email) < 3:
+                #     messages.info(request, 'Invalid email address!')
+                #     return redirect('/auth/register')
 
                 # User profile
                 user_Profile = UserProfile.objects.get(user=user)
                 user_Profile.bio = request.POST.get('bio')
                 user_Profile.location = request.POST.get('location')
+                # user_Profile.img_url = request.POST.get('img')
 
                 # Check bio limit 500 characters
                 if len(user_Profile.bio) > 500:
@@ -872,6 +875,12 @@ def profile_Settings(request, username):
                 if len(user_Profile.location) > 250:
                     messages.info(request, 'Location too long! Max length is 250 characters')
                     return redirect('/profile/' + user.username + '/settings')  
+
+                # Check image url ???
+                # if user_Profile.img_url != '':
+                #     if not user_Profile.img_url.startswith('https'):
+                #         messages.info(request, 'Invalid image url! Image must be secured with https')
+                #         return redirect('/profile/' + user.username + '/settings')
 
                 # Save
                 user.save()

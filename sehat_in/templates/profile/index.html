@@ -29,6 +29,15 @@
                         <img src="{% static 'img/avatar-big.svg' %}" alt="profile-pict">
                         <p><b>{{ theUser.first_name }} {{ theUser.last_name }}</b></p>
                         <p class="email">{{ theUser.email }}</p>
+                        {% if messages %}
+                            <div class="message-alert">
+                                {% for message in messages %}
+                                <div class="message-alert-content">
+                                    <p style="color:red">{{ message.message }}</p>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
                     </div>
                     <div class="button__container">
                         {% if request.user == theUser %}                        

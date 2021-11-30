@@ -77,6 +77,7 @@ class UserProfile(models.Model):
     bio = models.TextField(max_length=500, blank=True, null=True)
     location = models.CharField(max_length=250, blank=True, null=True)
     role = models.TextField(max_length=100, blank=True, null=True)
+    # img_url = models.TextField(blank=True, null=True)
 
 class Report(models.Model):
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name='reporter') # The one that reports
