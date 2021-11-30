@@ -1,38 +1,127 @@
 <!DOCTYPE html>
-<html lang="en">
 {% load static %}
+<html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ theUser.username }}'s History</title>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+  <link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}" />
+  <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/header.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/profile.css' %}" />
+
+  <link rel="icon" type="image/png" href="{% static 'img/favicon/favicon.ico' %}" />
+  <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+  <script type="text/javascript" src="{% static 'js/jquery.redirect.js' %}"></script>
+  <title>{{ theUser.username }}'s History</title>
 </head>
+
 <body>
-    {% include 'templates/header.html' %}
+  {% include 'templates/header.html' %}
 
-    <p> {{ theUser.username }}'s History </p>
-    <p id = "{{ theUser.username }}"></p>
+  <main>
+    <div class="container">
+      <div class="container__profile">
+        <div class="navigation">
+          <div class="info">
+            <img src="{% static 'img/avatar-big.svg' %}" alt="profile-pict" />
+            <p><b>{{ theUser.first_name }} {{ theUser.last_name }}</b></p>
+            <p class="email">{{ theUser.email }}</p>
+          </div>
+          <div class="button__container">
+            <div>
+              <a class="button__profile" href="/profile/{{ theUser.username }}">
+                <img src="{% static 'img/my_profile_icon.svg' %}" alt="icon" />
+                <p>My Profile</p>
+              </a>
+            </div>
+            <div>
+              <a class="button__profile" href="/profile/{{ theUser.username }}/history">
+                <img src="{% static 'img/tes_history_icon.svg' %}" alt="icon" />
+                <p>My Test History</p>
+              </a>
+            </div>
+            <div>
+              <a class="button__profile" href="/profile/{{ theUser.username }}/settings">
+                <img src="{% static 'img/edit_icon.svg' %}" alt="icon" />
+                <p>Edit Profile</p>
+              </a>
+            </div>
+            <div>
+              <a class="button__profile logout" href="/logout">
+                <img src="{% static 'img/logout_icon.svg' %}" alt="icon" />
+                <p>Logout</p>
+              </a>
+            </div>
+          </div>
+        </div>
+        <div class="history__container profile">
+          <h1>Test History</h1>
 
-    {% for history in history %}
-        <li>
-            Tipe: {{ history.quiz_type }} <br>
-            Hasil: {{ history.res_type }} <br>
-            Deskripsi: {{ history.res_data }} <br>
-            Dibuat pada tanggal {{ history.created_at }} <br>
-        </li>
-    {% endfor %}
+          <div class="tbl-header">
+            <table cellpadding="0" cellspacing="0" border="0">
+              <thead>
+                <tr>
+                  <th width="28%">TEST NAME</th>
+                  <th width="20%">DATE/TIME</th>
+                  <th width="25%">RESULT</th>
+                  <th width="15%">VIEW</th>
+                  <th width="10%"></th>
+                </tr>
+              </thead>
+            </table>
+          </div>
+          <div class="tbl-content">
+            <table cellpadding="0" cellspacing="0" border="0">
+              <tbody>
+                {% for history in history %}
+                <tr>
+                  <td width="30%">{{ history.quiz_type }}</td>
+                  <td width="20%">{{ history.created_at }}</td>
+                  <td width="25%">{{ history.res_type }}</td>
+                  <td width="15%"><span style="cursor: pointer;" id="res-{{history.id}}">Lihat Hasil</span></td>
+                  <td width="10%" class="trash" style="cursor: pointer;"><span id="{{history.id}}"><i class="uil uil-trash-alt"></i></span></td>
+                
+                  <script>
+                    $(document).ready(function() {
+                      $("#res-{{history.id}}").click(function() {
+                        $.redirect("/tests/result", {'res_type': '{{history.res_type}}', 'res_data': '{{history.res_data}}', 'quiz_type': '{{history.quiz_type}}', 'notifications': '{{notifications}}', 'csrfmiddlewaretoken': '{{ csrf_token }}'});
+                      });
+                    });
 
-    {% if history.has_previous %}
-        <a href="?page=1">&laquo First</a>
-        <a href="?page={{ history.previous_page_number }}">Previous</a>
-    {% endif %}
-    {% if history.has_next %}
-        <a href="?page={{ history.next_page_number }}">Next</a>
-        <a href="?page={{ history.paginator.num_pages }}">Last &raquo</a>
-    {% endif %}
+                    $(document).ready(function(){
+                      $('#{{history.id}}').click(function(){
+                        var id = $(this).attr('id');
+                        $.ajax({
+                          url: '/profile/{{ theUser.username }}/history',
+                          type: 'POST',
+                          data: {
+                            'history_id': id,
+                            'csrfmiddlewaretoken': '{{ csrf_token }}'
+                          },
+                          success: function(data){
+                            alert('Data berhasil dihapus');
+                            window.location.reload();
+                          }
+                        });
+                      });
+                    });
+                  </script>
+                </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
 
-    {% include 'templates/footer.html' %}
+  <script src="{% static 'js/swiper-bundle.min.js' %}"></script>
+  <script src="{% static 'js/main.js' %}"></script>
 </body>
+
 </html>

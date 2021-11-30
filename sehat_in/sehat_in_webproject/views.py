@@ -954,14 +954,21 @@ def profile_Notification_Readall(request, username):
 def profile_history(request, username):
     """User History"""
     if username == request.user.username:
-        user = User.objects.get(username=username)
-        history = History.objects.filter(user=user)
-        paginator = Paginator(history.order_by('created_at'), 10)
-        get_history = paginator.get_page(request.GET.get('page')) 
-        notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+        # Check if there is a post request to delete a history
+        if request.method == 'POST':
+            # Get the history
+            history = History.objects.get(id=request.POST.get('history_id'))
 
+            # Delete the history
+            history.delete()
 
-        return render(request, 'profile/history.html', {'theUser': user, 'history': get_history, 'notifications': notifications})
+            return HttpResponse(json.dumps({'status': 'success'}))
+        else:
+            user = User.objects.get(username=username)
+            history = History.objects.filter(user=user)
+            notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+
+            return render(request, 'profile/history.html', {'theUser': user, 'history': history, 'notifications': notifications})
     else:
         raise PermissionDenied()
 
@@ -1348,7 +1355,7 @@ def test_SehatMental_Question(request):
         notifications = None
     return render(request, 'tests/health/kesehatan-mental/question.html', {'notifications': notifications})
 
-def test_SehatMental_Result(request):
+def test_SehatMental_Submit(request):
     """Halaman hasil test kesehatan mental"""
     # Check if there is post request
     if request.method == 'POST':
@@ -1442,10 +1449,24 @@ def test_SehatMental_Result(request):
         else:
             notifications = None
         # Nanti bisa di return banyak, style json -> title, hasil text, apa2 lah
-        return render(request, 'tests/result.html', {'res_type': resultType, 'res_data': result_data[resultKey], 'notifications': notifications})
+        return render(request, 'tests/result.html', {'res_type': resultType, 'res_data': result_data[resultKey], 'notifications': notifications, 'quiz_type': 'Test Kesehatan Mental'})
     else:
-        messages.info(request, 'You have to take the test first!')
-        return redirect('/tests/health/kesehatan-mental')
+        return redirect('/tests')
+
+def test_Result(request):
+    if request.user.is_authenticated:
+        notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+    else:
+        notifications = None
+
+    # If a post request is sent
+    if request.method == 'POST':
+        res_type = request.POST.get('res_type')
+        res_data = request.POST.get('res_data')
+        quiz_type = request.POST.get('quiz_type')
+        return render(request, 'tests/result.html', {'res_type': res_type, 'res_data': res_data, 'notifications': notifications, 'quiz_type': 'Test Kesehatan Mental', 'quiz_type': quiz_type})
+
+    return render(request, 'tests/result.html', {'notifications': notifications})
 
 # ----------------------------------------------------------------
 # Artikel

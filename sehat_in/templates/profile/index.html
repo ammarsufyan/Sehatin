@@ -29,15 +29,6 @@
                         <img src="{% static 'img/avatar-big.svg' %}" alt="profile-pict">
                         <p><b>{{ theUser.first_name }} {{ theUser.last_name }}</b></p>
                         <p class="email">{{ theUser.email }}</p>
-                        {% if messages %}
-                            <div class="message-alert">
-                                {% for message in messages %}
-                                <div class="message-alert-content">
-                                    <p style="color:red">{{ message.message }}</p>
-                                </div>
-                                {% endfor %}
-                            </div>
-                        {% endif %}
                     </div>
                     <div class="button__container">
                         {% if request.user == theUser %}                        
@@ -76,6 +67,15 @@
                         <div class="container_name_role">
                             <p class="name">{{ theUser.first_name }} {{ theUser.last_name }}</p>
                             <p class="role">Role: {% if user_profile.role %}{{ user_profile.role }}{% else %}User{% endif %}</p>
+                            {% if messages %}
+                            <div class="message-alert">
+                                {% for message in messages %}
+                                <div class="message-alert-content">
+                                    <p style="color:red">{{ message.message }}</p>
+                                </div>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
                         </div>
                     </div>
                     <p>{% if user_profile.bio is None or user_profile.bio == '' %}...{% else %}{{ user_profile.bio }}{% endif %}</p>

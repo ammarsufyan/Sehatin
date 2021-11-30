@@ -43,7 +43,7 @@ incrementScore = (num, type) => {
 getNewQuestion = () => {
     // If questions is done, stop the test, send result
     if(availableQuestions.length === 0 || questionCounter > MAX_QUESTIONS) {
-        var form = $('<form action="/tests/result" method="post">' +
+        var form = $('<form action="/tests/health/kesehatan-mental/submit" method="post">' +
             '<input type="hidden" name="csrfmiddlewaretoken" value="' + csrftoken + '">' +
             '<input type="hidden" name="score_kesepian" value="' + score_Kesepian + '">' +
             '<input type="hidden" name="score_sosial" value="' + score_Sosial + '">' +

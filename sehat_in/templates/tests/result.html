@@ -12,9 +12,10 @@
 </head>
 <body>
     {% include 'templates/header.html' %}
-
-    {% comment %} untuk result hasilnya semua dari backend jadi bisa satu halaman aja {% endcomment %}
-
+    {% if res_data %}
+    ini ada
+    aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
     <main>
         <div class="container-wrapper">
             
@@ -22,7 +23,31 @@
             {{ res_data }}
         </div>
     </main>
+    {% else %}
+    ini ga ada
+    aaaaaaaaaaaaaaaaaaaa
+    dasdsad
+    sad
+    addslashesdas
+    das
+    dateasd
+    addslashesdsad
+    as
+    date
     
-    {% include 'templates/footer.html' %}
+    {% endif %}
+
+
+
+    {% comment %} untuk result hasilnya semua dari backend jadi bisa satu halaman aja {% endcomment %}
+
+    <main>
+        <div class="container-wrapper">
+            
+            Hasil test: aaa{{ res_type }}<br>
+            {{ res_data }}
+        </div>
+    </main>
+    
 </body>
 </html>

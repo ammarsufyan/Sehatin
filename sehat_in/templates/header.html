@@ -1,31 +1,3 @@
-{% comment %} <header class="header">
-    <div>
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a class="li-header" href="/forum">Forum</a></li>
-            <li><a class="li-header" href="/artikel">Artikel</a></li>
-            <li><a class="li-header" href="/tanya-jawab">Tanya Jawab</a></li>
-            {% if user.is_authenticated %}
-            <li><a class="li-header" href="/profile/{{ user.username }}/notification">Notification</a></li>
-            <li><a class="li-header" href="/profile/{{ user.username }}">Profile</a></li>
-            <li><a class="li-header button logout" href="/logout">Logout</a></li>
-            {% else %}
-            <li><a class="li-header button login-register" href="/auth/login">Login</a></li>
-            <li><a class="li-header button login-register" href="/auth/register">Register</a></li>
-            {% endif %}
-        </ul>
-    </div>
-</header>
-
-{% if messages %}
-<div class="message-alert">
-    {% for message in messages %}
-    <div class="message-alert-content">
-        <p>{{ message.message }}</p>
-    </div>
-    {% endfor %}
-</div>
-{% endif %} {% endcomment %}
     {% load static %}
     {% load remove_unused %}
     <header class="header" id="header">
