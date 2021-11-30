@@ -26,6 +26,15 @@
             <div class="section__title">
                 <h2>Tes Terpopuler</h2>
             </div>
+            {% if messages %}
+            <div class="message-alert">
+                {% for message in messages %}
+                <div class="message-alert-content">
+                    <p style="color:red">{{ message.message }}</p>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
             <div class="tes__container">
                 <div class="tes__card">
                     <div class="tes__wrapper">

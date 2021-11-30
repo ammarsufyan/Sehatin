@@ -1451,6 +1451,7 @@ def test_SehatMental_Submit(request):
         # Nanti bisa di return banyak, style json -> title, hasil text, apa2 lah
         return render(request, 'tests/result.html', {'res_type': resultType, 'res_data': result_data[resultKey], 'notifications': notifications, 'quiz_type': 'Test Kesehatan Mental'})
     else:
+        messages.info(request, 'Silahkan test terlebih dahulu!')        
         return redirect('/tests')
 
 def test_Result(request):
@@ -1465,8 +1466,9 @@ def test_Result(request):
         res_data = request.POST.get('res_data')
         quiz_type = request.POST.get('quiz_type')
         return render(request, 'tests/result.html', {'res_type': res_type, 'res_data': res_data, 'notifications': notifications, 'quiz_type': 'Test Kesehatan Mental', 'quiz_type': quiz_type})
-
-    return render(request, 'tests/result.html', {'notifications': notifications})
+    else:
+        messages.info(request, 'Silahkan test terlebih dahulu!')        
+        return redirect('/tests')
 
 # ----------------------------------------------------------------
 # Artikel

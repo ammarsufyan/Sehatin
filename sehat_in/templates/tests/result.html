@@ -1,53 +1,94 @@
 <!DOCTYPE html>
-<html lang="en">
 {% load static %}
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/result.css' %}">
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
 
-    <title>Test MENTAL RESULT</title>
+    <link rel="icon" 
+        type="image/png" 
+        href="{% static 'img/favicon/favicon.ico' %}" 
+    />
+    <title>Result</title>
 </head>
 <body>
     {% include 'templates/header.html' %}
-    {% if res_data %}
-    ini ada
-    aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-    aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
-    <main>
-        <div class="container-wrapper">
-            
-            Hasil test: {{ res_type }}<br>
-            {{ res_data }}
+
+    <main class="container">
+        <div class="container__result">
+            <h1>{{ res_type }}</h1>
+
+            <p>
+                {{ res_data }}
+            </p>
+
+            <a href="/" class="home__button">
+                Home
+            </a>
+
         </div>
-    </main>
-    {% else %}
-    ini ga ada
-    aaaaaaaaaaaaaaaaaaaa
-    dasdsad
-    sad
-    addslashesdas
-    das
-    dateasd
-    addslashesdsad
-    as
-    date
+
+        <section class="container home__tes">
+            <div class="tes__header">
+                <h1>Tes Lainnya</h1>
+                <a href="/tests">Lihat semua</a>
+            </div>
+            <div class="tes__container">
+                <div class="tes__card">
+                    <div class="tes__wrapper">
+                        <img class="tes__image" src="{% static 'img/tes_image_1.svg' %}" alt="tes image">
+                        <div class="tes__wrapper__content">
+                            <a class="tes__category" href="">Tes Psikologi<a>
+                            <h2 class="tes__title">Tes Tingkat Rasa Kesepian: Loneliness Scale</h2>
+                            <p class="tes__description">Rasa kesepian yang tinggi dikhawatirkan dapat memicu masalah terhadap kesehatan mental kamu.Cek tingkat...</p>
+                             <a href="#tes" class="tes__button">
+                                Tes Sekarang
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tes__card">
+                    <div class="tes__wrapper">
+                        <img class="tes__image" src="{% static 'img/tes_image_2.svg' %}" alt="tes image">
+                        <div class="tes__wrapper__content">
+                            <a class="tes__category" href="">Tes Psikologi<a>
+                            <h2 class="tes__title">Tes Mindfulness: Menemukan hidup yang lebih bermakna</h2>
+                            <p class="tes__description">Mindfulness banyak dikaitkan dengan kebahagiaan, kesehatan, dan ketentraman pikiran, tetapi banyak dari kita mungkin...</p>
+                             <a href="#tes" class="tes__button">
+                                Tes Sekarang
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="tes__card">
+                    <div class="tes__wrapper">
+                        <img class="tes__image" src="{% static 'img/tes_image_3.svg' %}" alt="tes image">
+                        <div class="tes__wrapper__content">
+                            <a class="tes__category" href="">Tes Psikologi<a>
+                            <h2 class="tes__title">Tes Kepribadian MBTI: Kenali dirimu</h2>
+                            <p class="tes__description">MBTI adalah singkatan dari The Myers-Briggs Type Indicator. MBTI merupakan sebuah instrumen untuk melakukan assesment atau</p>
+                             <a href="#tes" class="tes__button">
+                                Tes Sekarang
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
     
-    {% endif %}
-
-
-
-    {% comment %} untuk result hasilnya semua dari backend jadi bisa satu halaman aja {% endcomment %}
-
-    <main>
-        <div class="container-wrapper">
-            
-            Hasil test: aaa{{ res_type }}<br>
-            {{ res_data }}
-        </div>
+    
     </main>
+
+    {% include 'templates/footer.html' %}
     
 </body>
 </html>
