@@ -1,0 +1,163 @@
+.container {
+    display: flex;
+    
+}
+
+input {
+    margin-right: 1rem;
+}
+
+main {
+    margin-top: 2rem;
+}
+
+.container__forum {
+    display: flex;
+    flex-direction:column;
+}
+
+.container__card {
+    display: flex;
+    background: #FFFFFF;
+    box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.2);
+    border-radius: 25px;
+    padding: 1rem 2.5rem;
+    width: 38rem;
+    height: 10rem;
+    margin-bottom: 2rem;
+}
+
+.forum__about {
+    max-width: 75%;
+}
+
+.forum__about h1 {
+    font-size: 1.2rem;
+}
+
+.forum__about p {
+    font-size: 0.8rem;
+}
+
+.forum__info {
+    font-size: .75rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+    margin-left: 1rem;
+}
+
+.forum__info div {
+    margin-bottom: .5rem;
+}
+
+.forum__info div i {
+    color: #61AEF2;
+}
+
+.forum__category {
+    width: 60%;
+    display: inline-block;
+    background-color: #C9EAFE;
+    color: #315A94;
+    padding: var(--mb-0-25);
+    border-radius: 5px;
+    font-size: var(--mb-0-75);
+    margin: 0.5rem 0 0.5rem 0;
+    text-align: center;
+}
+
+.button {
+    float: right;
+    padding: .5rem;
+    width: 9rem;
+    display: flex;
+    justify-content: center;
+}
+
+.your__post {
+    margin-top: 1rem;
+    background-color: #61CC62;
+}
+
+.your__post:hover {
+    background-color: #32AA40;
+    transition: background 0.2s;
+}
+
+.grey {
+    background-color: #F6F6F6;
+}
+
+.create_post_container {
+    display: flex;
+    flex-direction: column;
+
+}
+
+.create_post_header {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1rem;
+}
+
+.create_post_header i {
+    font-size: 2rem;
+}
+
+.create_post_header h3 {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.input__area {
+    margin-top: 2rem;
+}
+
+textarea {
+    resize: none;
+    width: 100%;
+    border: none;
+    border-radius: 1rem;
+    height: 20rem;
+    padding: 2rem;
+}
+
+textarea:focus {
+    outline: none !important;
+    border-color: #61AEF2
+}
+
+.button__area{
+    display: flex; 
+    justify-content: space-between;   
+    margin-top: 1rem;
+}
+
+.button__area i{
+    font-size: 2rem;
+    margin-right: .5rem;
+}
+
+button {
+    padding: .5rem 1rem;
+    cursor: pointer;
+}
+
+.cancel_post{
+    border: none;
+    background-color: #FC3F2C;
+    margin-right: 1rem;
+}
+
+.cancel_post:hover {
+    background-color: #D92121;
+    transition: 0.2s;
+}
+
+.submit_post {
+    border: none;
+}

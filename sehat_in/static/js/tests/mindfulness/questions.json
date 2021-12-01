@@ -1,0 +1,66 @@
+{
+    "questions":
+    [
+        { 
+            "id": 0,
+            "q": "Saya mungkin mengalami beberapa emosi dan tidak menyadarinya sampai beberapa waktu kemudian"
+        },
+        {
+            "id": 1,
+            "q": "Saya merusak atau menumpahkan barang karena kecerobohan, tidak memperhatikan, atau memikirkan hal yang lain"
+        },
+        {
+            "id": 2,
+            "q": "Saya merasa sulit untuk tetap fokus pada apa yang terjadi sekarang"
+        },
+        {
+            "id": 3,
+            "q": "Saya cenderung berjalan cepat untuk mencapai tujuan saya tanpa memperhatikan apa yang saya alami di sepanjang jalan"
+        },
+        {
+            "id": 4,
+            "q": "Saya cenderung tidak memperhatikan perasaan tegang atau tidak nyaman secara fisik sampai perasaan itu benar-benar menarik perhatian saya"
+        },
+        {
+            "id": 5,
+            "q": "Saya lupa nama seseorang setelah saya diberi tahu untuk pertama kalinya"
+        },
+        {
+            "id": 6,
+            "q": "Sepertinya saya 'berjalan secara otomatis,' tanpa banyak menyadari apa yang saya lakukan"
+        },
+        {
+            "id": 7,
+            "q": "Saya terburu-buru menjalani aktivitas tanpa benar-benar memperhatikannya"
+        },
+        {
+            "id": 8,
+            "q": "Saya begitu fokus pada tujuan yang ingin saya capai sehingga saya kehilangan kontak dengan apa yang saya lakukan sekarang untuk mencapainya"
+        },
+        {
+            "id": 9,
+            "q": "Saya melakukan pekerjaan atau tugas secara otomatis, tanpa menyadari apa yang saya lakukan"
+        },
+        {
+            "id": 10,
+            "q": "Saya menemukan diri saya mendengarkan seseorang dengan satu telinga, melakukan sesuatu yang lain pada waktu yang sama"
+        },
+        {
+            "id": 11,
+            "q": "Saya mengemudi di 'pilot otomatis' dan kemudian bertanya-tanya mengapa saya pergi ke sana"
+        },
+        {
+            "id": 12,
+            "q": "Saya menemukan diri saya sibuk dengan masa depan atau masa lalu"
+        },
+        {
+            "id": 13,
+            "q": "Saya menemukan diri saya melakukan sesuatu tanpa memperhatikan"
+        },
+        {
+            "id": 14,
+            "q": "Saya ngemil tanpa sadar dengan apa yang sedang saya makan"
+        }
+    ],
+    "choices": [ "Sangat sesuai", "Sesuai", "Tidak sesuai", "Sangat tidak sesuai"]
+}
