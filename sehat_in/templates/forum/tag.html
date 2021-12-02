@@ -93,8 +93,12 @@
     </div>
     {% endif %}
 
-    <main class="container">
-
+    <section class="container" style="margin-top: 10px;">
+        <div>
+            <a href="/forum">⟵ Kembali ke Forum</a>
+        <div>
+    </section>
+    <main class="container" style="margin-top: 5px;">
         <div class="container__forum">
         {% for post in posts %}
             <div class="container__card">
@@ -133,10 +137,7 @@
 
         <div class="container__forum__button">
             <a class="create button button--flex" style="background-color: #0270a6">
-                <span style="text-align: center;">Melihat Tag<br>"{{ tag.name }}"</spam>
-            </a>
-            <a href="/forum" class="your__post button button--flex" style="text-align: center;">
-                Kembali ke Forum
+                <span style="text-align: center;">Sedang Melihat Tag "{{ tag.name }}"</spam>
             </a>
             {% if user.is_authenticated %}
             <a href="/forum/create" style="margin-top: 16px;" class="create button button--flex">
@@ -155,16 +156,26 @@
         </div>
     </main>
 
-    Page {{ posts.number }} of {{ posts.paginator.num_pages }}<br>
+    <div class="page-num"> 
+        Page {{ posts.number }} of {{ posts.paginator.num_pages }}<br>
+    
+        {% if posts.has_previous %}
+            <a href="{% if q %}?q={{q}}&page=1{% else %}?page=1{% endif %}">&laquo First</a>
+        {% endif %}
 
-    {% if posts.has_previous %}
-        <a href="?page=1">&laquo First</a>
-        <a href="?page={{ posts.previous_page_number }}">Previous</a>
-    {% endif %}
-    {% if notifications.has_next %}
-        <a href="?page={{ posts.next_page_number }}">Next</a>
-        <a href="?page={{ posts.paginator.num_pages }}">Last &raquo</a>
-    {% endif %}
+        {% if posts.has_previous and posts.has_next %}
+            <a href="{% if q %}?q={{q}}&page={{ posts.previous_page_number }}{% else %}?page={{ posts.previous_page_number}}{% endif %}">- Previous</a>
+            <a href="{% if q %}?q={{q}}&page={{ posts.next_page_number }}{% else %}?page={{ posts.next_page_number}}{% endif %}">- Next -</a>
+        {% elif posts.has_previous %}
+            <a href="{% if q %}?q={{q}}&page={{ posts.previous_page_number }}{% else %}?page={{ posts.previous_page_number}}{% endif %}">- Previous</a>
+        {% elif posts.has_next %}
+            <a href="{% if q %}?q={{q}}&page={{ posts.next_page_number }}{% else %}?page={{ posts.next_page_number}}{% endif %}">Next -</a>
+        {% endif %}
+
+        {% if posts.has_next %}
+            <a href="{% if q %}?q={{q}}&page={{ posts.paginator.num_pages }}{% else %}?page={{ posts.paginator.num_pages}}{% endif %}">Last &raquo</a>
+        {% endif %}
+    </div>
     
     {% include 'templates/footer.html' %}
     

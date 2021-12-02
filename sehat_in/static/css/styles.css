@@ -98,6 +98,11 @@ img {
     height: auto;
 }
 
+.page-num {
+    text-align: center;
+    padding-top: 20px;
+}
+
 .section {
     padding: 2rem 0 4rem;
 }
