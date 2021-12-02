@@ -133,22 +133,22 @@
 
         <div class="container__forum__button">
             <a class="create button button--flex" style="background-color: #0270a6">
-                <span style="text-align: center;">Viewing Tag<br>"{{ tag.name }}"</spam>
+                <span style="text-align: center;">Melihat Tag<br>"{{ tag.name }}"</spam>
             </a>
             <a href="/forum" class="your__post button button--flex" style="text-align: center; background-color: #dab51f;">
-                Go back to Forum
+                Kembali ke Forum
             </a>
             {% if user.is_authenticated %}
             <a href="/forum/create" style="margin-top: 16px;" class="create button button--flex">
-                Create Post
+                Buat Post
             </a>
             <a href="/profile/{{ user.username}}/posts" class="your__post button button--flex">
-                Your Post
+                Post Anda
             </a>
             <a class="your__post button button--flex" style="background-color: #8ee586"></a>
             {% else %}
             <a href="/auth/login" class="create button button--flex" style="text-align:center; margin-top: 16px;">
-                Login to Create Post
+                Login untuk Membuat Post
             </a>
             <a class="your__post button button--flex" style="background-color: #8ee586"></a>
             {% endif %}
