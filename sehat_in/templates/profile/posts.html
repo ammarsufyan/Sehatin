@@ -1,34 +1,129 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load static %}
+{% load space_to_dash %}
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <link rel="stylesheet" href="{% static 'css/forum.css' %}">
+
+    <link rel="icon" 
+        type="image/png" 
+        href="{% static 'img/favicon/favicon.ico' %}" 
+    />
+
     <title>{{ theUser.username }}'s Posts</title>
 </head>
 <body>
     {% include 'templates/header.html' %}
 
-    <ul>
-    {% for posts in posts %}
-        <li>
-            <a href="/post/{{ posts.id }}">{{ posts.title }}</a>
-            Created at {{ posts.created_at }} | last updated at {{ posts.updated_at }}
-        </li>
-    {% endfor %}
-    </ul>
+    <form action="/forum" method="get">
+        <section class="container search__container">
+            <input type="text" name="q" placeholder="Cari disini..">
+            <button type="submit">Search</button>
+        </section>
+    </form>
 
-    Page {{ posts.number }} of {{ posts.paginator.num_pages }}<br>
+    {% if messages %}
+    <div class="message-alert" style="text-align: center;">
+        {% for message in messages %}
+        <div class="message-alert-content">
+            <p style="color:red">{{ message.message }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
 
-    {% if posts.has_previous %}
-        <a href="?page=1">&laquo First</a>
-        <a href="?page={{ posts.previous_page_number }}">Previous</a>
-    {% endif %}
-    {% if posts.has_next %}
-        <a href="?page={{ posts.next_page_number }}">Next</a>
-        <a href="?page={{ posts.paginator.num_pages }}">Last &raquo</a>
-    {% endif %}
+    <section class="container" style="margin-top: 10px;">
+        <div>
+            <a href="/forum">⟵ Kembali ke Forum</a>
+        <div>
+    </section>
+    <main class="container" style="margin-top: 5px;">
+        <div class="container__forum">
+        {% for post in posts %}
+            <div class="container__card">
+                <div class="forum__about">
+                    <a href="/forum/{{ post.id }}"><h1>{{ post.title }}</h1></a>
+                    <a class="forum__category" href="/forum/tag/{{ post.tag.name|space_to_dash }}">{{ post.tag.name }}<a>
+                    {% autoescape off %}{{ post.content|slice:"0:50" }}...{% endautoescape %}
+                </div>
+                <div class="forum__info">
+                    <div>
+                        <i class="uil uil-thumbs-up"></i>
+                        {{ post.likes }} Likes
+                    </div>
+                    <div>
+                        <i class="uil uil-comment"></i>
+                        {{ post.comments }} Comments
+                    </div>
+                    <div>
+                        <i class="uil uil-user"></i>
+                        {% if post.user == null %}deleted{% else %}{{ post.user }}{% endif %}
+                    </div>
+                    <div>
+                        <i class="uil uil-calendar-alt"></i>
+                        <span id="date-{{ post.id }}">{{ post.created_at.isoformat }}</span>
+                        <script>
+                            // parse the date into dd-mm-yyyy hh:mm format
+                            var date = new Date(document.getElementById('date-{{ post.id }}').innerHTML);
+                            var formattedDate = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear() + ', ' + date.getHours() + ':' + date.getMinutes();
+                            document.getElementById('date-{{ post.id }}').innerHTML = formattedDate;
+                        </script>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+
+        <div class="container__forum__button">
+            <a class="create button button--flex" style="background-color: #0270a6">
+                <span style="text-align: center;">Sedang Melihat Post Anda</spam>
+            </a>
+            <a href="/forum/create" class="create button button--flex" style="margin-top: 16px;">
+                Buat Post
+            </a>
+            <a class="your__post button button--flex" style="background-color: #8ee586"></a>
+        </div>
+    </main>
+
+    <div class="page-num"> 
+        Page {{ posts.number }} of {{ posts.paginator.num_pages }}<br>
+    
+        {% if posts.has_previous %}
+            <a href="?page=1">&laquo First</a>
+        {% endif %}
+
+        {% if posts.has_previous and posts.has_next %}
+            <a href="?page={{ posts.previous_page_number }}">- Previous</a>
+            <a href="?page={{ posts.next_page_number }}">- Next -</a>
+        {% elif posts.has_previous %}
+            <a href="?page={{ posts.previous_page_number }}">- Previous</a>
+        {% elif posts.has_next %}
+            <a href="?page={{ posts.next_page_number }}">Next -</a>
+        {% endif %}
+
+        {% if posts.has_next %}
+            <a href="?page={{ posts.paginator.num_pages }}">Last &raquo</a>
+        {% endif %}
+    </div>
 
     {% include 'templates/footer.html' %}
+
+    <script>
+        var change = document.getElementById("forum");
+        change.classList.add("active-link");
+        change.href = "#";
+    </script>
+
+    <script src="{% static 'js/swiper-bundle.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>

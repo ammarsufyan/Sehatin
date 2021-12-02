@@ -11,7 +11,7 @@ let availableQuestions = [];
 var questionsIndex;
 
 // Load the question
-var questionJson = JSON.parse($.getJSON({'url': "/static/js/tests/kesehatan-mental/questions.json", 'async': false}).responseText);
+var questionJson = JSON.parse($.getJSON({'url': "/static/js/tests/loneliness/questions.json", 'async': false}).responseText);
 const MAX_QUESTIONS = questionJson.questions.length;
 const answer_Lists = questionJson.choices;
 
@@ -70,7 +70,7 @@ getNewQuestion = () => {
         // remove the prevent leave script
         window.onbeforeunload = null;
 
-        var form = $('<form action="/tests/health/kesehatan-mental/result" method="post">' +
+        var form = $('<form action="/tests/health/loneliness/result" method="post">' +
             '<input type="hidden" name="csrfmiddlewaretoken" value="' + csrftoken + '">' +
             '<input type="hidden" name="score_kesepian" value="' + score_Kesepian + '">' +
             '<input type="hidden" name="score_sosial" value="' + score_Sosial + '">' +

@@ -72,9 +72,22 @@ urlpatterns = [
 
     # Tests
     path('tests', views.tests, name='tests'),
-    path('tests/health/kesehatan-mental', views.test_SehatMental, name='tests/health/kesehatan-mental'),
-    path('tests/health/kesehatan-mental/question', views.test_SehatMental_Question, name='tests/health/kesehatan-mental/question'),
-    path('tests/health/kesehatan-mental/result', views.test_SehatMental_Result, name='tests/health/kesehatan-mental/submit'),
+    path('tests/', views.tests, name='tests'),
+
+    # Loneliness Test
+    path('tests/health/loneliness', views.test_Loneliness, name='tests/health/loneliness'),
+    path('tests/health/loneliness/question', views.test_Loneliness_Question, name='tests/health/loneliness/question'),
+    path('tests/health/loneliness/result', views.test_Loneliness_Result, name='tests/health/loneliness/submit'),
+
+    # Depression Test
+    path('tests/health/depression', views.test_Depression, name='tests/health/depression'),
+    path('tests/health/depression/question', views.test_Depression_Question, name='tests/health/depression/question'),
+    path('tests/health/depression/result', views.test_Depression_Result, name='tests/health/depression/submit'),
+
+    # Mindfulness Test
+    path('tests/health/mindfulness', views.test_Mindfulness, name='tests/health/mindfulness'),
+    path('tests/health/mindfulness/question', views.test_Mindfulness_Question, name='tests/health/mindfulness/question'),
+    path('tests/health/mindfulness/result', views.test_Mindfulness_Result, name='tests/health/mindfulness/submit'),
 
     # Hasil test, data ditentukan dari backend
     path('tests/result', views.test_Result, name='tests/result'),

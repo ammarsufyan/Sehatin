@@ -5,31 +5,69 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Post</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-    <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-</head>
-<body>
-    {% include 'templates/header.html' %}
 
-    <div class="post-form">
-        {% csrf_token %}
-        <p>Title</p>
-        <input type="text" name="title" placeholder="Title" autocomplete="off">
-        <p>Thumbnail</p>
-        <input type="text" name="thumbnail_url" placeholder="thumbnail" autocomplete="off">
-        <p>Content</p>
-        <div id="editor"></div>
-        <p>Tag</p>
-        <select name="tag" id="tag">
-            {% for tag in tags %}
-                <option value="{{ tag.name }}">{{ tag.name }}</option>
-            {% endfor %}
-        </select>
-        <br>
-        <input type="submit" value="Create" onclick="createPost()">
-    </div>
+    <link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/forum.css' %}">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
+    <link rel="icon" 
+        type="image/png" 
+        href="{% static 'img/favicon/favicon.ico' %}" 
+    />
+
+    <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+
+    <title>Create Artikel | Sehat.in</title>
+</head>
+<body class="grey">
+
+    <main class="container create_post_container">
+        <div class="create_post_header">
+            <a href="/artikel">
+                <i class="uil uil-angle-left"></i>
+            </a>
+    
+            <h3>Create Artikel</h3>
+            {% if messages %}
+            <div class="message-alert" style="text-align: center;">
+                {% for message in messages %}
+                <div class="message-alert-content">
+                    <p style="color:red">{{ message.message }}</p>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+        <hr>
+
+        <div class="input__area">
+            {% csrf_token %}
+            <p>Title
+                <input type="text" name="title" placeholder="Title" autocomplete="off">
+            </p>
+            <p>Thumbnail
+                <input type="text" name="thumbnail_url" placeholder="thumbnail" autocomplete="off">
+            </p>
+            <div id="editor"></div>
+            <div class="button__area" >
+                <div>
+                    <p>Tag
+                        <select name="tag" id="tag">
+                            {% for tag in tags %}
+                                <option value="{{ tag.name }}">{{ tag.name }}</option>
+                            {% endfor %}
+                        </select>
+                    </p>
+                </div>
+                <div>
+                    <button class="submit_post button button__flex" value="Create" onclick="createPost()">Submit</button>
+                    <button class="cancel_post button button_flex" onclick="location.href='/artikel';">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </main>
 
     <script>
         function validateForm() {
@@ -113,7 +151,6 @@
         }
     </script>
 
-
     <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
     <script type="text/javascript" src="{% static 'js/forumHandler.js' %}"></script>
     <script>
@@ -131,6 +168,7 @@
         });
     </script>
 
-    {% include 'templates/footer.html' %}
+    <script src="{% static 'js/swiper-bundle.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>

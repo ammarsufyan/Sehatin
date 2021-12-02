@@ -181,6 +181,7 @@ def forum(request):
         notifications = None
 
     searching = False
+    q = None
     # Check if there is a search
     if request.GET.get('q'):
         query = request.GET.get('q')
@@ -188,6 +189,7 @@ def forum(request):
         page = request.GET.get('page')
         posts = paginator.get_page(page)
         searching = True
+        q = query
 
         # Check if no result found
         if paginator.count == 0:
@@ -198,7 +200,7 @@ def forum(request):
         page = request.GET.get('page')
         posts = paginator.get_page(page)
 
-    return render(request, 'forum/index.html', {'posts': posts, 'tags': tags, 'searching': searching, 'notifications': notifications})
+    return render(request, 'forum/index.html', {'posts': posts, 'tags': tags, 'searching': searching, 'notifications': notifications, 'q': q})
 
 def forum_Tag(request, tagName):
     """See post by tag"""
@@ -237,6 +239,7 @@ def forum_Url(request, id, title):
     # Title in the link is just for vanity url
     if id is not None and title is not None:
         post = Forum.objects.get(id=id)
+        
         # if user is authenticated
         if request.user.is_authenticated:
             # Get user's notification
@@ -771,19 +774,22 @@ def profile_Posts(request, username):
 
     # Check if user exists or not
     if user:
-        # get the user posts 25 per page
-        paginator = Paginator(Forum.objects.filter(user=user).order_by('-created_at'), 25)
-        page = request.GET.get('page')
-        posts = paginator.get_page(page)
+        if request.user == user:
+            # get the user posts 25 per page
+            paginator = Paginator(Forum.objects.filter(user=user).order_by('-created_at'), 25)
+            page = request.GET.get('page')
+            posts = paginator.get_page(page)
 
-        # if user is authenticated
-        if request.user.is_authenticated:
-            # Get user's notification
-            notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+            # if user is authenticated
+            if request.user.is_authenticated:
+                # Get user's notification
+                notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+            else:
+                notifications = None
+
+            return render(request, 'profile/posts.html', {'theUser': user, 'posts': posts, 'notifications': notifications})
         else:
-            notifications = None
-
-        return render(request, 'profile/posts.html', {'theUser': user, 'posts': posts, 'notifications': notifications})
+            raise PermissionDenied()
     else:
         raise Http404
 
@@ -1022,6 +1028,7 @@ def konsultasi(request):
         notifications = None
     tags = Tag.objects.filter(type="Konsultasi")
     searching = False
+    q = None
     # Check if there is a search
     if request.GET.get('q'):
         query = request.GET.get('q')
@@ -1029,17 +1036,18 @@ def konsultasi(request):
         page = request.GET.get('page')
         konsultasi = paginator.get_page(page)
         searching = True
+        q = query
 
         # Check if no result found
         if paginator.count == 0:
             messages.info(request, 'No result found')
-            return redirect('/konsultasi')
+            return redirect('/tanya-jawab')
     else:
         paginator = Paginator(Konsultasi.objects.all().order_by('-created_at'), 25)
         page = request.GET.get('page')
         konsultasi = paginator.get_page(page)
 
-    return render(request, 'konsultasi/index.html', {'post_konsul': konsultasi, 'tags': tags, 'searching': searching, 'notifications': notifications})
+    return render(request, 'konsultasi/index.html', {'post_konsul': konsultasi, 'tags': tags, 'searching': searching, 'notifications': notifications, 'q': q})
 
 def konsultasi_Create(request):
     """Create post, if no request open page like usual. Request are made using jquery ajax
@@ -1334,29 +1342,29 @@ def tests(request):
     return render(request, 'tests/index.html', {'notifications': notifications})
 
 # ------------------------------
-# Test Kesehatan mental
-def test_SehatMental(request):
-    """Test kesehatan mental"""
+# Test Loneliness
+def test_Loneliness(request):
+    """Tes Skala Kesepian"""
     # if user is authenticated
     if request.user.is_authenticated:
         # Get user's notification
         notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
     else:
         notifications = None
-    return render(request, 'tests/health/kesehatan-mental/index.html', {'notifications': notifications})
+    return render(request, 'tests/health/loneliness/index.html', {'notifications': notifications})
 
-def test_SehatMental_Question(request):
-    """Halaman pertanyaan test kesehatan mental"""
+def test_Loneliness_Question(request):
+    """Halaman pertanyaan Tes Skala Kesepian"""
     # if user is authenticated
     if request.user.is_authenticated:
         # Get user's notification
         notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
     else:
         notifications = None
-    return render(request, 'tests/health/kesehatan-mental/question.html', {'notifications': notifications})
+    return render(request, 'tests/health/loneliness/question.html', {'notifications': notifications})
 
-def test_SehatMental_Result(request):
-    """Halaman hasil test kesehatan mental"""
+def test_Loneliness_Result(request):
+    """Halaman hasil Tes Skala Kesepian"""
     # Check if there is post request
     if request.method == 'POST':
         # Get score
@@ -1442,14 +1450,160 @@ def test_SehatMental_Result(request):
         # Save to history if user is logged in
         if request.user.is_authenticated:
             # Save to history
-            history = History(user=user, quiz_type='Test Kesehatan Mental', res_type=resultType, res_data=result_data[resultKey])
+            history = History(user=user, quiz_type='Tes Skala Kesepian', res_type=resultType, res_data=result_data[resultKey])
             history.save()
         
             notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
         else:
             notifications = None
         # Nanti bisa di return banyak, style json -> title, hasil text, apa2 lah
-        return render(request, 'tests/result.html', {'res_type': resultType, 'res_data': result_data[resultKey], 'notifications': notifications, 'quiz_type': 'Test Kesehatan Mental'})
+        return render(request, 'tests/result.html', {'res_type': resultType, 'res_data': result_data[resultKey], 'notifications': notifications, 'quiz_type': 'Test Skala Kesepian'})
+    else:
+        messages.info(request, 'Silahkan test terlebih dahulu!')        
+        return redirect('/tests')
+
+# ------------------------------
+# Test Depression
+def test_Depression(request):
+    """Test Depression"""
+    # if user is authenticated
+    if request.user.is_authenticated:
+        # Get user's notification
+        notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+    else:
+        notifications = None
+    return render(request, 'tests/health/depression/index.html', {'notifications': notifications})
+
+def test_Depression_Question(request):
+    """Halaman pertanyaan Test Depression"""
+    # if user is authenticated
+    if request.user.is_authenticated:
+        # Get user's notification
+        notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+    else:
+        notifications = None
+    return render(request, 'tests/health/depression/question.html', {'notifications': notifications})
+
+def test_Depression_Result(request):
+    """Halaman hasil Test Depression"""
+    # Check if there is post request
+    if request.method == 'POST':
+        # Get score
+        score = int(request.POST.get('score'))
+        user = request.user
+
+        if 20 <= score <= 49:
+            resultKey = 1
+            resultType = "Tidak mengalami depresi"
+        elif 50 <= score <= 59:
+            resultKey = 2
+            resultType = "Mengalami sedikit depresi"
+        elif 60 <= score <= 69:
+            resultKey = 3
+            resultType = "Mengalami tingkat depresi yang cukup tinggi"
+        elif 70 <= score <= 80:
+            resultKey = 4
+            resultType = "Mengalami tingkat depresi yang tinggi"
+        else:             
+            resultKey = 0
+            resultType = "Error!"
+
+        result_data = {
+            0: "Error, harap coba lagi! Jika masih error harap hubungi admin",
+            # Tidak mengalami depresi
+            1: "Berdasarkan jawaban kamu, dapat disimpulkan bahwa untuk saat ini kamu tidak mengalami depresi. Hal yang bagus! Untuk itu, tetap pertahankan ya! Masih banyak kesenangan yang bisa kamu lakukan dan bisa datang ke kamu. Jangan berpikir rendah tentang dirimu, ya. Semangat!",
+            # Mengalami sedikit depresi
+            2: "Berdasarkan jawaban kamu, dapat disimpulkan bahwa untuk saat ini kamu mengalami sedikit depresi. Untuk itu, cobalah kembali melakukan hal yang kamu suka dan jangan menyalahkan dirimu akan setiap hal buruk yang terjadi. Apapun keadaanmu sekarang, jangan sampai membuatmu putus asa akan kehidupan, ya. Masih ada waktu untukmu kembali menjadi individu yang memiliki harapan. Semangat!",
+            # Mengalami depresi yang cukup tinggi
+            3: "Berdasarkan jawaban kamu, dapat disimpulkan bahwa untuk saat ini kamu mengalami tingkat depresi yang cukup tinggi. Untuk itu, cobalah membuka hidup baru dengan menjauhkan hal-hal yang membuatmu merasa sedih dan terganggu, dan lanjutkan hidupmu yang ceria dan penuh tawa. Jauhkan pula dirimu dari lingkungan yang tidak sehat bagimu. Kelilingi dirimu dengan orang-orang baik yang akan mendukungmu dengan pilihan terbaik. Kami yakin bahwa kamu bisa melewati fase ini. Semangat!",
+            # Mengalami depresi yang tinggi
+            4: "Berdasarkan jawaban kamu, dapat disimpulkan bahwa untuk saat ini kamu mengalami tingkat depresi yang tinggi. Untuk itu, cobalah renungkan apa yang menjadi penyebab utama yang memicu rasa depresimu saat ini. Dengan begitu, kamu akan mengetahui bagaimana cara mengatasi depresi yang kamu hadapi dengan cara dan versimu sendiri. Sehingga diharapkan, dengan adanya perubahan cara hidup, bisa menjadikan kamu tidak merasa depresi lagi karena masih banyak bagian dari dunia ini yang akan merasa bahagia dengan kehadiranmu. Mungkin untuk saat ini, kamu belum bisa merasakan bahwa kamu berguna bagi banyak orang. Kami yakin bahwa kamu bisa melewati fase ini. Senyumlah dan tetap semangat!",
+        }
+
+        # Save to history if user is logged in
+        if request.user.is_authenticated:
+            # Save to history
+            history = History(user=user, quiz_type='Test Depresi', res_type=resultType, res_data=result_data[resultKey])
+            history.save()
+        
+            notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+        else:
+            notifications = None
+        # Nanti bisa di return banyak, style json -> title, hasil text, apa2 lah
+        return render(request, 'tests/result.html', {'res_type': resultType, 'res_data': result_data[resultKey], 'notifications': notifications, 'quiz_type': 'Test Depresi'})
+    else:
+        messages.info(request, 'Silahkan test terlebih dahulu!')        
+        return redirect('/tests')
+
+# ------------------------------
+# Test Kesadaran
+def test_Mindfulness(request):
+    """Test Kesadaran"""
+    # if user is authenticated
+    if request.user.is_authenticated:
+        # Get user's notification
+        notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+    else:
+        notifications = None
+    return render(request, 'tests/health/mindfulness/index.html', {'notifications': notifications})
+
+def test_Mindfulness_Question(request):
+    """Halaman pertanyaan Test Kesadaran"""
+    # if user is authenticated
+    if request.user.is_authenticated:
+        # Get user's notification
+        notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+    else:
+        notifications = None
+    return render(request, 'tests/health/mindfulness/question.html', {'notifications': notifications})
+
+def test_Mindfulness_Result(request):
+    """Halaman hasil Test Kesadaran"""
+    # Check if there is post request
+    if request.method == 'POST':
+        # Get score
+        score = int(request.POST.get('score'))
+        user = request.user
+
+        if 15 <= score <= 39:
+            resultKey = 1
+            resultType = "Kamu Sangat Peka"
+        elif 40 <= score <= 49:
+            resultKey = 2
+            resultType = "Kamu Cukup Peka"
+        elif 50 <= score <= 59:
+            resultKey = 3
+            resultType = "Kamu Sangat Kurang Peka"
+        elif score == 60:
+            resultKey = 4
+            resultType = "Kamu Tidak Peka"
+        else:             
+            resultKey = 0
+            resultType = "Error!"
+
+        result_data = {
+            0: "Error, harap coba lagi! Jika masih error harap hubungi admin",
+            # Kamu Sangat Peka
+            1: "Berdasarkan jawaban kamu, dapat disimpulkan bahwa kamu adalah orang yang sangat peka dan memiliki kesadaran penuh terhadap emosi dirimu dan kegiatan yang kamu lakukan. Hal yang bagus! Untuk itu, tetap pertahankan ya! Banggalah terhadap dirimu sendiri dan berikan senyum terbaikmu. Semangat!",
+            # Kamu Kurang Peka
+            2: "Berdasarkan jawaban kamu, dapat disimpulkan bahwa untuk saat ini kamu adalah orang yang cukup peka dan kurang memiliki kesadaran terhadap emosi dirimu dan kegiatan yang kamu lakukan. Untuk itu, cobalah kembali renungkan apa yang perlu pemicu utamanya, dan mintalah bantuan kepada orang terdekatmu. Berbicaralah dan kembali terbuka atas keluh kesahmu. Apapun keadaanmu sekarang, kamu adalah orang yang hebat. Tetap semangat!",
+            # Mengalami depresi yang cukup tinggi
+            3: "Berdasarkan jawaban kamu, dapat disimpulkan bahwa untuk saat ini kamu adalah orang yang kurang peka dan sangat kurang memiliki kesadaran terhadap emosi dirimu dan kegiatan yang kamu lakukan. Untuk itu, cobalah kembali menjadi orang yang terbuka dan meminta bantuan kepada orang terdekatmu, maupun orang yang menurutmu dapat dipercaya dan paham dengan hal yang kamu rasakan. Jauhkan dirimu dari yang kamu anggap buruk. Secara perlahan, kami yakin bahwa kamu bisa melewati fase ini. Tetap senyum dan berikan yang terbaik, ya! Kamu adalah orang yang hebat, semangat!",
+            # Mengalami depresi yang tinggi
+            4: "Berdasarkan jawaban kamu, dapat disimpulkan bahwa untuk saat ini kamu adalah orang yang tidak peka dan tidak memiliki kesadaran terhadap emosi dirimu dan kegiatan yang kamu lakukan. Untuk itu, cobalah kembali menjadi orang yang terbuka secara perlahan. Renungkan dengan dirimu sendiri, pasti kamu akan mendapatkan jalan keluar yang terbaik versimu. Mintalah bantuan orang terdekat maupun orang yang menurutmu dapat dipercaya dan paham dengan hal yang kamu rasakan. Kamu tidak perlu berjuang sendiri, banyak sekali orang yang dapat membantumu dan peduli dengan kehadiranmu. Kami yakin bahwa kamu bisa melewati fase ini. Tetap senyum dan berikan yang terbaik, ya! Kamu adalah orang yang hebat, semangat!",
+        }
+
+        # Save to history if user is logged in
+        if request.user.is_authenticated:
+            # Save to history
+            history = History(user=user, quiz_type='Test Kesadaran', res_type=resultType, res_data=result_data[resultKey])
+            history.save()
+        
+            notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+        else:
+            notifications = None
+        # Nanti bisa di return banyak, style json -> title, hasil text, apa2 lah
+        return render(request, 'tests/result.html', {'res_type': resultType, 'res_data': result_data[resultKey], 'notifications': notifications, 'quiz_type': 'Test Kesadaran'})
     else:
         messages.info(request, 'Silahkan test terlebih dahulu!')        
         return redirect('/tests')
@@ -1465,7 +1619,7 @@ def test_Result(request):
         res_type = request.POST.get('res_type')
         res_data = request.POST.get('res_data')
         quiz_type = request.POST.get('quiz_type')
-        return render(request, 'tests/result.html', {'res_type': res_type, 'res_data': res_data, 'notifications': notifications, 'quiz_type': 'Test Kesehatan Mental', 'quiz_type': quiz_type})
+        return render(request, 'tests/result.html', {'res_type': res_type, 'res_data': res_data, 'notifications': notifications, 'quiz_type': quiz_type})
     else:
         messages.info(request, 'Silahkan test terlebih dahulu!')        
         return redirect('/tests')
@@ -1482,6 +1636,8 @@ def artikel(request):
     else:
         notifications = None
     searching = False
+    nextPage = False
+    q = None
     # Check if there is a search
     if request.GET.get('q'):
         query = request.GET.get('q')
@@ -1489,6 +1645,7 @@ def artikel(request):
         page = request.GET.get('page')
         posts_artikel = paginator.get_page(page)
         searching = True
+        q = query
 
         # Check if no result found
         if paginator.count == 0:
@@ -1498,11 +1655,14 @@ def artikel(request):
         paginator = Paginator(Artikel.objects.all().order_by('-created_at'), 25)
         page = request.GET.get('page')
         posts_artikel = paginator.get_page(page)
+        if page:
+            if int(page) > 1:
+                nextPage = True
 
     # Get top 3 popular artikel sorted by views
     popular_artikel = Artikel.objects.all().order_by('-views')[:3]
 
-    return render(request, 'artikel/index.html', {'posts': posts_artikel, 'tags': tags, 'popular_artikel': popular_artikel, 'searching': searching, 'notifications': notifications})
+    return render(request, 'artikel/index.html', {'posts': posts_artikel, 'tags': tags, 'popular_artikel': popular_artikel, 'searching': searching, 'nextPage': nextPage, 'notifications': notifications, 'q': q})
 
 def artikel_tag(request, tagName):
     """See post by tag"""

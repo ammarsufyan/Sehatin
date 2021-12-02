@@ -98,6 +98,16 @@ img {
     height: auto;
 }
 
+.page-num {
+    text-align: center;
+    padding-top: 20px;
+}
+
+.ql-editor{
+    min-height:200px;
+    background-color: white;
+}
+
 .section {
     padding: 2rem 0 4rem;
 }

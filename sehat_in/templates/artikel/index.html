@@ -25,7 +25,7 @@
     <main>
         <section class="container search__container">
             <form action="/artikel" method="get">
-                <input type="text" name="q" placeholder="Cari artikel disini..">
+                <input type="text" name="q" placeholder="Cari artikel disini.." value={% if q %}{{q}}{% endif %}>
                 <button type="submit">Search</button>
             </form>
         {% if messages %}
@@ -40,11 +40,12 @@
         </section>
 
         {% if not searching %}
+            {% if not nextPage %}
             <section class="container home__tes">
                 <div class="tes__header">
                     <h1>Artikel Populer</h1>
                     {% if user.is_staff %}
-                        <a href="/forum/create">Create Post</a>
+                        <a href="/artikel/create">Post Artikel</a>
                     {% endif %}
                 </div>
                 <div class="tes__container">
@@ -55,7 +56,7 @@
                                 <img class="tes__image" src="{% if post.thumbnail_url %}{{post.thumbnail_url}}{% else %}/static/img/no_image.png{% endif %}" onerror="this.onerror=null; this.src='/static/img/no_image.png'" alt="{{ post.title }}">
                                 <div class="tes__wrapper__content">
                                     <a class="tes__category" href="/artikel/tag/{{ post.tag.name }}">{{ post.tag.name }}</a>
-                                    <h2 class="tes__title">{{ post.title }}</h2>
+                                    <a href="artikel/{{ post.id }}"><h2 class="tes__title">{{ post.title }}</h2></a>
                                     <div id="desc-{{ post.id }}">{% autoescape off %}{{ post.content|slice:"0:50" }}...{% endautoescape %}</div>
                                     <script>
                                     x = document.getElementById("desc-{{ post.id }}").getElementsByTagName("P")[0];
@@ -68,14 +69,40 @@
                     {% endfor %}
                 </div>
             </section>        
+            <script>
+                var change = document.getElementById("artikel");
+                change.classList.add("active-link");
+                change.href = "#";
+            </script>
+            {% else %}
+            <script>
+                var change = document.getElementById("artikel");
+                change.classList.add("active-link");
+                change.href = "/artikel";
+            </script>
+            {% endif %}
+        {% else %}
+        <script>
+            var change = document.getElementById("artikel");
+            change.classList.add("active-link");
+            change.href = "/artikel";
+        </script>
         {% endif %}
-
         
+        {% if searching %}
         <section class="container home__tes">
+            <div>
+                <a href="/artikel">⟵ Kembali ke Artikel</a>
+            <div>
+        </section>
+        <section class="container home__tes" style="margin-top: 10px;">
+        {% else %}
+        <section class="container home__tes">
+        {% endif %}
             <div class="tes__header">
                 <h1>{% if not searching %}Artikel Terbaru{% else %}Hasil Search Artikel{% endif %}</h1>
                 {% if user.is_staff %}
-                    <a href="/forum/create">Create Post</a>
+                    <a href="/artikel/create">Post Artikel</a>
                 {% endif %}
             </div>
             <div class="tes__container">
@@ -86,7 +113,7 @@
                             <img class="tes__image" src="{% if post.thumbnail_url %}{{post.thumbnail_url}}{% else %}/static/img/no_image.png{% endif %}" onerror="this.onerror=null; this.src='/static/img/no_image.png'" alt="{{ post.title }}">
                             <div class="tes__wrapper__content">
                                 <a class="tes__category" href="/artikel/tag/{{ post.tag.name }}">{{ post.tag.name }}</a>
-                                <h2 class="tes__title">{{ post.title }}</h2>
+                                <a href="artikel/{{ post.id }}"><h2 class="tes__title">{{ post.title }}</h2></a>
                                 <div id="desc-{{ post.id }}">{% autoescape off %}{{ post.content|slice:"0:50" }}...{% endautoescape %}</div>
                                 <script>
                                 x = document.getElementById("desc-{{ post.id }}").getElementsByTagName("P")[0];
@@ -102,22 +129,26 @@
     </main>
 
 
-    Page {{ posts.number }} of {{ posts.paginator.num_pages }}<br>
+    <div class="page-num"> 
+        Page {{ posts.number }} of {{ posts.paginator.num_pages }}<br>
+    
+        {% if posts.has_previous %}
+            <a href="{% if q %}?q={{q}}&page=1{% else %}?page=1{% endif %}">&laquo First</a>
+        {% endif %}
 
-    {% if posts.has_previous %}
-        <a href="?page=1">&laquo First</a>
-        <a href="?page={{ posts.previous_page_number }}">Previous</a>
-    {% endif %}
-    {% if notifications.has_next %}
-        <a href="?page={{ posts.next_page_number }}">Next</a>
-        <a href="?page={{ posts.paginator.num_pages }}">Last &raquo</a>
-    {% endif %}
+        {% if posts.has_previous and posts.has_next %}
+            <a href="{% if q %}?q={{q}}&page={{ posts.previous_page_number }}{% else %}?page={{ posts.previous_page_number}}{% endif %}">- Previous</a>
+            <a href="{% if q %}?q={{q}}&page={{ posts.next_page_number }}{% else %}?page={{ posts.next_page_number}}{% endif %}">- Next -</a>
+        {% elif posts.has_previous %}
+            <a href="{% if q %}?q={{q}}&page={{ posts.previous_page_number }}{% else %}?page={{ posts.previous_page_number}}{% endif %}">- Previous</a>
+        {% elif posts.has_next %}
+            <a href="{% if q %}?q={{q}}&page={{ posts.next_page_number }}{% else %}?page={{ posts.next_page_number}}{% endif %}">Next -</a>
+        {% endif %}
 
-    <script>
-    var change = document.getElementById("artikel");
-    change.classList.add("active-link");
-    change.href = "#";
-    </script>
+        {% if posts.has_next %}
+            <a href="{% if q %}?q={{q}}&page={{ posts.paginator.num_pages }}{% else %}?page={{ posts.paginator.num_pages}}{% endif %}">Last &raquo</a>
+        {% endif %}
+    </div>
 
     <script src="{% static 'js/swiper-bundle.min.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>

@@ -15,7 +15,7 @@
         type="image/png" 
         href="{% static 'img/favicon/favicon.ico' %}" 
     />
-    <title>Tes Kesehatan Mental | Sehat.in</title>
+    <title>Tes Depresi | Sehat.in</title>
 </head>
 <body>
     {% include 'templates/header.html' %}
@@ -24,10 +24,11 @@
         <div class="container container__tes">
             <div class="penjelasan__tes">
                 <div class="tes__title" style="margin-right: 10px;">  {% comment %} TEMPORARY STYLE {% endcomment %}
-                    <h2>Tes Kesehatan Mental</h2>
-                    <p>kita anak metal kita kalo joged sukanya Kita anak metal kalo goyuang Rasanya kesepian mental metal tabrak sana, tabrak sini seperti Em G D Am kuda binal kita bisa lincah walaupun cuma Em G D Am pakai sandal abis joged pegal2 E5 G5 F#5 F5 kita selalu optimis ayo semua ngangguk2 E5 G4 F#5 F5 apa saja kita setuju ayo semua ngangguk2</p>
+                    <h2>Tes Depresi</h2>
                 </div>
                 <div class="tes__panduan" style="margin-top: 10px;">
+                    <p>Ikuti tes ini untuk membantu menentukan apakah kamu memiliki gejala depresi dan untuk menilai apakah kamu harus berbicara dengan tenaga profesional kesehatan mental.</p>
+                    <br>
                     <h3>Panduan Pengisian</h3>
                     <ol>
                         <li>Bacalah pernyataan-pernyataan pada lembar berikut.</li>
@@ -37,13 +38,13 @@
                     </ol>
                 </div>
                 
-                <a href="/tests/health/kesehatan-mental/question" class="btn__mulai">
+                <a href="/tests/health/depression/question" class="btn__mulai">
                     Mulai Tes
                 </a>
             </div>
             <div>
                 <div class="img__wrapper">
-                    <img class="thumbnail" src="{% static 'img/thumbnail_tes_kesepian.svg' %}" alt="">
+                    <img class="thumbnail" src="{% static 'img/tes_image_4.svg' %}" alt="">
                 </div>
                 
             </div>

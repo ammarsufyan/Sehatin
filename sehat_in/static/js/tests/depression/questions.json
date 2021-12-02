@@ -1,0 +1,86 @@
+{
+    "questions":
+    [
+        { 
+            "id": 0,
+            "q": "Saya merasa sedih"
+        },
+        {
+            "id": 1,
+            "q": "Pagi hari adalah saat dimana saya merasa terbaik"
+        },
+        {
+            "id": 2,
+            "q": "Saya sulit tidur di malam hari"
+        },
+        {
+            "id": 3,
+            "q": "Saya makan sebanyak porsi yang saya makan dulu"
+        },
+        {
+            "id": 4,
+            "q": "Saya merasa bahwa saya kehilangan berat badan"
+        },
+        {
+            "id": 5,
+            "q": "Saya memiliki masalah dengan sembelit"
+        },
+        {
+            "id": 6,
+            "q": "Jantung saya berdetak lebih cepat dari biasanya"
+        },
+        {
+            "id": 7,
+            "q": "Saya merasa lelah tanpa alasan"
+        },
+        {
+            "id": 8,
+            "q": "Pikiran saya jernih seperti dulu"
+        },
+        {
+            "id": 9,
+            "q": "Saya merasa mudah untuk melakukan hal-hal yang biasa saya lakukan"
+        },
+        {
+            "id": 10,
+            "q": "Saya gelisah dan tidak bisa diam"
+        },
+        {
+            "id": 11,
+            "q": "Saya merasa penuh harapan tentang masa depan"
+        },
+        {
+            "id": 12,
+            "q": "Saya lebih mudah marah dari biasanya"
+        },
+        {
+            "id": 13,
+            "q": "Saya merasa mudah membuat keputusan"
+        },
+        {
+            "id": 14,
+            "q": "Saya merasa bahwa saya berguna dan dibutuhkan"
+        },
+        {
+            "id": 15,
+            "q": "Hidup saya cukup bahagia"
+        },
+        {
+            "id": 16,
+            "q": "Saya merasa bahwa orang lain akan lebih baik jika saya tidak ada di dunia"
+        },
+        {
+            "id": 17,
+            "q": "Saya masih menikmati hal-hal yang biasa saya lakukan"
+        },
+        {
+            "id": 18,
+            "q": "Saya memiliki nafsu makan yang buruk atau makan berlebihan"
+        },
+        {
+            "id": 19,
+            "q": "Saya mudah fokus dan konsentrasi terhadap apa yang saya lakukan"
+        }
+    ],
+    "choices": [ "Sangat sesuai", "Sesuai", "Tidak sesuai", "Sangat tidak sesuai"]
+}
