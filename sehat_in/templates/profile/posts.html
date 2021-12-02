@@ -84,8 +84,8 @@
             <a href="/forum/create" class="create button button--flex">
                 Create Post
             </a>
-            <a href="/profile/{{ user.username}}/posts" class="your__post button button--flex">
-                Your Post
+            <a href="/forum" class="your__post button button--flex" style="text-align: center;">
+                Go back to Forum
             </a>
             {% endif %}
         </div>
@@ -103,6 +103,12 @@
     {% endif %}
     
     {% include 'templates/footer.html' %}
+
+    <script>
+        var change = document.getElementById("forum");
+        change.classList.add("active-link");
+        change.href = "#";
+    </script>
 
     <script src="{% static 'js/swiper-bundle.min.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>

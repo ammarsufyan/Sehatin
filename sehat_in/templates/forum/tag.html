@@ -132,8 +132,11 @@
         </div>
 
         <div class="container__forum__button">
-            <a href="tes_psikologi.html" class="create button button--flex">
+            <a class="create button button--flex">
                 <span style="text-align: center;">Viewing Tag<br>"{{ tag.name }}"</spam>
+            </a>
+            <a href="/forum" class="your__post button button--flex" style="text-align: center; background-color: #2f61a7;">
+                Go back to Forum
             </a>
             {% if user.is_authenticated %}
             <a href="/forum/create" style="margin-top: 16px;" class="create button button--flex">
