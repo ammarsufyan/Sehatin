@@ -5,82 +5,100 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Report</title>
 
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/header.css' %}">
+    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+    <link rel="stylesheet" href="{% static 'css/forum.css' %}">
+
+    <link rel="icon" 
+        type="image/png" 
+        href="{% static 'img/favicon/favicon.ico' %}" 
+    />
     <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+
+    <title>Reports | Sehat.in</title>
 </head>
 <body>
-    {% include 'templates/header.html'%}
+    {% include 'templates/header.html' %}
 
-    <div class="container">
-        <ul>
+
+    {% if messages %}
+    <div class="message-alert" style="text-align: center; margin-top: 100px;">
+        {% for message in messages %}
+        <div class="message-alert-content">
+            <p style="color:red">{{ message.message }}</p>
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <main class="container" style="margin-top: 100px;">
+
+        <div class="container__forum">
             {% for report in reportsPaged %}
             {% if report.isResolved %}
-            <li id="report-{{ report.id }}" style="background-color: yellow;";>
+            <div class="container__card" id="report-{{ report.id }}" style="background-color: yellow; padding-right: 0px; width: auto; height: auto;">
             {% else %}
-            <li id="report-{{ report.id }}" style="background-color: red;";>
+            <div class="container__card" id="report-{{ report.id }}" style="background-color: red; padding-right: 0px; width: auto; height: auto;">
             {% endif %}
-                Type: {{ report.reportType }}<br>
-                Reason: {{ report.reason }}<br>
-                Reported by: {{ report.user }}<br>
-                Reported at: {{ report.created_at }}<br>
-                Report Information: <br> 
-                {% if report.reportType == 'post' %}
-                    {% if report.post %}
-                        Post ID: {{ report.post.id }}<br>
-                        Post Title: {{ report.post.title }}<br>
-                        <a href="/post/{{ report.post.id }}">Link to the reported post</a>
+                <div class="forum__about" style="width: auto;">
+                    <h1>Type: {{ report.reportType }}</h1>
+                    {% if report.isResolved %}
+                    <p style="width: auto; max-width: 100%; color: black;" id="report-text-{{ report.id }}">
                     {% else %}
-                        Post is already deleted
+                    <p style="width: auto; max-width: 100%; color: white;" id="report-text-{{ report.id }}">
                     {% endif %}
-                    {% if report.user %}
-                        <a href="/profile/{{ report.user.username }}">The user that make the post</a>
-                    {% else %}
-                        User is already deleted
-                    {% endif %}
-                {% elif report.reportType == 'comment' %}
-                    {% if report.comment %}
-                        Comment ID: {{ report.comment.id }}<br>
-                        Content:<br>{% autoescape off %}{{ report.comment.content }}{% endautoescape %}
-        
-                        <a href="/forum/{{ report.post.id }}/{{ report.post.title }}#comments-{{ report.comment.id }}">Link to the reported Comment</a>
-                    {% else %}
-                        Comment is already deleted
-                    {% endif %}
-                    {% if report.user %}
-                        <a href="/profile/{{ report.user.username }}">The user that make the comment</a>
-                    {% else %}
-                        User is already deleted
-                    {% endif %}
-                {% elif report.reportType == 'user' %}
-                    {% if report.user %}
-                        <a href="/profile/{{ report.user.username }}">{{ report.user.username }}'s profile</a>
-                    {% else %}
-                        User is already deleted
-                    {% endif %}
-                {% endif %}
+                        Reason "{{ report.reason }}" Reported by {{ report.user }} at {{ report.created_at }}><br>
+                        <b>Report Information:</b> <br> 
+                        {% if report.reportType == 'post' %}
+                            {% if report.post %}
+                                Post ID: {{ report.post.id }}<br>
+                                Post Title: {{ report.post.title }}<br>
+                                <a href="/post/{{ report.post.id }}">[Link to the reported post]</a>
+                            {% else %}
+                                Post is already deleted
+                            {% endif %}
+                            {% if report.user %}
+                                <a href="/profile/{{ report.user.username }}">[The user that make the post]</a>
+                            {% else %}
+                                User is already deleted
+                            {% endif %}
+                        {% elif report.reportType == 'comment' %}
+                            {% if report.comment %}
+                                Comment ID: {{ report.comment.id }}<br>
+                                Content:<br>{% autoescape off %}{{ report.comment.content }}{% endautoescape %}
                 
-                <br><br>
-                Status: <span id="status-{{ report.id }}"><b>
-                {% if report.isResolved %}
-                Resolved
-                {% else %}
-                Not Resolved
-                {% endif %}
-                </b></span></br>
-
-                <button id="resolvebtn-{{ report.id }}" onclick="statusChange('{{ report.id }}', '{{ csrf_token }}')">
-                {% if report.isResolved %}
-                Mark as unresolved
-                {% else %}
-                Mark as resolved
-                {% endif %}
-                </button>
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
+                                <a href="/forum/{{ report.post.id }}/{{ report.post.title }}#comments-{{ report.comment.id }}">[Link to the reported Comment]</a>
+                            {% else %}
+                                Comment is already deleted
+                            {% endif %}
+                            {% if report.user %}
+                                <a href="/profile/{{ report.user.username }}">[The user that make the comment]</a>
+                            {% else %}
+                                User is already deleted
+                            {% endif %}
+                        {% elif report.reportType == 'user' %}
+                            {% if report.user %}
+                                <a href="/profile/{{ report.user.username }}">[{{ report.user.username }}'s profile]</a>
+                            {% else %}
+                                User is already deleted
+                            {% endif %}
+                        {% endif %}
+                        
+                        <br><br>
+                        Status: <span id="status-{{ report.id }}"><b>{% if report.isResolved %}Resolved{% else %}Not Resolved{% endif %}</b></span></br>
+                    </p>
+                    <button id="resolvebtn-{{ report.id }}" onclick="statusChange('{{ report.id }}', '{{ csrf_token }}')">
+                        {% if report.isResolved %}Mark as unresolved{% else %}Mark as resolved{% endif %}
+                    </button>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+    </main>
 
     Page {{ reportsPaged.number }} of {{ reportsPaged.paginator.num_pages }}<br>
 
@@ -92,7 +110,7 @@
         <a href="?page={{ reportsPaged.next_page_number }}">Next</a>
         <a href="?page={{ reportsPaged.paginator.num_pages }}">Last &raquo</a>
     {% endif %}
-
+    
     <script>
         function statusChange(reportId, token) {
             $.ajax({
@@ -106,11 +124,13 @@
                             document.querySelector('#resolvebtn-' + reportId).textContent = 'Mark as unresolved';
                             document.querySelector('#status-' + reportId).innerHTML = '<b>Resolved</b>';
                             $('#report-'+ reportId).css("background-color", "yellow");
+                            $('#report-text-'+ reportId).css("color", "black");
                             alert("Report has been marked as resolved!");
                         } else {
                             document.querySelector('#resolvebtn-' + reportId).textContent = 'Mark as resolved';
                             document.querySelector('#status-' + reportId).innerHTML = '<b>Not Resolved</b>';
                             $('#report-'+ reportId).css("background-color", "red");
+                            $('#report-text-'+ reportId).css("color", "white");
                             alert("Report has been marked as not resolved!");
                         }
                     } else {
@@ -121,6 +141,7 @@
         }
     </script>
 
-    {% include 'templates/footer.html' %}
+    <script src="{% static 'js/swiper-bundle.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>
