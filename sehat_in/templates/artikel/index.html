@@ -61,9 +61,18 @@
                                     <a href="artikel/{{ post.id }}"><h2 class="tes__title">{{ post.title }}</h2></a>
                                     <p id="post-{{post.id}}" class="tes__description">
                                         <script>
-                                            var x = jQuery('{% autoescape off %}{{post.content}}{% endautoescape %}').text();
+                                            var x;
+                                            try {
+                                                x = jQuery('{% autoescape off %}{{post.content}}{% endautoescape %}').text();
+                                                if (x.length > 50) {
+                                                    x = x.slice(0,50);
+                                                    x = x + '...';
+                                                }
+                                            } catch (e) {
+                                                x = "";
+                                            }
                                             // write it
-                                            document.getElementById("post-{{post.id}}").innerHTML = x.slice(0,50);
+                                            document.getElementById("post-{{post.id}}").innerHTML = x;
                                         </script>
                                     </p>
                                 </div>

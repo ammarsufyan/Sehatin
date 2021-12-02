@@ -1,6 +1,5 @@
 .container {
     display: flex;
-    
 }
 
 input {
@@ -37,6 +36,8 @@ main {
 
 .forum__about p {
     font-size: 0.8rem;
+    min-width: 25rem;
+    overflow: hidden;
 }
 
 .forum__info {

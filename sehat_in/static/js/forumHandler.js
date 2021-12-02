@@ -3,7 +3,7 @@
 // Quill
 var myToolbar = [
     ['bold', 'italic', 'underline', 'strike'],       
-    ['blockquote', 'code-block'],
+    ['blockquote'],
 
     [{ 'color': [] }, { 'background': [] }],         
     [{ 'font': [] }],

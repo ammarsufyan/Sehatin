@@ -284,6 +284,7 @@ img {
 .tes__description {
     font-size: var(--mb-0-75);
     margin-bottom: 1rem;
+    overflow: hidden;
 }
 
 .tes__button {
@@ -358,6 +359,12 @@ input[type=text]:focus {
   .artikel__link {
       margin-top: 7rem;
       margin-bottom: 2rem;
+      font-size: .8rem;
+      color: black;
+  }
+
+  .artikel__link__abu {
+      color: #999999;
   }
 
 

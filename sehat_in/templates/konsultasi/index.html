@@ -48,9 +48,9 @@
             <a href="/forum">⟵ Kembali ke Forum</a>
         <div>
     </section>
-    <main class="container" style="margin-top: 5px;">
+    <main class="container flex" style="margin-top: 5px;">
     {% else %}
-    <main class="container">
+    <main class="container flex">
     {% endif %}
         <div class="container__forum">
         {% for post in post_konsul %}
@@ -60,9 +60,18 @@
                     <a class="forum__category" href="/tanya-jawab/tag/{{ post.tag.name|space_to_dash }}">{{ post.tag.name }}<a>
                     <p id="post-{{post.id}}">
                         <script>
-                        var x = jQuery('{% autoescape off %}{{post.content}}{% endautoescape %}').text();
+                        var x;
+                        try {
+                            x = jQuery('{% autoescape off %}{{post.content}}{% endautoescape %}').text();
+                            if (x.length > 50) {
+                                x = x.slice(0,50);
+                                x = x + '...';
+                            }
+                        } catch (e) {
+                            x = "";
+                        }
                         // write it
-                        document.getElementById("post-{{post.id}}").innerHTML = x.slice(0,50);
+                        document.getElementById("post-{{post.id}}").innerHTML = x;
                         </script>
                     </p>
                 </div>

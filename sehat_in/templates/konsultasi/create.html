@@ -149,7 +149,7 @@
     <script>
         var myToolbar= [
             ['bold', 'italic', 'underline', 'strike'],       
-            ['blockquote', 'code-block'],
+            ['blockquote'],
 
             [{ 'color': [] }, { 'background': [] }],         
             [{ 'font': [] }],
@@ -160,7 +160,7 @@
 
         var quill = new Quill('#editor', {
             theme: 'snow',
-            placeholder: 'Post content...',
+            placeholder: 'Question...',
             modules: {
                 toolbar: {
                     container: myToolbar

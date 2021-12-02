@@ -118,11 +118,22 @@
                             <div class="tes__wrapper__content">
                                 <a class="tes__category" href="/artikel/tag/{{ post.tag.name }}">{{ post.tag.name }}</a>
                                 <h2 class="tes__title">{{ post.title }}</h2>
-                                <div id="desc-{{ post.id }}">{% autoescape off %}{{ post.content|slice:"0:50" }}...{% endautoescape %}</div>
-                                <script>
-                                x = document.getElementById("desc-{{ post.id }}").getElementsByTagName("P")[0];
-                                x.classList.add("tes__description");
-                                </script>
+                                <p id="post-{{post.id}}">
+                                    <script>
+                                        var x;
+                                        try {
+                                            x = jQuery('{% autoescape off %}{{post.content}}{% endautoescape %}').text();
+                                            if (x.length > 50) {
+                                                x = x.slice(0,50);
+                                                x = x + '...';
+                                            }
+                                        } catch (e) {
+                                            x = "";
+                                        }
+                                        // write it
+                                        document.getElementById("post-{{post.id}}").innerHTML = x;
+                                    </script>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -146,11 +157,21 @@
                             <div class="tes__wrapper__content">
                                 <a class="tes__category" href="">{{ latest_forum.0.tag.name }}<a>
                                 <h2 class="tes__title">{{ latest_forum.0.title }}</h2>
-                                {% comment %} <div id="forum-{{ latest_forum.0.id }}">{% autoescape off %}{{ latest_forum.0.content|slice:"0:50" }}...{% endautoescape %}</div> {% endcomment %}
-                                <script>
-                                x = document.getElementById("forum-{{ latest_forum.0.id }}").getElementsByTagName("P")[0];
-                                x.classList.add("tes__description");
-                                </script>
+                                <p id="forum-{{latest_forum.0.id}}" class="tes__description">
+                                    <script>
+                                    try {
+                                        x = jQuery('{% autoescape off %}{{latest_forum.0.content}}{% endautoescape %}').text();
+                                        if (x.length > 50) {
+                                            x = x.slice(0,50);
+                                            x = x + '...';
+                                        }
+                                    } catch (e) {
+                                        x = "";
+                                    }
+                                    // write it
+                                    document.getElementById("forum-{{latest_forum.0.id}}").innerHTML = x;
+                                    </script>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -163,11 +184,21 @@
                             <div class="tes__wrapper__content">
                                 <a class="tes__category" href="">{{ latest_forum.1.tag.name }}<a>
                                 <h2 class="tes__title">{{ latest_forum.1.title }}</h2>
-                                {% comment %} <div id="forum-{{ latest_forum.1.id }}">{% autoescape off %}{{ latest_forum.1.content|slice:"0:50" }}...{% endautoescape %}</div> {% endcomment %}
-                                <script>
-                                x = document.getElementById("forum-{{ latest_forum.1.id }}").getElementsByTagName("P")[0];
-                                x.classList.add("tes__description");
-                                </script>
+                                <p id="forum-{{latest_forum.1.id}}" class="tes__description">
+                                    <script>
+                                    try {
+                                        x = jQuery('{% autoescape off %}{{latest_forum.1.content}}{% endautoescape %}').text();
+                                        if (x.length > 50) {
+                                            x = x.slice(0,50);
+                                            x = x + '...';
+                                        }
+                                    } catch (e) {
+                                        x = "";
+                                    }
+                                    // write it
+                                    document.getElementById("forum-{{latest_forum.1.id}}").innerHTML = x;
+                                    </script>
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -180,11 +211,21 @@
                             <div class="tes__wrapper__content">
                                 <a class="tes__category" href="">{{ latest_forum.2.tag.name }}<a>
                                 <h2 class="tes__title">{{ latest_forum.2.title }}</h2>
-                                {% comment %} <div id="forum-{{ latest_forum.2.id }}">{% autoescape off %}{{ latest_forum.2.content|slice:"0:50" }}...{% endautoescape %}</div> {% endcomment %}
-                                <script>
-                                x = document.getElementById("forum-{{ latest_forum.2.id }}").getElementsByTagName("P")[0];
-                                x.classList.add("tes__description");
-                                </script>
+                                <p id="forum-{{latest_forum.2.id}}" class="tes__description">
+                                    <script>
+                                    try {
+                                        x = jQuery('{% autoescape off %}{{latest_forum.2.content}}{% endautoescape %}').text();
+                                        if (x.length > 50) {
+                                            x = x.slice(0,50);
+                                            x = x + '...';
+                                        }
+                                    } catch (e) {
+                                        x = "";
+                                    }
+                                    // write it
+                                    document.getElementById("forum-{{latest_forum.2.id}}").innerHTML = x;
+                                    </script>
+                                </p>
                             </div>
                         </div>
                     </div>
