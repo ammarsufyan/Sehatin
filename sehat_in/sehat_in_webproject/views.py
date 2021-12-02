@@ -743,11 +743,10 @@ def forum_Comment_Report(request, id, title, comment_id):
 # Profile
 def profile(request, username):
     """See a user's profile"""
-    # get the user profile
-    user = User.objects.get(username=username)
+    try:
+        # get the user profile
+        user = User.objects.get(username=username)
 
-    # Check if user exists or not
-    if user:
         user_profile = UserProfile.objects.get(user=user)
         
         # get the user posts
@@ -764,42 +763,59 @@ def profile(request, username):
             notifications = None
 
         return render(request, 'profile/index.html', {'theUser': user, 'user_profile': user_profile, 'posts': posts, 'comments': comments, 'notifications': notifications})
-    else:
+    except:
         raise Http404
 
 def profile_Posts(request, username):
     """Get all posts of a user"""
-    # get the user profile
-    user = User.objects.get(username=username)
+    try:
+        user = User.objects.get(username=username)
 
-    # Check if user exists or not
-    if user:
-        if request.user == user:
-            # get the user posts 25 per page
-            paginator = Paginator(Forum.objects.filter(user=user).order_by('-created_at'), 25)
-            page = request.GET.get('page')
-            posts = paginator.get_page(page)
+        # get the user posts 25 per page
+        paginator = Paginator(Forum.objects.filter(user=user).order_by('-created_at'), 25)
+        page = request.GET.get('page')
+        posts = paginator.get_page(page)
 
-            # if user is authenticated
-            if request.user.is_authenticated:
-                # Get user's notification
-                notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
-            else:
-                notifications = None
-
-            return render(request, 'profile/posts.html', {'theUser': user, 'posts': posts, 'notifications': notifications})
+        # if user is authenticated
+        if request.user.is_authenticated:
+            # Get user's notification
+            notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
         else:
-            raise PermissionDenied()
-    else:
+            notifications = None
+
+        return render(request, 'profile/posts.html', {'theUser': user, 'posts': posts, 'notifications': notifications})
+    except:
         raise Http404
+
+def profile_Tanya_Jawab(request, username):
+    """Get all posts of a user"""
+    try:
+        # get the user profile
+        user = User.objects.get(username=username)
+
+        # get the user posts 25 per page
+        paginator = Paginator(Forum.objects.filter(user=user).order_by('-created_at'), 25)
+        page = request.GET.get('page')
+        posts = paginator.get_page(page)
+
+        # if user is authenticated
+        if request.user.is_authenticated:
+            # Get user's notification
+            notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+        else:
+            notifications = None
+
+        return render(request, 'profile/tanya-jawab.html', {'theUser': user, 'post_konsul': posts, 'notifications': notifications})
+    except:
+        raise Http404
+    
 
 def profile_Comments(request, username):
     """Get all comments of a user"""
-    # get the user profile
-    user = User.objects.get(username=username)
+    try:
+        # get the user profile
+        user = User.objects.get(username=username)
 
-    # Check if user exists or not
-    if user:
         # get the user comments 25 per page
         paginator = Paginator(Comment.objects.filter(user=user).order_by('-created_at'), 25)
         page = request.GET.get('page')
@@ -813,38 +829,34 @@ def profile_Comments(request, username):
             notifications = None
 
         return render(request, 'profile/comments.html', {'theUser': user, 'comments': comments, 'notifications': notifications})
-    else:
+    except:
         raise Http404
-
 
 # INi buat apaan ya??? kaga kepake gw lupa dulu mau bakal apa, tp di keep aja dulu mungkin
-def profile_Liked_Commented_Posts(request, username):
-    """Get all liked and commented posts of a user"""
-    # get the user profile
-    user = User.objects.get(username=username)
+# def profile_Liked_Commented_Posts(request, username):
+#     """Get all liked and commented posts of a user"""
+#     try:
+#         # get the user profile
+#         user = User.objects.get(username=username)
 
-    # Check if user exists or not
-    if user:
-        # Get user liked or commented posts
-        liked_posts = Like.objects.filter(user=user).order_by('-created_at')
-        commented_posts = Comment.objects.filter(user=user).order_by('-created_at')
-        combined_Liked_Commented_Posts = list(chain(liked_posts, commented_posts))
+#         # Get user liked or commented posts
+#         liked_posts = Like.objects.filter(user=user).order_by('-created_at')
+#         commented_posts = Comment.objects.filter(user=user).order_by('-created_at')
+#         combined_Liked_Commented_Posts = list(chain(liked_posts, commented_posts))
 
-        # 
-        paginator = Paginator(combined_Liked_Commented_Posts, 25)
-        page = request.GET.get('page')
-        liked_Commented_Posts = paginator.get_page(page)
+#         # 
+#         paginator = Paginator(combined_Liked_Commented_Posts, 25)
+#         page = request.GET.get('page')
+#         liked_Commented_Posts = paginator.get_page(page)
 
-        return render(request, 'profile/liked-commented-posts.html', {'theUser': user, 'liked_Commented_Posts': liked_Commented_Posts, 'test': combined_Liked_Commented_Posts})
+#         return render(request, 'profile/liked-commented-posts.html', {'theUser': user, 'liked_Commented_Posts': liked_Commented_Posts, 'test': combined_Liked_Commented_Posts})
 
 
-        # Combine them both into one object
+#         # Combine them both into one object
         
-
-        # return render(request, 'profile/liked_commented_posts.html', {'theUser': user, 'liked_posts': liked_posts, 'commented_posts': commented_posts})
-    else:
-        raise Http404
-
+#         # return render(request, 'profile/liked_commented_posts.html', {'theUser': user, 'liked_posts': liked_posts, 'commented_posts': commented_posts})
+#     except:
+#         raise Http404
 
 def profile_Settings(request, username):
     """User profile settings
@@ -904,20 +916,20 @@ def profile_Settings(request, username):
         messages.info(request, 'You have to be logged in first!')
         return render(request, 'auth/login')
 
-def profile_Notification(request, username):
-    """User profile notification"""
-    if request.user.is_authenticated:
-        if username == request.user.username:
-            # Get reqeuest split notifications to 25 per page
-            paginator = Paginator(Notification.objects.filter(user=request.user).order_by('-created_at'), 25)
-            page = request.GET.get('page')
-            notifications = paginator.get_page(page)
-            return render(request, 'profile/notification.html', {'notifications': notifications})
-        else:
-            raise PermissionDenied()
-    else:
-        messages.info(request, 'You have to be logged in first!')
-        return render(request, 'auth/login')
+# def profile_Notification(request, username):
+#     """User profile notification"""
+#     if request.user.is_authenticated:
+#         if username == request.user.username:
+#             # Get reqeuest split notifications to 25 per page
+#             paginator = Paginator(Notification.objects.filter(user=request.user).order_by('-created_at'), 25)
+#             page = request.GET.get('page')
+#             notifications = paginator.get_page(page)
+#             return render(request, 'profile/notification.html', {'notifications': notifications})
+#         else:
+#             raise PermissionDenied()
+#     else:
+#         messages.info(request, 'You have to be logged in first!')
+#         return render(request, 'auth/login')
 
 def profile_Notification_Read(request, username, notification_id):
     """User profile notification read

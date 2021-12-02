@@ -48,8 +48,9 @@
         <div>
     </section>
     <main class="container" style="margin-top: 5px;">
+        {% if posts %}
         <div class="container__forum">
-        {% for post in posts %}
+            {% for post in posts %}
             <div class="container__card">
                 <div class="forum__about">
                     <a href="/forum/{{ post.id }}"><h1>{{ post.title }}</h1></a>
@@ -87,7 +88,18 @@
                     </div>
                 </div>
             </div>
-        {% endfor %}
+            {% endfor %}
+        {% else %}
+        <div class="container__forum">
+            <div class="container__card">
+                <div class="forum__about">
+                    <a><h1>Tidak ada forum post yang dibuat oleh {{theUser.username}}</h1></a>
+                    <p id="post-{{post.id}}"></p>
+                </div>
+                <div class="forum__info"></div>
+            </div>
+        </div>
+        {% endif %}
         </div>
 
         <div class="container__forum__button">
@@ -97,7 +109,7 @@
             <a href="/forum/create" class="create button button--flex" style="margin-top: 16px;">
                 Buat Post
             </a>
-            <a class="your__post button button--flex" style="background-color: #8ee586"></a>
+            <a class="your__post button button--flex" style="background-color: #fbfcfe"></a>
         </div>
     </main>
 
