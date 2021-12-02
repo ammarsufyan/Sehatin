@@ -103,6 +103,11 @@ img {
     padding-top: 20px;
 }
 
+.ql-editor{
+    min-height:200px;
+    background-color: white;
+}
+
 .section {
     padding: 2rem 0 4rem;
 }
