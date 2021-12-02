@@ -262,6 +262,12 @@ img {
 
 .tes__image {
     border-radius: 25px;
+    min-height: 150px;
+    max-height: 150px;
+    min-width: 240px;
+    max-width: 240px;
+    width: 100%;
+    height: 100%;
 }
 
 .tes__category {
@@ -285,6 +291,16 @@ img {
     font-size: var(--mb-0-75);
     margin-bottom: 1rem;
     overflow: hidden;
+}
+
+.tes__description-fit-text {
+    font-size: var(--mb-0-75);
+    margin-bottom: 1rem;
+    overflow: hidden;
+    max-height: 100px;
+    min-height: 100px;
+    height: 100%;
+    width: 100%;
 }
 
 .tes__button {
@@ -349,23 +365,23 @@ input[type=text]:focus {
     width: 19%;
   }
 
-  .search__container button:hover {
+.search__container button:hover {
     background: var(--first-color);
     color: #FFF;
     border: none;
     transition: background 0.2s;
-  }
+}
 
-  .artikel__link {
-      margin-top: 7rem;
-      margin-bottom: 2rem;
-      font-size: .8rem;
-      color: black;
-  }
+.artikel__link {
+    margin-top: 7rem;
+    margin-bottom: 2rem;
+    font-size: .8rem;
+    color: black;
+}
 
-  .artikel__link__abu {
-      color: #999999;
-  }
+.artikel__link__abu {
+    color: #999999;
+}
 
 
 ::-webkit-scrollbar {
