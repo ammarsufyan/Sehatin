@@ -16,6 +16,8 @@
         type="image/png" 
         href="{% static 'img/favicon/favicon.ico' %}" 
     />
+    
+    <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
     <title>Artikel | Sehat.in</title>
 </head>
 
@@ -57,11 +59,13 @@
                                 <div class="tes__wrapper__content">
                                     <a class="tes__category" href="/artikel/tag/{{ post.tag.name }}">{{ post.tag.name }}</a>
                                     <a href="artikel/{{ post.id }}"><h2 class="tes__title">{{ post.title }}</h2></a>
-                                    <div id="desc-{{ post.id }}">{% autoescape off %}{{ post.content|slice:"0:50" }}...{% endautoescape %}</div>
-                                    <script>
-                                    x = document.getElementById("desc-{{ post.id }}").getElementsByTagName("P")[0];
-                                    x.classList.add("tes__description");
-                                    </script>
+                                    <p id="post-{{post.id}}" class="tes__description">
+                                        <script>
+                                            var x = jQuery('{% autoescape off %}{{post.content}}{% endautoescape %}').text();
+                                            // write it
+                                            document.getElementById("post-{{post.id}}").innerHTML = x.slice(0,50);
+                                        </script>
+                                    </p>
                                 </div>
                             </div>
                         </div>

@@ -146,7 +146,7 @@
                             <div class="tes__wrapper__content">
                                 <a class="tes__category" href="">{{ latest_forum.0.tag.name }}<a>
                                 <h2 class="tes__title">{{ latest_forum.0.title }}</h2>
-                                <div id="forum-{{ latest_forum.0.id }}">{% autoescape off %}{{ latest_forum.0.content|slice:"0:50" }}...{% endautoescape %}</div>
+                                {% comment %} <div id="forum-{{ latest_forum.0.id }}">{% autoescape off %}{{ latest_forum.0.content|slice:"0:50" }}...{% endautoescape %}</div> {% endcomment %}
                                 <script>
                                 x = document.getElementById("forum-{{ latest_forum.0.id }}").getElementsByTagName("P")[0];
                                 x.classList.add("tes__description");
@@ -163,7 +163,7 @@
                             <div class="tes__wrapper__content">
                                 <a class="tes__category" href="">{{ latest_forum.1.tag.name }}<a>
                                 <h2 class="tes__title">{{ latest_forum.1.title }}</h2>
-                                <div id="forum-{{ latest_forum.1.id }}">{% autoescape off %}{{ latest_forum.1.content|slice:"0:50" }}...{% endautoescape %}</div>
+                                {% comment %} <div id="forum-{{ latest_forum.1.id }}">{% autoescape off %}{{ latest_forum.1.content|slice:"0:50" }}...{% endautoescape %}</div> {% endcomment %}
                                 <script>
                                 x = document.getElementById("forum-{{ latest_forum.1.id }}").getElementsByTagName("P")[0];
                                 x.classList.add("tes__description");
@@ -180,7 +180,7 @@
                             <div class="tes__wrapper__content">
                                 <a class="tes__category" href="">{{ latest_forum.2.tag.name }}<a>
                                 <h2 class="tes__title">{{ latest_forum.2.title }}</h2>
-                                <div id="forum-{{ latest_forum.2.id }}">{% autoescape off %}{{ latest_forum.2.content|slice:"0:50" }}...{% endautoescape %}</div>
+                                {% comment %} <div id="forum-{{ latest_forum.2.id }}">{% autoescape off %}{{ latest_forum.2.content|slice:"0:50" }}...{% endautoescape %}</div> {% endcomment %}
                                 <script>
                                 x = document.getElementById("forum-{{ latest_forum.2.id }}").getElementsByTagName("P")[0];
                                 x.classList.add("tes__description");

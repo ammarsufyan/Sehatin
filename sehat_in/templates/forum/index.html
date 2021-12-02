@@ -18,7 +18,8 @@
         type="image/png" 
         href="{% static 'img/favicon/favicon.ico' %}" 
     />
-
+    
+    <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
     <title>Forum | Sehat.in</title>
 </head>
 <body>
@@ -57,7 +58,13 @@
                 <div class="forum__about">
                     <a href="/forum/{{ post.id }}"><h1>{{ post.title }}</h1></a>
                     <a class="forum__category" href="/forum/tag/{{ post.tag.name|space_to_dash }}">{{ post.tag.name }}<a>
-                    {% autoescape off %}{{ post.content|slice:"0:50" }}...{% endautoescape %}
+                    <p id="post-{{post.id}}">
+                        <script>
+                            var x = jQuery('{% autoescape off %}{{post.content}}{% endautoescape %}').text();
+                            // write it
+                            document.getElementById("post-{{post.id}}").innerHTML = x.slice(0,50);
+                        </script>
+                    </p>    
                 </div>
                 <div class="forum__info">
                     <div>
