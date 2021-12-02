@@ -29,6 +29,15 @@
                 <i class="uil uil-angle-left"></i>
             </a>
             <h3>Edit Artikel</h3>
+            {% if messages %}
+            <div class="message-alert" style="text-align: center;">
+                {% for message in messages %}
+                <div class="message-alert-content">
+                    <p style="color:red">{{ message.message }}</p>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
         </div>
         <div class="input__area">
             {% csrf_token %}
