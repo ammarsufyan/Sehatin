@@ -24,6 +24,10 @@
     justify-content: space-between;
 }
 
+.comment-content {
+    overflow-wrap: break-word;
+}
+
 .account_info {
     display: flex;
     font-size: .8rem;

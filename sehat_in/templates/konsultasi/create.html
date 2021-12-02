@@ -19,13 +19,13 @@
 
     <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
 
-    <title>Create Tanya Jawab | Sehat.in</title>
+    <title>Create Konsultasi | Sehat.in</title>
 </head>
 <body class="grey">
 
     <main class="container create_post_container">
         <div class="create_post_header">
-            <a href="/tanya-jawab">
+            <a href="/konsultasi">
                 <i class="uil uil-angle-left"></i>
             </a>
     
@@ -68,7 +68,7 @@
                 </div>
                 <div>
                     <button class="submit_post button button__flex" value="Create" onclick="createPost()">Submit</button>
-                    <button class="cancel_post button button_flex" onclick="location.href='/tanya-jawab';">Cancel</button>
+                    <button class="cancel_post button button_flex" onclick="location.href='/konsultasi';">Cancel</button>
                 </div>
             </div>
         </div>
@@ -119,7 +119,7 @@
                 var tag = $('#tag').val();
                 var csrf = $('input[name=csrfmiddlewaretoken]').val();
                 $.ajax({
-                    url: '/tanya-jawab/create',
+                    url: '/konsultasi/create',
                     type: 'POST',
                     data: {
                         'csrfmiddlewaretoken': csrf,
@@ -131,12 +131,12 @@
                     success: function(data) {
                         // data returned on success is post id
                         if (data == 'error') {
-                            window.location.href = '/tanya-jawab/create';
+                            window.location.href = '/konsultasi/create';
                         } else
                         if (data == 'limit')  {
                             alert('Character length invalid!')
                         } else {
-                            window.location.href = '/tanya-jawab/' + data.toString();
+                            window.location.href = '/konsultasi/' + data.toString();
                         }
                     }
                 });

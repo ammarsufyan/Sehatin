@@ -427,10 +427,7 @@ def forum_Like(request, id, title):
 
                 # Get amount of posts like
                 likes = Like.objects.filter(post=post)
-                names = []
-                for like in likes:
-                    names.append(like.user.username)
-                jsonData = {'likes': likes.count(), 'names': names}
+                jsonData = {'likes': likes.count()}
 
                 # Increase the post likes
                 post.likes += 1
@@ -442,10 +439,7 @@ def forum_Like(request, id, title):
 
                 # Get amount of posts like
                 likes = Like.objects.filter(post=post)
-                names = []
-                for like in likes:
-                    names.append(like.user.username)
-                jsonData = {'likes': likes.count(), 'names': names}
+                jsonData = {'likes': likes.count()}
 
                 # Decrease the post likes
                 post.likes -= 1
@@ -453,7 +447,7 @@ def forum_Like(request, id, title):
 
                 return HttpResponse(json.dumps(jsonData))
         else: # If user is not logged in
-            jsonData = {'likes': 0, 'names': 'error'}
+            jsonData = {'likes': 0}
             return HttpResponse(json.dumps(jsonData))
     else: # If no request, throw 404
         raise Http404
@@ -571,8 +565,8 @@ def forum_Comment_Like(request, id, title, comment_id):
         if request.user.is_authenticated:
             comment = Comment.objects.get(id=comment_id)
             user = request.user
-            like = Like.objects.filter(user=user, comment=comment)
             post = Forum.objects.get(id=id)
+            like = Like.objects.filter(user=user, comment=comment)
 
             if like.count() == 0: # If user hasn't liked this comment
                 like = Like(user=user, comment=comment, post=post)
@@ -580,10 +574,7 @@ def forum_Comment_Like(request, id, title, comment_id):
 
                 # Get amount of comments like
                 likes = Like.objects.filter(comment=comment)
-                names = []
-                for like in likes:
-                    names.append(like.user.username)
-                jsonData = {'likes': likes.count(), 'names': names}
+                jsonData = {'likes': likes.count()}
 
                 # Increase the comment likes
                 comment.likes += 1
@@ -595,10 +586,7 @@ def forum_Comment_Like(request, id, title, comment_id):
 
                 # Get amount of comments like
                 likes = Like.objects.filter(comment=comment)
-                names = []
-                for like in likes:
-                    names.append(like.user.username)
-                jsonData = {'likes': likes.count(), 'names': names}
+                jsonData = {'likes': likes.count()}
 
                 # Decrease the comment likes
                 comment.likes -= 1
@@ -722,7 +710,7 @@ def forum_Comment_Report(request, id, title, comment_id):
             # If have not reported this comment
             if report.count() == 0:                
                 # Report comment
-                report = Report(user=user, reportedUser=comment.user, post=comment.post, comment=comment, reason=reason, reportType='comment')
+                report = Report(user=user, reportedUser=comment.user, comment=comment, reason=reason, reportType='comment')
                 report.save()
 
                 # Get amount of reports
@@ -787,14 +775,14 @@ def profile_Posts(request, username):
     except:
         raise Http404
 
-def profile_Tanya_Jawab(request, username):
+def profile_Konsultasi(request, username):
     """Get all posts of a user"""
     try:
         # get the user profile
         user = User.objects.get(username=username)
 
         # get the user posts 25 per page
-        paginator = Paginator(Forum.objects.filter(user=user).order_by('-created_at'), 25)
+        paginator = Paginator(Konsultasi.objects.filter(user=user).order_by('-created_at'), 25)
         page = request.GET.get('page')
         posts = paginator.get_page(page)
 
@@ -805,7 +793,7 @@ def profile_Tanya_Jawab(request, username):
         else:
             notifications = None
 
-        return render(request, 'profile/tanya-jawab.html', {'theUser': user, 'post_konsul': posts, 'notifications': notifications})
+        return render(request, 'profile/konsultasi.html', {'theUser': user, 'post_konsul': posts, 'notifications': notifications})
     except:
         raise Http404
     
@@ -1053,7 +1041,7 @@ def konsultasi(request):
         # Check if no result found
         if paginator.count == 0:
             messages.info(request, 'No result found')
-            return redirect('/tanya-jawab')
+            return redirect('/konsultasi')
     else:
         paginator = Paginator(Konsultasi.objects.all().order_by('-created_at'), 25)
         page = request.GET.get('page')
@@ -1131,13 +1119,13 @@ def konsultasi_Tag(request, tagName):
     else:
         raise Http404
 
-def konsultasi_Delete(request):
+def konsultasi_Delete(request, id, title):
     """Delete konsultasi"""
         # Check if user is logged in and it's the post owner
     if request.method == 'POST': # If a request is made
         mode = request.POST.get('mode')
         user = request.user
-        konsultasi = Konsultasi.objects.get(id=request.POST.get('id'))
+        konsultasi = Konsultasi.objects.get(id=id)
 
         if not user.is_superuser:
             if user != konsultasi.user:
@@ -1180,7 +1168,7 @@ def konsultasi_Url(request, id, title):
             notifications = None
         # To ensure the vanity url is always exactly the title
         if title.replace('-', ' ') != konsultasi.title.replace('?', ''):
-            return redirect('/tanya-jawab/' + str(konsultasi.id) + '/' + konsultasi.title.replace(' ', '-').replace('?', ''))
+            return redirect('/konsultasi/' + str(konsultasi.id) + '/' + konsultasi.title.replace(' ', '-').replace('?', ''))
         
         if konsultasi is not None:
             comments = Comment.objects.filter(comment_Konsultasi=konsultasi).order_by('created_at') # oldest to newest
@@ -1200,7 +1188,7 @@ def konsultasi_Content(request, id):
         except:
             raise Http404
 
-        return redirect('/tanya-jawab/' + str(konsultasi.id) + '/' + konsultasi.title.replace(' ', '-'))
+        return redirect('/konsultasi/' + str(konsultasi.id) + '/' + konsultasi.title.replace(' ', '-'))
     else:
         # return 404
         raise Http404
@@ -1301,7 +1289,7 @@ def konsultasi_Comment_Delete(request, id, title, comment_id):
             post.save()
 
             # Get current comment count
-            comments = Comment.objects.filter(comment_Forum=comment.comment_Forum)
+            comments = Comment.objects.filter(comment_Konsultasi=comment.comment_Konsultasi)
             dataJson = {'status': 'success', 'message': comments.count()}
             return HttpResponse(json.dumps(dataJson))
         else: # If user is not logged in

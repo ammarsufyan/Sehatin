@@ -57,6 +57,12 @@ main {
 
 .profile {
     padding: 1.5rem 3rem 3rem 1rem;
+    max-width: 520px;
+}
+
+.profile p {
+    overflow-wrap: break-word;
+    overflow: hidden;
 }
 
 .profile h1 {
@@ -77,10 +83,9 @@ main {
 }
 
 .container_name_role {
-    margin-left: 3rem;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: left;
 }
 
 .name {

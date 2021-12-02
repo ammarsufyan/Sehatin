@@ -20,13 +20,12 @@
 </head>
 <body>
     {% include 'templates/header.html' %}
-
     <main>
         <div class="container">
             <div class="container__profile">
                 <div class="navigation">
                     <div class="info">
-                        <img src="{% static 'img/avatar-big.svg' %}" alt="profile-pict">
+                        <img src="{% static 'img/default_profile.png' %}" alt="profile-pict">
                         <p><b>{{ user.first_name }} {{ user.last_name }}</b></p>
                         <p class="email">{{ user.email }}</p>
                     </div>
@@ -35,6 +34,18 @@
                             <a class="button__profile" href="/profile/{{ user.username }}">
                                 <img src="{% static 'img/my_profile_icon.svg' %}" alt="icon">
                                 <p>My Profile</p>
+                            </a>
+                        </div>
+                        <div>
+                            <a class="button__profile" href="/profile/{{ user.username }}/posts">
+                                <img src="{% static 'img/my_forum.png' %}" alt="icon">
+                                <p>My Forum Post</p>
+                            </a>
+                        </div>
+                        <div>
+                            <a class="button__profile" href="/profile/{{ user.username }}/tanya-jawab">
+                                <img src="{% static 'img/my_question.png' %}" alt="icon">
+                                <p>My Question</p>
                             </a>
                         </div>
                         <div>
@@ -56,12 +67,10 @@
                             </a>
                         </div>
                     </div>
-    
                 </div>
                 <div class="profile">
                     <h1>Edit Profile</h1>
                     <div class="profile__header">
-                        <img class="change__profile__pict" src="{% static 'img/change_avatar.svg' %}" alt="profile-pict-change" id="profileImg">
                         <div class="container_name_role">
                             <p class="name">{{ user.first_name }} {{ user.last_name }}</p>
                             <p class="role">Role: {% if user_profile.role %}{{ user_profile.role }}{% else %}User{% endif %}</p>

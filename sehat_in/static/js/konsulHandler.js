@@ -1,5 +1,38 @@
 // The variable that is passed are only for the api to works
 // The backend process is handled in views.js
+// Quill
+var myToolbar = [
+    ['bold', 'italic', 'underline', 'strike'],       
+    ['blockquote'],
+
+    [{ 'color': [] }, { 'background': [] }],         
+    [{ 'font': [] }],
+    [{ 'align': [] }],
+
+    ['clean'],                                        
+    ['image']
+];
+
+
+function imageHandler() {
+    var range = this.quill.getSelection();
+    var value = prompt('please copy paste the image url here.');
+    if (value == "") { // If empty value
+        return;
+    }
+
+    // verify the url, must be an image and a https image
+    if (value.startsWith('https://') && (value.endsWith('.png') || value.endsWith('.jpg') || value.endsWith('.jpeg'))) {
+        this.quill.insertEmbed(range.index, 'image', value, Quill.sources.USER);
+    } else {
+        // Check if img is http
+        if (value.startsWith('http://')) {
+            alert('Image linked needs to be secured (HTTPS)!');
+        } else {
+            alert('Invalid linked image! Image must be a png, jpg or jpeg!');
+        }
+    }
+}
 
 function deletePost(logged_in, postid, title, csrf_token, mode) {
     /* delete post, alert post has been deleted successfully and redirect to post lists on success, alert fail otherwise */
@@ -46,18 +79,19 @@ function deletePost(logged_in, postid, title, csrf_token, mode) {
     }
     console.log(title.replaceAll(' ', '-').replaceAll('?', ''));
     $.ajax({
-        url: '/tanya-jawab/' + postid + '/' + title.replaceAll(' ', '-').replaceAll('?', '') + '/delete',
+        url: '/konsultasi/' + postid + '/' + title.replaceAll(' ', '-').replaceAll('?', '') + '/delete',
         type: 'POST',
         data: {
             'csrfmiddlewaretoken': csrf_token,
             'mode': mode,
+            'id': postid,
             'reason': reason.trim()
         },
         success: function (data) {
             dataJson = JSON.parse(data);
             if (dataJson.status == 'success') {
                 alert("Post has been deleted successfully!");
-                window.location.href = '/tanya-jawab';
+                window.location.href = '/konsultasi';
             } else {
                 alert("Error! Fail to delete post!" + dataJson.message);
             }
@@ -92,7 +126,7 @@ function deleteComment(logged_in, postid, title, commentId, csrf_token, mode) {
             return;
         } else {
             $.ajax({
-                url: '/tanya-jawab/' + postid + '/' + title.replaceAll(' ', '-').replaceAll('?', '') + '/comment/' + commentId + '/delete',
+                url: '/konsultasi/' + postid + '/' + title.replaceAll(' ', '-').replaceAll('?', '') + '/comment/' + commentId + '/delete',
                 type: 'POST',
                 data: {
                     'csrfmiddlewaretoken': csrf_token,
@@ -118,7 +152,7 @@ function deleteComment(logged_in, postid, title, commentId, csrf_token, mode) {
         }
 
         $.ajax({
-            url: '/tanya-jawab/' + postid + '/' + title.replaceAll(' ', '-').replaceAll('?', '') + '/comment/' + commentId + '/delete',
+            url: '/konsultasi/' + postid + '/' + title.replaceAll(' ', '-').replaceAll('?', '') + '/comment/' + commentId + '/delete',
             type: 'POST',
             data: {
                 'csrfmiddlewaretoken': csrf_token,
@@ -211,7 +245,7 @@ function editComment(logged_in, id, title, comment_id, csrf_token) {
         }
 
         $.ajax({
-            url: '/tanya-jawab/' + id + '/' + title.replaceAll(' ', '-').replaceAll('?', '') + '/comment/' + comment_id + '/edit',
+            url: '/konsultasi/' + id + '/' + title.replaceAll(' ', '-').replaceAll('?', '') + '/comment/' + comment_id + '/edit',
             type: 'POST',
             data: {
                 'csrfmiddlewaretoken': csrf_token,
@@ -222,8 +256,8 @@ function editComment(logged_in, id, title, comment_id, csrf_token) {
                     // Create the div again and append the value
                     var div = document.createElement('div');
                     div.innerHTML = newValue;
-                    div.style = 'max-width: 800px;';
                     div.id = 'comment-' + comment_id;
+                    div.className = "isi_forum";
                     reset(div);
                 } else {
                     alert('Something went wrong, please try again');
@@ -239,8 +273,8 @@ function editComment(logged_in, id, title, comment_id, csrf_token) {
         // Create the div again and append the value
         var div = document.createElement('div');
         div.innerHTML = value;
-        div.style = 'max-width: 800px;';
         div.id = 'comment-' + comment_id;
+        div.className = "isi_forum";
         reset(div);
     }
     // Append the buttons to quill
@@ -267,7 +301,7 @@ function comment(logged_in, id, title, csrf_token) {
         alert('Comment to long! Max character allowed including formatting are 10000 characters long');
     } else {
         $.ajax({
-            url: '/tanya-jawab/' + id + '/' + title.replaceAll(' ', '-').replaceAll('?', '') + '/comment',
+            url: '/konsultasi/' + id + '/' + title.replaceAll(' ', '-').replaceAll('?', '') + '/comment',
             type: 'POST',
             data: {
                 'csrfmiddlewaretoken': csrf_token,
@@ -276,7 +310,7 @@ function comment(logged_in, id, title, csrf_token) {
             success: function (data) {
                 if (data == 'success') {
                     // Refresh the page
-                    window.location.href = '/tanya-jawab/' + id + '/' + title.replaceAll(' ', '-').replaceAll('?', '');
+                    window.location.href = '/konsultasi/' + id + '/' + title.replaceAll(' ', '-').replaceAll('?', '');
                 } else
                 if (data == 'limit') {
                     alert('Character length invalid!')

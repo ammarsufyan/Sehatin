@@ -28,8 +28,8 @@
                         </a>
                     </li>
                     <li class="nav__item">
-                        <a href="/tanya-jawab" id="tanya-jawab" class="nav__link">
-                            <i class="uil uil-info nav__icon"></i> Tanya Jawab
+                        <a href="/konsultasi" id="konsultasi" class="nav__link">
+                            <i class="uil uil-info nav__icon"></i> Konsultasi
                         </a>
                     </li>
 
@@ -50,12 +50,12 @@
                                         {% if notif.post_Forum %}
                                             <a href="/forum/{{ notif.post_Forum.id }}/{{ notif.post_Forum.title|remove_unused }}#comments-{{ notif.comment.id }}">{{ notif.notification_Content }}</a>
                                         {% elif notif.post_Konsultasi %}
-                                            <a href="/tanya-jawab/{{ notif.post_Konsultasi.id }}/{{ notif.post_Konsultasi.title|remove_unused }}#comments-{{ notif.comment.id }}">{{ notif.notification_Content }}</a>
+                                            <a href="/konsultasi/{{ notif.post_Konsultasi.id }}/{{ notif.post_Konsultasi.title|remove_unused }}#comments-{{ notif.comment.id }}">{{ notif.notification_Content }}</a>
                                         {% elif notif.comment %}
                                             {% if notif.post_Forum %}
                                                 <a href="/forum/{{ notif.post.id }}/{{ notif.post.title|remove_unused }}#comments-{{ notif.comment.id }}">{{ notif.notification_Content }}</a>
                                             {% else %}
-                                                <a href="/tanya-jawab/{{ notif.post.id }}/{{ notif.post.title|remove_unused }}#comments-{{ notif.comment.id }}">{{ notif.notification_Content }}</a>
+                                                <a href="/konsultasi/{{ notif.post.id }}/{{ notif.post.title|remove_unused }}#comments-{{ notif.comment.id }}">{{ notif.notification_Content }}</a>
                                             {% endif %}
                                         {% endif %}
                                     {% endif %}
@@ -74,7 +74,9 @@
                             </i>
                         </li>
                         <li>
-                            <img src="{% static 'img/avatar.svg' %}" alt="">
+                            <div class="avatar">
+                                <img src="{% static 'img/default_profile.png' %}" alt="">
+                            </div>
                         </li>
                     </ul>
                 {% else %}

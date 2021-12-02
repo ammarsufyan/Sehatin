@@ -27,35 +27,47 @@
       <div class="container__profile">
         <div class="navigation">
           <div class="info">
-            <img src="{% static 'img/avatar-big.svg' %}" alt="profile-pict" />
+            <img src="{% static 'img/default_profile.png' %}" alt="profile-pict" />
             <p><b>{{ theUser.first_name }} {{ theUser.last_name }}</b></p>
             <p class="email">{{ theUser.email }}</p>
           </div>
-          <div class="button__container">
-            <div>
-              <a class="button__profile" href="/profile/{{ theUser.username }}">
-                <img src="{% static 'img/my_profile_icon.svg' %}" alt="icon" />
-                <p>My Profile</p>
-              </a>
-            </div>
-            <div>
-              <a class="button__profile" href="/profile/{{ theUser.username }}/history">
-                <img src="{% static 'img/tes_history_icon.svg' %}" alt="icon" />
-                <p>My Test History</p>
-              </a>
-            </div>
-            <div>
-              <a class="button__profile" href="/profile/{{ theUser.username }}/settings">
-                <img src="{% static 'img/edit_icon.svg' %}" alt="icon" />
-                <p>Edit Profile</p>
-              </a>
-            </div>
-            <div>
-              <a class="button__profile logout" href="/logout">
-                <img src="{% static 'img/logout_icon.svg' %}" alt="icon" />
-                <p>Logout</p>
-              </a>
-            </div>
+          <div class="button__container">                      
+              <div>
+                  <a class="button__profile" href="/profile/{{ theUser.username }}">
+                      <img src="{% static 'img/my_profile_icon.svg' %}" alt="icon">
+                      <p>My Profile</p>
+                  </a>
+              </div>
+              <div>
+                  <a class="button__profile" href="/profile/{{ theUser.username }}/posts">
+                      <img src="{% static 'img/my_forum.png' %}" alt="icon">
+                      <p>My Forum Post</p>
+                  </a>
+              </div>
+              <div>
+                  <a class="button__profile" href="/profile/{{ theUser.username }}/tanya-jawab">
+                      <img src="{% static 'img/my_question.png' %}" alt="icon">
+                      <p>My Question</p>
+                  </a>
+              </div>
+              <div>
+                  <a class="button__profile" href="/profile/{{ theUser.username }}/history">
+                      <img src="{% static 'img/tes_history_icon.svg' %}" alt="icon">
+                      <p>My Test History</p>
+                  </a>
+              </div>
+              <div>
+                  <a class="button__profile" href="/profile/{{ theUser.username }}/settings">
+                      <img src="{% static 'img/edit_icon.svg' %}" alt="icon">
+                      <p>Edit Profile</p>
+                  </a>
+              </div>
+              <div>
+                  <a class="button__profile logout" href="/logout">
+                      <img src="{% static 'img/logout_icon.svg' %}" alt="icon">
+                      <p>Logout</p>
+                  </a>
+              </div>
           </div>
         </div>
         <div class="history__container profile">
@@ -103,7 +115,6 @@
                             'csrfmiddlewaretoken': '{{ csrf_token }}'
                           },
                           success: function(data){
-                            alert('Data berhasil dihapus');
                             window.location.reload();
                           }
                         });

@@ -42,12 +42,18 @@ function editPost(logged_in, id, title) {
     window.location.href = '/forum/' + id + '/' + title.replaceAll(' ', '-').replaceAll('?', '') + '/edit';
 }
 
+var disableLikePost = false;
 function likePost(logged_in, id, title, csrf_token) {
     /* like post, if success edit likes and liker, if fail alert fail */
     if (logged_in == "False") {
         alert('You must be logged in to like a post');
         return;
     }
+    // prevent user from spamming the button
+    if (disableLikePost == true) {
+        return;
+    }
+    disableLikePost = true;
 
     $.ajax({
         url: '/forum/' + id + '/' + title.replaceAll(' ', '-').replaceAll('?', '') + '/like',
@@ -57,14 +63,10 @@ function likePost(logged_in, id, title, csrf_token) {
         },
         success: function (data) {
             dataJson = JSON.parse(data);
-            if (dataJson.names != 'error') {
-                $('#post-like-count').html(dataJson.likes);
-                $('#post-liker').html(dataJson.names.join(', '));
-            } else {
-                alert("Error! Fail to like post!");
-            }
+            $('#post-like-count').html(dataJson.likes);
         }
     });
+    disableLikePost = false;
 }
 
 function deletePost(logged_in, postid, title, csrf_token, mode) {
@@ -376,8 +378,8 @@ function editComment(logged_in, id, title, comment_id, csrf_token) {
                     // Create the div again and append the value
                     var div = document.createElement('div');
                     div.innerHTML = newValue;
-                    div.style = 'max-width: 800px;';
                     div.id = 'comment-' + comment_id;
+                    div.className = "isi_forum";
                     reset(div);
                 } else {
                     alert('Something went wrong, please try again');
@@ -393,8 +395,8 @@ function editComment(logged_in, id, title, comment_id, csrf_token) {
         // Create the div again and append the value
         var div = document.createElement('div');
         div.innerHTML = value;
-        div.style = 'max-width: 800px;';
         div.id = 'comment-' + comment_id;
+        div.className = "isi_forum";
         reset(div);
     }
     // Append the buttons to quill
@@ -403,13 +405,18 @@ function editComment(logged_in, id, title, comment_id, csrf_token) {
     valueDiv.appendChild(cancelButton);
 }
 
-
+var disableLikeComment = false;
 function likeComment(logged_in, post_id, title, comment_id, csrf_token) {
     /* like comment, if success edit likes count, if fail alert fail */
     if (logged_in == "False") {
         alert('You must be logged in to like a comment');
         return;
     }
+    // prevent user from spamming the button
+    if (disableLikeComment == true) {
+        return;
+    }
+    disableLikeComment = true;
 
     $.ajax({
         url: '/forum/' + post_id + '/' + title.replaceAll(' ', '-').replaceAll('?', '') + '/comment/' + comment_id + '/like',
@@ -419,13 +426,10 @@ function likeComment(logged_in, post_id, title, comment_id, csrf_token) {
         },
         success: function (data) {
             dataJson = JSON.parse(data);
-            if (dataJson.names != 'error') {
-                $('#comment-like-count-' + comment_id).html(dataJson.likes);
-            } else {
-                alert("Error! Fail to like comment!");
-            }
+            $('#comment-like-count-' + comment_id).html(dataJson.likes);
         }
     });
+    disableLikeComment = false;
 }
 
 function comment(logged_in, id, title, csrf_token) {

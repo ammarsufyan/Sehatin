@@ -104,7 +104,11 @@
 
         <div class="container__forum__button">
             <a class="create button button--flex" style="background-color: #0270a6">
-                <span style="text-align: center;">Sedang Melihat Post Anda</spam>
+                {% if theUser == user %}
+                <span style="text-align: center;">Sedang Melihat Post Forum Anda</spam>
+                {% else %}
+                <span style="text-align: center;">Sedang Melihat Post Forum {{ theUser.username }}</spam>
+                {% endif %}
             </a>
             <a href="/forum/create" class="create button button--flex" style="margin-top: 16px;">
                 Buat Post
