@@ -1632,6 +1632,7 @@ def artikel(request):
     else:
         notifications = None
     searching = False
+    nextPage = False
     # Check if there is a search
     if request.GET.get('q'):
         query = request.GET.get('q')
@@ -1648,11 +1649,14 @@ def artikel(request):
         paginator = Paginator(Artikel.objects.all().order_by('-created_at'), 25)
         page = request.GET.get('page')
         posts_artikel = paginator.get_page(page)
+        if page:
+            if int(page) > 1:
+                nextPage = True
 
     # Get top 3 popular artikel sorted by views
     popular_artikel = Artikel.objects.all().order_by('-views')[:3]
 
-    return render(request, 'artikel/index.html', {'posts': posts_artikel, 'tags': tags, 'popular_artikel': popular_artikel, 'searching': searching, 'notifications': notifications})
+    return render(request, 'artikel/index.html', {'posts': posts_artikel, 'tags': tags, 'popular_artikel': popular_artikel, 'searching': searching, 'nextPage': nextPage, 'notifications': notifications})
 
 def artikel_tag(request, tagName):
     """See post by tag"""

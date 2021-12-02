@@ -40,6 +40,7 @@
         </section>
 
         {% if not searching %}
+            {% if not nextPage %}
             <section class="container home__tes">
                 <div class="tes__header">
                     <h1>Artikel Populer</h1>
@@ -68,7 +69,26 @@
                     {% endfor %}
                 </div>
             </section>        
+            <script>
+                var change = document.getElementById("artikel");
+                change.classList.add("active-link");
+                change.href = "#";
+            </script>
+            {% else %}
+            <script>
+                var change = document.getElementById("artikel");
+                change.classList.add("active-link");
+                change.href = "/artikel";
+            </script>
+            {% endif %}
+        {% else %}
+        <script>
+            var change = document.getElementById("artikel");
+            change.classList.add("active-link");
+            change.href = "/artikel";
+        </script>
         {% endif %}
+
 
         
         <section class="container home__tes">
@@ -112,12 +132,6 @@
         <a href="?page={{ posts.next_page_number }}">Next</a>
         <a href="?page={{ posts.paginator.num_pages }}">Last &raquo</a>
     {% endif %}
-
-    <script>
-    var change = document.getElementById("artikel");
-    change.classList.add("active-link");
-    change.href = "#";
-    </script>
 
     <script src="{% static 'js/swiper-bundle.min.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
