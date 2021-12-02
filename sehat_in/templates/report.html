@@ -51,7 +51,7 @@
                     {% else %}
                     <p style="width: auto; max-width: 100%; color: white;" id="report-text-{{ report.id }}">
                     {% endif %}
-                        Reason "{{ report.reason }}" Reported by {{ report.user }} at {{ report.created_at }}><br>
+                        Reason "{{ report.reason }}" Reported by {{ report.user }} at {{ report.created_at }}<br>
                         <b>Report Information:</b> <br> 
                         {% if report.reportType == 'post' %}
                             {% if report.post %}
