@@ -37,6 +37,7 @@ main {
 
 .forum__about p {
     font-size: 0.8rem;
+    min-width: 25rem;
 }
 
 .forum__info {
