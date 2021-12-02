@@ -5,45 +5,80 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-    <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-</head>
-<body>
-    {% include 'templates/header.html' %}
 
-    <div class="post-form">
-        {% csrf_token %}
-        <p>Title</p>
-        <input type="text" name="title" placeholder="{{post.title}}" readonly>
-        <p>Content</p>
-        <div id="editor"></div>
-        <p>Tag</p>
-        <select name="tag" id="tag">
-            {% if user.is_superuser %}
-                {% for tag in tags %}
-                    {% if tag.id == post.tag_id %}
-                        <option value="{{ tag.name }}" selected>{{ tag.name }}</option>
-                    {% else %}
-                        <option value="{{ tag.name }}">{{ tag.name }}</option>
-                    {% endif %}
-                {% endfor %}
-            {% else %}
-                {% for tag in tags %}
-                    {% if not tag.adminOnly %}
-                        {% if tag.id == post.tag_id %}
-                            <option value="{{ tag.name }}" selected>{{ tag.name }}</option>
-                        {% else %}
-                            <option value="{{ tag.name }}">{{ tag.name }}</option>
-                        {% endif %}
-                    {% endif %}
-                {% endfor %}
-            {% endif %}
-        </select>
-        <br>
-        <input type="submit" value="Edit" onclick="editThePost()">
-    </div>
+    <link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'css/forum.css' %}">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+
+    <link rel="icon" 
+        type="image/png" 
+        href="{% static 'img/favicon/favicon.ico' %}" 
+    />
+
+    <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+
+    <style>
+        .ql-editor{
+            min-height:200px;
+            background-color: white;
+        }
+    </style>
+
+    <title>Edit Forum Post | Sehat.in</title>
+</head>
+<body class="grey">
+
+    <main class="container create_post_container">
+        <div class="create_post_header">
+            <a href="/forum">
+                <i class="uil uil-angle-left"></i>
+            </a>
+    
+            <h3>Edit Forum Post</h3>
+        </div>
+        <hr>
+
+        <div class="input__area">
+            {% csrf_token %}
+            <p>Title
+            <input type="text" name="title" placeholder="{{post.title}}" readonly>
+            </p>
+            <div id="editor"></div>
+            <div class="button__area" >
+                <div>
+                    <p>Tag
+                        <select name="tag" id="tag">
+                            {% if user.is_superuser %}
+                                {% for tag in tags %}
+                                    {% if tag.id == post.tag_id %}
+                                        <option value="{{ tag.name }}" selected>{{ tag.name }}</option>
+                                    {% else %}
+                                        <option value="{{ tag.name }}">{{ tag.name }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                {% for tag in tags %}
+                                    {% if not tag.adminOnly %}
+                                        {% if tag.id == post.tag_id %}
+                                            <option value="{{ tag.name }}" selected>{{ tag.name }}</option>
+                                        {% else %}
+                                            <option value="{{ tag.name }}">{{ tag.name }}</option>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </select>
+                    </p>
+                </div>
+                <div>
+                    <button class="submit_post button button__flex" value="Edit" onclick="editThePost()">Submit</button>
+                    <button class="cancel_post button button_flex" onclick="location.href='/forum/{{post.id}}';">Cancel</button>
+                </div>
+            </div>
+        </div>
+    </main>
 
     <script>
         function editThePost() {
@@ -127,6 +162,7 @@
         quill.root.innerHTML = value.trim();
     </script>
 
-    {% include 'templates/footer.html' %}
+    <script src="{% static 'js/swiper-bundle.min.js' %}"></script>
+    <script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>
