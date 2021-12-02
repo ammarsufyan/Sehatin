@@ -42,7 +42,6 @@
     {% endif %}
 
     <main class="container">
-
         <div class="container__forum">
         {% for post in posts %}
             <div class="container__card">
@@ -87,6 +86,12 @@
             <a href="/profile/{{ user.username}}/posts" class="your__post button button--flex">
                 Your Post
             </a>
+            <a class="your__post button button--flex" style="background-color: #8ee586"></a>
+            {% else %}
+            <a href="/auth/login" class="create button button--flex" style="text-align:center;">
+                Login to Create Post
+            </a>
+            <a class="your__post button button--flex" style="background-color: #8ee586"></a>
             {% endif %}
         </div>
     </main>
