@@ -1,46 +1,3 @@
-{% comment %} <!DOCTYPE html>
-<html lang="en">
-{% load static %}
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create Post</title>
-    <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}">
-    <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-</head>
-<body>
-    {% include 'templates/header.html' %}
-
-    <div class="post-form">
-        {% csrf_token %}
-        <p>Title</p>
-        <input type="text" name="title" placeholder="Title" autocomplete="off">
-        <p>Content</p>
-        <div id="editor"></div>
-        <p>Tag</p>
-        <select name="tag" id="tag">
-            {% if user.is_superuser %}
-                {% for tag in tags %}
-                    <option value="{{ tag.name }}">{{ tag.name }}</option>
-                {% endfor %}
-            {% else %}
-                {% for tag in tags %}
-                    {% if not tag.adminOnly %}
-                        <option value="{{ tag.name }}">{{ tag.name }}</option>
-                    {% endif %}
-                {% endfor %}
-            {% endif %}
-        </select>
-        <br>
-        <input type="submit" value="Create" onclick="createPost()">
-    </div>
-
-    {% include 'templates/footer.html' %}
-</body>
-</html> {% endcomment %}
-
 <!DOCTYPE html>
 <html lang="en">
 {% load static %}
@@ -53,11 +10,21 @@
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="stylesheet" href="{% static 'css/forum.css' %}">
+    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 
     <link rel="icon" 
         type="image/png" 
         href="{% static 'img/favicon/favicon.ico' %}" 
     />
+
+    <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+
+    <style>
+        .ql-editor{
+            min-height:200px;
+            background-color: white;
+        }
+    </style>
 
     <title>Create Forum Post | Sehat.in</title>
 </head>
@@ -69,52 +36,40 @@
                 <i class="uil uil-angle-left"></i>
             </a>
     
-            <h3>Create Post</h3>
+            <h3>Create Forum Post</h3>
         </div>
         <hr>
 
-        {% comment %} <div class="post-form">
-            {% csrf_token %}
-            <p>Title</p>
-            <input type="text" name="title" placeholder="Title" autocomplete="off">
-            <p>Content</p>
-            <div id="editor"></div>
-            <p>Tag</p>
-            <select name="tag" id="tag">
-                {% if user.is_superuser %}
-                    {% for tag in tags %}
-                        <option value="{{ tag.name }}">{{ tag.name }}</option>
-                    {% endfor %}
-                {% else %}
-                    {% for tag in tags %}
-                        {% if not tag.adminOnly %}
-                            <option value="{{ tag.name }}">{{ tag.name }}</option>
-                        {% endif %}
-                    {% endfor %}
-                {% endif %}
-            </select>
-            <br>
-            <input type="submit" value="Create" onclick="createPost()">
-        </div> {% endcomment %}
-
         <div class="input__area">
-            <textarea id="editor" name="post"  cols="30" rows="10"></textarea>
+            {% csrf_token %}
+            <p>Title
+            <input type="text" name="title" placeholder="Title" autocomplete="off">
+            </p>
+            <div id="editor"></div>
             <div class="button__area" >
                 <div>
-                    {% comment %} <a href="#"><i class="uil uil-image"></i></a>
-                    <a href="#"><i class="uil uil-grin"></i></a> {% endcomment %}
+                    <p>Tag
+                        <select name="tag" id="tag">
+                            {% if user.is_superuser %}
+                                {% for tag in tags %}
+                                    <option value="{{ tag.name }}">{{ tag.name }}</option>
+                                {% endfor %}
+                            {% else %}
+                                {% for tag in tags %}
+                                    {% if not tag.adminOnly %}
+                                        <option value="{{ tag.name }}">{{ tag.name }}</option>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        </select>
+                    </p>
                 </div>
                 <div>
-                    <button class="submit_post button button__flex">Submit</button>
-                    <button class="cancel_post button button_flex">Cancel</button>
+                    <button class="submit_post button button__flex" value="Create" onclick="createPost()">Submit</button>
+                    <button class="cancel_post button button_flex" onclick="location.href='/forum';">Cancel</button>
                 </div>
             </div>
         </div>
-
-        <div>
-
-        </div>
-
     </main>
 
     <script>
