@@ -119,6 +119,17 @@ main {
     margin-top: 2rem;
 }
 
+.container__title {
+    margin-bottom: 2rem;
+}
+
+.forum__title {
+    margin-left: 1rem;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 10px;
+    width: 20rem;
+}
 textarea {
     resize: none;
     width: 100%;
