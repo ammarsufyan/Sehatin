@@ -20,12 +20,12 @@
     />
 
     <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
-    <title>Tanya-Jawab | Sehat.in</title>
+    <title>Konsultasi | Sehat.in</title>
 </head>
 <body>
     {% include 'templates/header.html' %}
 
-    <form action="/tanya-jawab" method="get">
+    <form action="/konsultasi" method="get">
         <section class="container search__container">
             <input type="text" name="q" placeholder="Cari disini.." value={% if q %}{{q}}{% endif %}>
             <button type="submit">Search</button>
@@ -44,7 +44,7 @@
 
     <section class="container" style="margin-top: 10px;">
         <div>
-            <a href="/forum">⟵ Kembali ke Tanya-Jawab</a>
+            <a href="/forum">⟵ Kembali ke Konsultasi</a>
         <div>
     </section>
     <main class="container flex" style="margin-top: 5px;">
@@ -52,8 +52,8 @@
         {% for post in post_konsul %}
             <div class="container__card">
                 <div class="forum__about">
-                    <a href="/tanya-jawab/{{ post.id }}"><h1>{{ post.title }}</h1></a>
-                    <a class="forum__category" href="/tanya-jawab/tag/{{ post.tag.name|space_to_dash }}">{{ post.tag.name }}<a>
+                    <a href="/konsultasi/{{ post.id }}"><h1>{{ post.title }}</h1></a>
+                    <a class="forum__category" href="/konsultasi/tag/{{ post.tag.name|space_to_dash }}">{{ post.tag.name }}<a>
                     <p id="post-{{post.id}}">
                         <script>
                         var x;
@@ -100,10 +100,10 @@
                 <span style="text-align: center;">Sedang Melihat Tag "{{ tag.name }}"</spam>
             </a>
             {% if user.is_authenticated %}
-            <a href="/tanya-jawab/create" class="create button button--flex" style="margin-top: 16px;">
+            <a href="/konsultasi/create" class="create button button--flex" style="margin-top: 16px;">
                 Ayo Tanya
             </a>
-            <a href="/profile/{{ user.username }}/tanya-jawab" class="your__post button button--flex" style="text-align:center;">
+            <a href="/profile/{{ user.username }}/konsultasi" class="your__post button button--flex" style="text-align:center;">
                 Pertanyaan Anda
             </a>
             {% else %}
@@ -139,7 +139,7 @@
     {% include 'templates/footer.html' %}
     
     <script>
-        var change = document.getElementById("tanya-jawab");
+        var change = document.getElementById("konsultasi");
         change.classList.add("active-link");
         change.href = "#";
     </script>
