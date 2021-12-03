@@ -42,21 +42,55 @@
                 {% if user.is_authenticated %}
                     <ul class="account">
                         <li>
-                            <i style="padding-bottom: 5px;" class="uil uil-bell dropdown account__icon" onclick="window.location.href='/profile/{{user.username}}/notification'">
+                            <i style="padding-bottom: 5px;" class="uil uil-bell dropdown account__icon" onclick="">
                                 {% if notifications %}
                                 <div class="dropdown-content">
                                 {% for notif in notifications %}
                                     {% if not notif.read %}
                                         {% if notif.post_Forum %}
-                                            <a href="/forum/{{ notif.post_Forum.id }}/{{ notif.post_Forum.title|remove_unused }}#comments-{{ notif.comment.id }}" onclick="markRead('{{ notif.id }}', '{{ user.username }}' ,'{{ csrf_token }}')">{{ notif.notification_Content }}</a>
+                                            <a style="cursor: pointer;" id="notif-{{notif.id}}" onclick="markRead('{{ notif.id }}', '{{ user.username }}' ,'{{ csrf_token }}'); window.location.href='/forum/{{ notif.post_Forum.id }}/{{ notif.post_Forum.title|remove_unused }}#comments-{{ notif.comment.id }}'">{{ notif.notification_Content }}</a>
+                                            <script>
+                                                $("#notif-{{notif.id}}").on('mousedown', function(e) { 
+                                                    if( e.which == 2 ) {
+                                                        markRead('{{ notif.id }}', '{{ user.username }}' ,'{{ csrf_token }}'); 
+                                                        window.location.href='/forum/{{ notif.post_Forum.id }}/{{ notif.post_Forum.title|remove_unused }}#comments-{{ notif.comment.id }}';
+                                                    }
+                                                 }); 
+                                            </script>
                                         {% elif notif.post_Konsultasi %}
-                                            <a href="/konsultasi/{{ notif.post_Konsultasi.id }}/{{ notif.post_Konsultasi.title|remove_unused }}#comments-{{ notif.comment.id }}" onclick="markRead('{{ notif.id }}', '{{ user.username }}' ,'{{ csrf_token }}')">{{ notif.notification_Content }}</a>
+                                            <a style="cursor: pointer;" id="notif-{{notif.id}}" onclick="markRead('{{ notif.id }}', '{{ user.username }}' ,'{{ csrf_token }}'); window.location.href='/konsultasi/{{ notif.post_Konsultasi.id }}/{{ notif.post_Konsultasi.title|remove_unused }}#comments-{{ notif.comment.id }}'">{{ notif.notification_Content }}</a>
+                                            <script>
+                                                $("#notif-{{notif.id}}").on('mousedown', function(e) { 
+                                                    if( e.which == 2 ) {
+                                                        markRead('{{ notif.id }}', '{{ user.username }}' ,'{{ csrf_token }}'); 
+                                                        window.location.href='/forum/{{ notif.post_Forum.id }}/{{ notif.post_Forum.title|remove_unused }}#comments-{{ notif.comment.id }}';
+                                                    }
+                                                 }); 
+                                            </script>
                                         {% elif notif.comment %}
                                             {% if notif.post_Forum %}
-                                                <a href="/forum/{{ notif.post.id }}/{{ notif.post.title|remove_unused }}#comments-{{ notif.comment.id }}" onclick="markRead('{{ notif.id }}', '{{ user.username }}' ,'{{ csrf_token }}')">{{ notif.notification_Content }}</a>
+                                                <a style="cursor: pointer;" id="notif-{{notif.id}}" onclick="markRead('{{ notif.id }}', '{{ user.username }}' ,'{{ csrf_token }}'); window.location.href='/forum/{{ notif.post.id }}/{{ notif.post.title|remove_unused }}#comments-{{ notif.comment.id }}'">{{ notif.notification_Content }}</a>
+                                                <script>
+                                                    $("#notif-{{notif.id}}").on('mousedown', function(e) { 
+                                                        if( e.which == 2 ) {
+                                                            markRead('{{ notif.id }}', '{{ user.username }}' ,'{{ csrf_token }}'); 
+                                                            window.location.href='/forum/{{ notif.post.id }}/{{ notif.post.title|remove_unused }}#comments-{{ notif.comment.id }}';
+                                                        }
+                                                     }); 
+                                                </script>
                                             {% else %}
-                                                <a href="/konsultasi/{{ notif.post.id }}/{{ notif.post.title|remove_unused }}#comments-{{ notif.comment.id }}" onclick="markRead('{{ notif.id }}', '{{ user.username }}' ,'{{ csrf_token }}')">{{ notif.notification_Content }}</a>
+                                                <a style="cursor: pointer;" id="notif-{{notif.id}}" onclick="markRead('{{ notif.id }}', '{{ user.username }}' ,'{{ csrf_token }}'); window.location.href='/konsultasi/{{ notif.post.id }}/{{ notif.post.title|remove_unused }}#comments-{{ notif.comment.id }}'">{{ notif.notification_Content }}</a>
+                                                <script>
+                                                    $("#notif-{{notif.id}}").on('mousedown', function(e) { 
+                                                        if( e.which == 2 ) {
+                                                            markRead('{{ notif.id }}', '{{ user.username }}' ,'{{ csrf_token }}'); 
+                                                            window.location.href='/konsultasi/{{ notif.post.id }}/{{ notif.post.title|remove_unused }}#comments-{{ notif.comment.id }}';
+                                                        }
+                                                     }); 
+                                                </script>
                                             {% endif %}
+                                        {% else %}
+                                            <a href="/profile/{{ user.username }}/notification">{{ notif.notification_Content }}</a>
                                         {% endif %}
                                     {% endif %}
                                 {% endfor %}
