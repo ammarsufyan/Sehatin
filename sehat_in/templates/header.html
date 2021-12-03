@@ -42,20 +42,20 @@
                 {% if user.is_authenticated %}
                     <ul class="account">
                         <li>
-                            <i class="uil uil-bell dropdown account__icon">
+                            <i class="uil uil-bell dropdown account__icon" onclick="window.location.href='/profile/{{user.username}}/notification'">
                             {% if notifications %}
                                 <div class="dropdown-content">
                                 {% for notif in notifications %}
                                     {% if not notif.read %}
                                         {% if notif.post_Forum %}
-                                            <a href="/forum/{{ notif.post_Forum.id }}/{{ notif.post_Forum.title|remove_unused }}#comments-{{ notif.comment.id }}">{{ notif.notification_Content }}</a>
+                                            <a href="/forum/{{ notif.post_Forum.id }}/{{ notif.post_Forum.title|remove_unused }}#comments-{{ notif.comment.id }}" onclick="markRead('{{ notif.id }}', '{{ user.username }}' ,'{{ csrf_token }}')">{{ notif.notification_Content }}</a>
                                         {% elif notif.post_Konsultasi %}
-                                            <a href="/konsultasi/{{ notif.post_Konsultasi.id }}/{{ notif.post_Konsultasi.title|remove_unused }}#comments-{{ notif.comment.id }}">{{ notif.notification_Content }}</a>
+                                            <a href="/konsultasi/{{ notif.post_Konsultasi.id }}/{{ notif.post_Konsultasi.title|remove_unused }}#comments-{{ notif.comment.id }}" onclick="markRead('{{ notif.id }}', '{{ user.username }}' ,'{{ csrf_token }}')">{{ notif.notification_Content }}</a>
                                         {% elif notif.comment %}
                                             {% if notif.post_Forum %}
-                                                <a href="/forum/{{ notif.post.id }}/{{ notif.post.title|remove_unused }}#comments-{{ notif.comment.id }}">{{ notif.notification_Content }}</a>
+                                                <a href="/forum/{{ notif.post.id }}/{{ notif.post.title|remove_unused }}#comments-{{ notif.comment.id }}" onclick="markRead('{{ notif.id }}', '{{ user.username }}' ,'{{ csrf_token }}')">{{ notif.notification_Content }}</a>
                                             {% else %}
-                                                <a href="/konsultasi/{{ notif.post.id }}/{{ notif.post.title|remove_unused }}#comments-{{ notif.comment.id }}">{{ notif.notification_Content }}</a>
+                                                <a href="/konsultasi/{{ notif.post.id }}/{{ notif.post.title|remove_unused }}#comments-{{ notif.comment.id }}" onclick="markRead('{{ notif.id }}', '{{ user.username }}' ,'{{ csrf_token }}')">{{ notif.notification_Content }}</a>
                                             {% endif %}
                                         {% endif %}
                                     {% endif %}
@@ -100,3 +100,7 @@
             </div>
         </nav>
     </header>
+
+    {% if user.is_authenticated %}
+    <script type="text/javascript" src="{% static 'js/notifHandler.js' %}"></script>
+    {% endif %}

@@ -45,7 +45,7 @@
                             </a>
                         </div>
                         <div>
-                            <a class="button__profile" href="/profile/{{ theUser.username }}/tanya-jawab">
+                            <a class="button__profile" href="/profile/{{ theUser.username }}/konsultasi">
                                 <img src="{% static 'img/my_question.png' %}" alt="icon">
                                 <p>My Question</p>
                             </a>
@@ -54,6 +54,12 @@
                             <a class="button__profile" href="/profile/{{ theUser.username }}/history">
                                 <img src="{% static 'img/tes_history_icon.svg' %}" alt="icon">
                                 <p>My Test History</p>
+                            </a>
+                        </div>
+                        <div>
+                            <a class="button__profile" href="/profile/{{ theUser.username }}/notification">
+                                <img src="{% static 'img/my_notification.png' %}" alt="icon">
+                                <p>My Notification</p>
                             </a>
                         </div>
                         <div>
@@ -78,14 +84,13 @@
                             </a>
                         </div>
                         <div>
-                            <a class="button__profile logout" href="/profile/{{ theUser.username }}/tanya-jawab">
+                            <a class="button__profile logout" href="/profile/{{ theUser.username }}/konsultasi">
                                 <img src="{% static 'img/my_question.png' %}" alt="icon">
                                 <p>User's Question</p>
                             </a>
                         </div>
                         {% endif %}
                     </div>
-    
                 </div>
                 <div class="profile">
                     <h1>My Profile</h1>
