@@ -39,12 +39,27 @@ main {
 .button__profile {
     display: flex;
     padding: .5rem;
-
+    color: #3B8EE4;
 }
 
 .button__profile:hover {
-    background-color:  rgb(209, 209, 209);
+    background-color:  #3B8EE4;
+    color: #fff;
+    border-radius: 1rem;
+    transition: background 0.2s;
+}
 
+.logout {
+    color: red;
+}
+
+.logout:hover {
+    background-color:  red;
+    color: #fff;
+}
+
+.profile__image {
+    font-size: 2.5rem;
 }
 
 .button__profile img {
