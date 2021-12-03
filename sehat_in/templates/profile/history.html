@@ -31,50 +31,67 @@
 						<p><b>{{ theUser.first_name }} {{ theUser.last_name }}</b></p>
 						<p class="email">{{ theUser.email }}</p>
 					</div>
-					<div class="button__container">
-						<div>
-							<a class="button__profile" href="/profile/{{ theUser.username }}">
-								<img src="{% static 'img/my_profile_icon.svg' %}" alt="icon">
-								<p>My Profile</p>
-							</a>
-						</div>
-						<div>
-							<a class="button__profile" href="/profile/{{ theUser.username }}/posts">
-								<img src="{% static 'img/my_forum.png' %}" alt="icon">
-								<p>My Forum Post</p>
-							</a>
-						</div>
-						<div>
-							<a class="button__profile" href="/profile/{{ theUser.username }}/konsultasi">
-								<img src="{% static 'img/my_question.png' %}" alt="icon">
-								<p>My Question</p>
-							</a>
-						</div>
-						<div>
-							<a class="button__profile" href="/profile/{{ theUser.username }}/history">
-								<img src="{% static 'img/tes_history_icon.svg' %}" alt="icon">
-								<p>My Test History</p>
-							</a>
-						</div>
-						<div>
-							<a class="button__profile" href="/profile/{{ theUser.username }}/notification">
-								<img src="{% static 'img/my_notification.png' %}" alt="icon">
-								<p>My Notification</p>
-							</a>
-						</div>
-						<div>
-							<a class="button__profile" href="/profile/{{ theUser.username }}/settings">
-								<img src="{% static 'img/edit_icon.svg' %}" alt="icon">
-								<p>Edit Profile</p>
-							</a>
-						</div>
-						<div>
-							<a class="button__profile logout" href="/logout">
-								<img src="{% static 'img/logout_icon.svg' %}" alt="icon">
-								<p>Logout</p>
-							</a>
-						</div>
-					</div>
+                    <div class="button__container">
+                        {% if request.user == theUser %}                        
+                        <div>
+                            <a class="button__profile" href="/profile/{{ theUser.username }}">
+                                <div><i class="uil uil-user-square"></i></div>
+                                <p>My Profile</p>
+                            </a>
+                        </div>
+                        <div>
+                            <a class="button__profile" href="/profile/{{ theUser.username }}/posts">
+                                <div><i class="uil uil-users-alt"></i></div>
+                                <p>My Forum Post</p>
+                            </a>
+                        </div>
+                        <div>
+                            <a class="button__profile" href="/profile/{{ theUser.username }}/konsultasi">
+                                <div><i class="uil uil-comment-alt-message"></i></div>
+                                <p>My Question</p>
+                            </a>
+                        </div>
+                        <div>
+                            <a class="button__profile" href="/profile/{{ theUser.username }}/history">
+                                <div><i class="uil uil-history"></i></div>
+                                <p>My Test History</p>
+                            </a>
+                        </div>
+                        <div>
+                            <a class="button__profile" href="/profile/{{ theUser.username }}/notification">
+                                <div><i class="uil uil-bell"></i></div>
+                                <p>My Notification</p>
+                            </a>
+                        </div>
+                        <div>
+                            <a class="button__profile" href="/profile/{{ theUser.username }}/settings">
+                                <div><i class="uil uil-edit-alt"></i></div>
+                                <p>Edit Profile</p>
+                            </a>
+                        </div>
+                        <div>
+                            <a class="button__profile logout" href="/logout">
+                                <div><i class="uil uil-sign-out-alt"></i></div>
+                                <p>Logout</p>
+                            </a>
+                        </div>
+                        
+                        {% else %}
+                        
+                        <div>
+                            <a class="button__profile logout" href="/profile/{{ theUser.username }}/posts">
+                                <img src="{% static 'img/my_forum.png' %}" alt="icon">
+                                <p>User's Post</p>
+                            </a>
+                        </div>
+                        <div>
+                            <a class="button__profile logout" href="/profile/{{ theUser.username }}/konsultasi">
+                                <img src="{% static 'img/my_question.png' %}" alt="icon">
+                                <p>User's Question</p>
+                            </a>
+                        </div>
+                        {% endif %}
+                    </div>
 				</div>
 				<div class="history__container profile">
 					<h1>Test History</h1>
