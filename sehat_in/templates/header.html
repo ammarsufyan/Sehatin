@@ -42,8 +42,8 @@
                 {% if user.is_authenticated %}
                     <ul class="account">
                         <li>
-                            <i class="uil uil-bell dropdown account__icon" onclick="window.location.href='/profile/{{user.username}}/notification'">
-                            {% if notifications %}
+                            <i style="padding-bottom: 5px;" class="uil uil-bell dropdown account__icon" onclick="window.location.href='/profile/{{user.username}}/notification'">
+                                {% if notifications %}
                                 <div class="dropdown-content">
                                 {% for notif in notifications %}
                                     {% if not notif.read %}
