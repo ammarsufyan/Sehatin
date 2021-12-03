@@ -90,7 +90,7 @@
                         <script>
                             // parse the date into dd-mm-yyyy hh:mm format
                             var date = new Date(document.getElementById('date-{{ post.id }}').innerHTML);
-                            var formattedDate = date.getDate() + '-' + (date.getMonth() + 1) + '-' + date.getFullYear() + ', ' + date.getHours() + ':' + date.getMinutes();
+                            var formattedDate = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes();
                             document.getElementById('date-{{ post.id }}').innerHTML = formattedDate;
                         </script>
                     </div>
