@@ -49,6 +49,19 @@ main {
     transition: background 0.2s;
 }
 
+.logout {
+    color: red;
+}
+
+.logout:hover {
+    background-color:  red;
+    color: #fff;
+}
+
+.profile__image {
+    font-size: 2.5rem;
+}
+
 .button__profile img {
     max-width: 1rem;
 }
@@ -60,10 +73,6 @@ main {
 .profile {
     padding: 1.5rem 3rem 3rem 1rem;
     max-width: 520px;
-}
-
-.profile__image {
-    font-size: 3rem;
 }
 
 .profile p {
@@ -187,4 +196,3 @@ td {
 td .uil {
     color: red;
 }
-
