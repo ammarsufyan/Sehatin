@@ -133,6 +133,11 @@
                                 {% else %}
                                     <td width="20%">Notif</td>
                                     <td width="40%">{{ notif.notification_Content }}</td>
+									{% if not notif.read %}
+                                    <td width="15%" style="cursor: pointer;" name="btn-notif-id" id="btn-notif-{{ notif.id }}" onclick="markRead('{{ notif.id }}', '{{ user.username }}' ,'{{ csrf_token }}')">Not read</td>
+                                    {% else %}
+                                    <td width="15%">Already Read</td>
+                                    {% endif %}
                                 {% endif %}
 									{% comment %} <td width="15%"><span style="cursor: pointer;" id="res-{{history.id}}">Lihat
 											Hasil</span></td>
