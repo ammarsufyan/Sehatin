@@ -32,14 +32,14 @@
         <div class="forum__link">
             <a class="forum__link__abu" href="/">Home</a> / 
             <a class="forum__link__abu" href="/forum">Forum</a> / 
-            <a href="">{{ post.title }}</a>
+            <a class="forum__link__active" href="">{{ post.title }}</a>
         </div>
 
         <div class="container__main_forum">
             <div class="header__main_forum">
                 <div class="account_info">
                     <i class="uil uil-user"></i>
-                    <P>{% if post.user == null %}deleted{% else %}<a href="/profile/{{ post.user.username }}">{{ post.user.username }}</a>{% endif %}</P>
+                    <P class="forum__link__active">{% if post.user == null %}deleted{% else %}<a href="/profile/{{ post.user.username }}">{{ post.user.username }}</a>{% endif %}</P>
                     <p>•</p>
                     <p><span id="date-{{ post.id }}">{{ post.created_at.isoformat }}</span>{% if post.created_at != post.updated_at %} - Edited{% endif %}</p>
                     <script>

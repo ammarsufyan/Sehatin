@@ -37,7 +37,7 @@ main {
 
 .forum__about p {
     font-size: 0.8rem;
-    min-width: 25rem;
+    min-width: 24rem;
     word-wrap: break-word;
 }
 
@@ -173,4 +173,18 @@ button {
 
 .submit_post {
     border: none;
+}
+
+
+.back__to__forum {
+    margin: 1rem 0;
+}
+
+.back__to__forum a {
+
+    color: #3B8EE4;
+}
+
+.forum__link__active {
+    color:  #3B8EE4;
 }
