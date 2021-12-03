@@ -98,9 +98,9 @@
 							<tbody>
 								{% for notif in notifications %}
                                 {% if notif.read %}
-                                    <tr style="background-color:white;" name="notif-id" id="notif-{{ notif.id }}">
+                                    <tr style="background-color:white;" name="notif-id" id="notif-tr-{{ notif.id }}">
                                 {% else %}
-                                    <tr style="background-color:#d7d7d7;" name="notif-id" id="notif-{{ notif.id }}">
+                                    <tr style="background-color:#d7d7d7;" name="notif-id" id="notif-tr-{{ notif.id }}">
                                 {% endif %}
                                 {% if notif.post_Forum %}
 									<td width="20%">Post-Comment</td>
@@ -162,7 +162,7 @@
                 success: function(data) {
                     dataJson = JSON.parse(data);
                     if (dataJson.status == 'success') { 
-                        $('#notif-' + notification_id).css('background-color', 'white');
+						document.getElementById('notif-tr-' + notification_id).style.backgroundColor = "white";
                         $('#btn-notif-' + notification_id).html("Already Read");
                         $('#btn-notif-' + notification_id).css('cursor', 'default');
                     } else {
@@ -174,7 +174,6 @@
 
         function readAll(username, csrf_token) {
             // ask for confirmation
-
             if (confirm('Are you sure you want to mark all notifications as read?')) {
                 $.ajax({
                     url: "/profile/" + username + "/notification/readall",
