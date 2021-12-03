@@ -35,13 +35,11 @@
         </div>
         <div class="input__area">
             {% csrf_token %}
-            <p>
-                Title
-                <input type="text" name="title" placeholder="{{post.title}}" readonly />
+            <p class="container__title" style="margin-bottom: 10px;">Title
+                <input class="forum__title" type="text" name="title" placeholder="{{post.title}}" value="{{post.title}}" readonly><br>
             </p>
-            <p>
-                Thumbnail
-                <input type="text" name="thumbnail_url" placeholder="{{post.thumbnail_url}}" value="{{post.thumbnail_url}}"/>
+            <p class="container__title">Thumbnail
+                <input class="forum__title" type="text" name="thumbnail_url" placeholder="{{post.thumbnail_url}}" value="{{post.thumbnail_url}}"/>
             </p>
             <div id="editor"></div>
             <div class="button__area">
