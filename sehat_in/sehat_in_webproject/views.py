@@ -904,20 +904,17 @@ def profile_Settings(request, username):
         messages.info(request, 'You have to be logged in first!')
         return render(request, 'auth/login')
 
-# def profile_Notification(request, username):
-#     """User profile notification"""
-#     if request.user.is_authenticated:
-#         if username == request.user.username:
-#             # Get reqeuest split notifications to 25 per page
-#             paginator = Paginator(Notification.objects.filter(user=request.user).order_by('-created_at'), 25)
-#             page = request.GET.get('page')
-#             notifications = paginator.get_page(page)
-#             return render(request, 'profile/notification.html', {'notifications': notifications})
-#         else:
-#             raise PermissionDenied()
-#     else:
-#         messages.info(request, 'You have to be logged in first!')
-#         return render(request, 'auth/login')
+def profile_Notification(request, username):
+    """User profile notification"""
+    if request.user.is_authenticated:
+        if username == request.user.username:
+            notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
+            return render(request, 'profile/notification.html', {'notifications': notifications})
+        else:
+            raise PermissionDenied()
+    else:
+        messages.info(request, 'You have to be logged in first!')
+        return render(request, 'auth/login')
 
 def profile_Notification_Read(request, username, notification_id):
     """User profile notification read

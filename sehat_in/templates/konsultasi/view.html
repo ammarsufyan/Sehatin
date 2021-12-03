@@ -162,10 +162,10 @@
                 <h2>
                     {{ post.title }}
                 </h2>
-                <p class="isi_forum">
-                    {% autoescape off %}
-                    {{ post.content }}
-                    {% endautoescape %}
+                <p class="isi_forum" id="forumid-{{post.id}}">
+                    <script>
+                        document.getElementById('forumid-{{post.id}}').innerHTML = '{% autoescape off %}{{ post.content }}{% endautoescape %}';
+                    </script>
                 </p>
                 <br>
             </div>
