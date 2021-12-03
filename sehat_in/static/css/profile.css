@@ -60,6 +60,10 @@ main {
     max-width: 520px;
 }
 
+.profile__image {
+    font-size: 5rem;
+}
+
 .profile p {
     overflow-wrap: break-word;
     overflow: hidden;
@@ -181,3 +185,4 @@ td {
 td .uil {
     color: red;
 }
+
