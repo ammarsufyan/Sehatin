@@ -285,6 +285,7 @@ img {
 .tes__title {
     font-size: var(--mb-0-75);
     font-weight: 700;
+    overflow: hidden;
 }
 
 .tes__description {
