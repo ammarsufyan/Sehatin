@@ -40,17 +40,18 @@
         <div class="container__forum">
             {% for report in reportsPaged %}
             {% if report.isResolved %}
-            <div class="container__card" id="report-{{ report.id }}" style="background-color: yellow; padding-right: 0px; width: auto; height: auto;">
+            <div class="container__card" id="report-{{ report.id }}" style="background-color: white; padding-right: 0px; width: auto; height: auto;">
             {% else %}
-            <div class="container__card" id="report-{{ report.id }}" style="background-color: red; padding-right: 0px; width: auto; height: auto;">
+            <div class="container__card" id="report-{{ report.id }}" style="background-color: #d7d7d7; padding-right: 0px; width: auto; height: auto;">
             {% endif %}
                 <div class="forum__about" style="width: auto;">
                     <h1>Type: {{ report.reportType }}</h1>
-                    {% if report.isResolved %}
-                    <p style="width: auto; max-width: 100%; color: black;" id="report-text-{{ report.id }}">
+                    {% comment %} {% if report.isResolved %}
+                    <p style="width: auto; max-width: 100%; color: gray;" id="report-text-{{ report.id }}">
                     {% else %}
-                    <p style="width: auto; max-width: 100%; color: white;" id="report-text-{{ report.id }}">
-                    {% endif %}
+                    <p style="width: auto; max-width: 100%; color: gray;" id="report-text-{{ report.id }}">
+                    {% endif %} {% endcomment %}
+                    <p style="width: auto; max-width: 100%; color: gray;" id="report-text-{{ report.id }}">
                         Reason "{{ report.reason }}" Reported by {{ report.user }} at {{ report.created_at }}<br>
                         <b>Report Information:</b> <br> 
                         {% if report.reportType == 'post' %}
@@ -133,14 +134,14 @@
                         if (dataJson.isResolved) { 
                             document.querySelector('#resolvebtn-' + reportId).textContent = 'Mark as unresolved';
                             document.querySelector('#status-' + reportId).innerHTML = '<b>Resolved</b>';
-                            $('#report-'+ reportId).css("background-color", "yellow");
-                            $('#report-text-'+ reportId).css("color", "black");
+                            $('#report-'+ reportId).css("background-color", "white");
+                            // $('#report-text-'+ reportId).css("color", "gray");
                             alert("Report has been marked as resolved!");
                         } else {
                             document.querySelector('#resolvebtn-' + reportId).textContent = 'Mark as resolved';
                             document.querySelector('#status-' + reportId).innerHTML = '<b>Not Resolved</b>';
-                            $('#report-'+ reportId).css("background-color", "red");
-                            $('#report-text-'+ reportId).css("color", "white");
+                            $('#report-'+ reportId).css("background-color", "#d7d7d7");
+                            // $('#report-text-'+ reportId).css("color", "white");
                             alert("Report has been marked as not resolved!");
                         }
                     } else {
