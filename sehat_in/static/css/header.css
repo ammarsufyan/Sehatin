@@ -185,6 +185,7 @@
     overflow-y: auto;
     height: auto;
     max-height: 20rem;
+    font-style: normal;
 }
   
 .dropdown-content a {
@@ -205,7 +206,9 @@
 }
   
 .dropdown-content a:hover {
-    background-color: #f1f1f1;
+    background-color:  #3B8EE4;
+    color: #fff;
+    transition: background 0.2s;
 }
   
 .dropdown:hover .dropdown-content {
