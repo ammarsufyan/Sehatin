@@ -39,12 +39,14 @@ main {
 .button__profile {
     display: flex;
     padding: .5rem;
-
+    color: #3B8EE4;
 }
 
 .button__profile:hover {
-    background-color:  rgb(209, 209, 209);
-
+    background-color:  #3B8EE4;
+    color: #fff;
+    border-radius: 1rem;
+    transition: background 0.2s;
 }
 
 .button__profile img {
@@ -61,7 +63,7 @@ main {
 }
 
 .profile__image {
-    font-size: 5rem;
+    font-size: 3rem;
 }
 
 .profile p {
