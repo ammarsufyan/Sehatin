@@ -5,11 +5,8 @@ function markRead(notification_id, username, csrf_token) {
         data: {csrfmiddlewaretoken: csrf_token},
         success: function(data) {
             dataJson = JSON.parse(data);
-            if (dataJson.status == 'success') { 
-                $('#notif-' + notification_id).css('background-color', 'white');
-                $('#btn-notif-' + notification_id).remove();
-            } else {
-                alert("Error, failed to mark notification as read: ");
+            if (dataJson.status != 'success') { 
+                alert("Error, opening notification!");
             }
         }
     });
@@ -25,11 +22,8 @@ function readAll(username, csrf_token) {
             data: {csrfmiddlewaretoken: csrf_token},
             success: function(data) {
                 dataJson = JSON.parse(data);
-                if (dataJson.status == 'success') {
-                    $('li[name*=\'notif-id\']').css('background-color', 'white');
-                    $('button[name*=\'btn-notif-id\']').remove();
-                } else {
-                    alert("Error, failed to mark all notifications as read: ");
+                if (dataJson.status != 'success') { 
+                    alert("Error, opening notification!");
                 }
             }
         });

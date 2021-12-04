@@ -204,13 +204,19 @@
 #profile-dropdown a {
     font-size: .8rem;
 }
+
+#profile-dropdown a:hover {
+    background-color:  #3B8EE4;
+    color: #fff;
+    transition: background 0.2s;
+}
   
 .dropdown-content a:hover {
     background-color:  #3B8EE4;
     color: #fff;
     transition: background 0.2s;
 }
-  
+
 .dropdown:hover .dropdown-content {
     display: block;
 }

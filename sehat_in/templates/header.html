@@ -47,44 +47,55 @@
                                 <div class="dropdown-content">
                                 {% for notif in notifications %}
                                     {% if not notif.read %}
+                                        <script>
+                                            var notifIsNotRead_{{notif.id}} = true;
+                                        </script>
                                         {% if notif.post_Forum %}
-                                            <a style="cursor: pointer;" id="notif-{{notif.id}}" onclick="markRead('{{ notif.id }}', '{{ user.username }}' ,'{{ csrf_token }}'); window.location.href='/forum/{{ notif.post_Forum.id }}/{{ notif.post_Forum.title|remove_unused }}#comments-{{ notif.comment.id }}'">{{ notif.notification_Content }}</a>
+                                            <a style="cursor: pointer;" id="notif-{{notif.id}}" onclick="if (notifIsNotRead_{{notif.id}}) markRead('{{ notif.id }}', '{{ user.username }}' ,'{{ csrf_token }}'); window.location.href='/forum/{{ notif.post_Forum.id }}/{{ notif.post_Forum.title|remove_unused }}#comments-{{ notif.comment.id }}'">{{ notif.notification_Content }}</a>
                                             <script>
                                                 $("#notif-{{notif.id}}").on('mousedown', function(e) { 
                                                     if( e.which == 2 ) {
+                                                        if (notifIsNotRead_{{notif.id}}) {}
                                                         markRead('{{ notif.id }}', '{{ user.username }}' ,'{{ csrf_token }}'); 
-                                                        window.location.href='/forum/{{ notif.post_Forum.id }}/{{ notif.post_Forum.title|remove_unused }}#comments-{{ notif.comment.id }}';
+                                                        window.open('/forum/{{ notif.post_Forum.id }}/{{ notif.post_Forum.title|remove_unused }}#comments-{{ notif.comment.id }}', '_blank').focus();
+                                                        notifIsNotRead_{{notif.id}} = false;
                                                     }
                                                  }); 
                                             </script>
                                         {% elif notif.post_Konsultasi %}
-                                            <a style="cursor: pointer;" id="notif-{{notif.id}}" onclick="markRead('{{ notif.id }}', '{{ user.username }}' ,'{{ csrf_token }}'); window.location.href='/konsultasi/{{ notif.post_Konsultasi.id }}/{{ notif.post_Konsultasi.title|remove_unused }}#comments-{{ notif.comment.id }}'">{{ notif.notification_Content }}</a>
+                                            <a style="cursor: pointer;" id="notif-{{notif.id}}" onclick="if (notifIsNotRead_{{notif.id}}) markRead('{{ notif.id }}', '{{ user.username }}' ,'{{ csrf_token }}'); window.location.href='/konsultasi/{{ notif.post_Konsultasi.id }}/{{ notif.post_Konsultasi.title|remove_unused }}#comments-{{ notif.comment.id }}'">{{ notif.notification_Content }}</a>
                                             <script>
                                                 $("#notif-{{notif.id}}").on('mousedown', function(e) { 
                                                     if( e.which == 2 ) {
+                                                        if (notifIsNotRead_{{notif.id}})
                                                         markRead('{{ notif.id }}', '{{ user.username }}' ,'{{ csrf_token }}'); 
-                                                        window.location.href='/forum/{{ notif.post_Forum.id }}/{{ notif.post_Forum.title|remove_unused }}#comments-{{ notif.comment.id }}';
+                                                        window.open('/konsultasi/{{ notif.post_Konsultasi.id }}/{{ notif.post_Konsultasi.title|remove_unused }}#comments-{{ notif.comment.id }}', '_blank').focus();
+                                                        notifIsNotRead_{{notif.id}} = false;
                                                     }
                                                  }); 
                                             </script>
                                         {% elif notif.comment %}
                                             {% if notif.post_Forum %}
-                                                <a style="cursor: pointer;" id="notif-{{notif.id}}" onclick="markRead('{{ notif.id }}', '{{ user.username }}' ,'{{ csrf_token }}'); window.location.href='/forum/{{ notif.post.id }}/{{ notif.post.title|remove_unused }}#comments-{{ notif.comment.id }}'">{{ notif.notification_Content }}</a>
+                                                <a style="cursor: pointer;" id="notif-{{notif.id}}" onclick="if (notifIsNotRead_{{notif.id}}) markRead('{{ notif.id }}', '{{ user.username }}' ,'{{ csrf_token }}'); window.location.href='/forum/{{ notif.post.id }}/{{ notif.post.title|remove_unused }}#comments-{{ notif.comment.id }}'">{{ notif.notification_Content }}</a>
                                                 <script>
                                                     $("#notif-{{notif.id}}").on('mousedown', function(e) { 
                                                         if( e.which == 2 ) {
+                                                            if (notifIsNotRead_{{notif.id}})
                                                             markRead('{{ notif.id }}', '{{ user.username }}' ,'{{ csrf_token }}'); 
-                                                            window.location.href='/forum/{{ notif.post.id }}/{{ notif.post.title|remove_unused }}#comments-{{ notif.comment.id }}';
+                                                            window.open('/forum/{{ notif.post.id }}/{{ notif.post.title|remove_unused }}#comments-{{ notif.comment.id }}', '_blank').focus();
+                                                            notifIsNotRead_{{notif.id}} = false;
                                                         }
                                                      }); 
                                                 </script>
                                             {% else %}
-                                                <a style="cursor: pointer;" id="notif-{{notif.id}}" onclick="markRead('{{ notif.id }}', '{{ user.username }}' ,'{{ csrf_token }}'); window.location.href='/konsultasi/{{ notif.post.id }}/{{ notif.post.title|remove_unused }}#comments-{{ notif.comment.id }}'">{{ notif.notification_Content }}</a>
+                                                <a style="cursor: pointer;" id="notif-{{notif.id}}" onclick="if (notifIsNotRead_{{notif.id}}) markRead('{{ notif.id }}', '{{ user.username }}' ,'{{ csrf_token }}'); window.location.href='/konsultasi/{{ notif.post.id }}/{{ notif.post.title|remove_unused }}#comments-{{ notif.comment.id }}'">{{ notif.notification_Content }}</a>
                                                 <script>
                                                     $("#notif-{{notif.id}}").on('mousedown', function(e) { 
                                                         if( e.which == 2 ) {
+                                                            if (notifIsNotRead_{{notif.id}})
                                                             markRead('{{ notif.id }}', '{{ user.username }}' ,'{{ csrf_token }}'); 
-                                                            window.location.href='/konsultasi/{{ notif.post.id }}/{{ notif.post.title|remove_unused }}#comments-{{ notif.comment.id }}';
+                                                            window.open('/konsultasi/{{ notif.post.id }}/{{ notif.post.title|remove_unused }}#comments-{{ notif.comment.id }}', '_blank').focus();
+                                                            notifIsNotRead_{{notif.id}} = false;
                                                         }
                                                      }); 
                                                 </script>
