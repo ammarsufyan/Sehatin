@@ -56,7 +56,7 @@
                 {% endautoescape %}
 
                 <br>
-                <p> <b>Author:</b> {% if post.user == null %}deleted{% else %}{{ post.user }}{% endif %}<br><b>Created at</b> <span id="date-{{ post.id }}">{{ post.created_at.isoformat }}</span></b> {% if post.created_at != post.updated_at %} - edited{% endif %}</p>
+                <p> <b>Author:</b> {% if post.user == null %}deleted{% else %}{{ post.user }}{% endif %}<br><b>Created at</b> {% if post.created_at != post.updated_at %}<span id="date-{{ post.id }}">{{ post.updated_at.isoformat }}</span></b> - edited{% else %}<span id="date-{{ post.id }}">{{ post.created_at.isoformat }}{% endif %}</p>
                 <br>
 
                 <script>

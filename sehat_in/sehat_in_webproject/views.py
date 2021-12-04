@@ -306,6 +306,9 @@ def forum_Create(request):
                 messages.info(request, 'Invalid tag options! No tag found!')
                 return HttpResponse('error')
 
+            # remove ? from title
+            title = title.replace('?', '')
+
             post = Forum(title=title, content=content, user=user, tag=tag)
             post.save()
 
@@ -1090,6 +1093,9 @@ def konsultasi_Create(request):
                 messages.info(request, 'Invalid tag options! No tag found!')
                 return HttpResponse('error')
 
+            # remove ? from title
+            title = title.replace('?', '')
+
             post = Konsultasi(title=title, content=content, user=user, tag=tag)
             post.save()
 
@@ -1765,6 +1771,9 @@ def artikel_create(request):
             if tag is None:
                 messages.info(request, 'Invalid tag options! No tag found!')
                 return HttpResponse('error')
+
+            # remove ? from title
+            title = title.replace('?', '')
 
             post = Artikel(title=title, content=content, user=user, tag=tag, thumbnail_url=thumbnail_url)
             post.save()

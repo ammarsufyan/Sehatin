@@ -57,12 +57,12 @@
             </div>
             <div class="tes__container">
                 {% for post in posts %}
-                <a href="artikel/{{ post.id }}">
-                    <div class="tes__card">
+                <a href="/artikel/{{post.id}}">
+                    <div class="tes__card"> 
                         <div class="tes__wrapper">
                             <img class="tes__image" src="{% if post.thumbnail_url %}{{post.thumbnail_url}}{% else %}/static/img/no_image.png{% endif %}" onerror="this.onerror=null; this.src='/static/img/no_image.png'" alt="{{ post.title }}">
                             <div class="tes__wrapper__content">
-                                <a class="tes__category" href="/artikel/tag/{{ post.tag.name }}">{{ post.tag.name }}</a>
+                                <a class="tes__category" href="/artikel/tag/{{post.tag.name}}">{{ post.tag.name }}</a>
                                 <h2 class="tes__title">{{ post.title }}</h2>
                                 <p id="post-{{post.id}}" class="tes__description">
                                     <script>                                        

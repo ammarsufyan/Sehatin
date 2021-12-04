@@ -78,16 +78,15 @@
                         </div>
                         
                         {% else %}
-                        
                         <div>
-                            <a class="button__profile logout" href="/profile/{{ theUser.username }}/posts">
-                                <img src="{% static 'img/my_forum.png' %}" alt="icon">
+                            <a class="button__profile" href="/profile/{{ theUser.username }}/posts">
+                                <div><i class="uil uil-users-alt"></i></div>
                                 <p>User's Post</p>
                             </a>
                         </div>
                         <div>
-                            <a class="button__profile logout" href="/profile/{{ theUser.username }}/konsultasi">
-                                <img src="{% static 'img/my_question.png' %}" alt="icon">
+                            <a class="button__profile" href="/profile/{{ theUser.username }}/konsultasi">
+                                <div><i class="uil uil-comment-alt-message"></i></div>
                                 <p>User's Question</p>
                             </a>
                         </div>

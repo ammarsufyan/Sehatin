@@ -274,3 +274,7 @@
 
 }
 
+.uil-sign-out-alt:hover {
+    background-color: red;
+    color: white;
+}
