@@ -52,6 +52,7 @@
     {% else %}
     <main class="container flex">
     {% endif %}
+    {% if post_konsul %}
         <div class="container__forum">
         {% for post in post_konsul %}
             <div class="container__card">
@@ -96,7 +97,18 @@
                     </div>
                 </div>
             </div>
-        {% endfor %}
+            {% endfor %}
+        {% else %}
+        <div class="container__forum">
+            <div class="container__card">
+                <div class="forum__about">
+                    <a><h1>Belum ada pertanyaan konsultasi</h1></a>
+                    <p id="post-{{post.id}}"></p>
+                </div>
+                <div class="forum__info"></div>
+            </div>
+        </div>
+        {% endif %}
         </div>
 
         <div class="container__forum__button">

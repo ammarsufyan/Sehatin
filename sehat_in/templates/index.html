@@ -110,6 +110,7 @@
                 <a href="/artikel">Lihat semua</a>
             </div>
             <div class="tes__container">
+                {% if latest_articles %}
                 {% for post in latest_articles %}
                 <a href="artikel/{{ post.id }}">
                     <div class="tes__card">
@@ -139,8 +140,47 @@
                     </div>
                 </a>
                 {% endfor %}
-            </div>
+                {% else %}
+                <a>
+                    <div class="tes__card">
+                        <div class="tes__wrapper">
+                            <img class="tes__image" src="{% static 'img/forum1.svg' %}">
+                            <div class="tes__wrapper__content">
+                                <a class="tes__category" href="/artikel"><a>
+                                <h2 class="tes__title"></h2>
+                                <p id="forum-{{latest_forum.2.id}}" class="tes__description"></p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
 
+                <a>
+                    <div class="tes__card">
+                        <div class="tes__wrapper">
+                            <img class="tes__image" src="{% static 'img/forum2.svg' %}">
+                            <div class="tes__wrapper__content">
+                                <a class="tes__category" href="/artikel"><a>
+                                <h2 class="tes__title"></h2>
+                                <p id="forum-{{latest_forum.2.id}}" class="tes__description"></p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+
+                <a>
+                    <div class="tes__card">
+                        <div class="tes__wrapper">
+                            <img class="tes__image" src="{% static 'img/forum3.svg' %}">
+                            <div class="tes__wrapper__content">
+                                <a class="tes__category" href="/artikel"><a>
+                                <h2 class="tes__title"></h2>
+                                <p id="forum-{{latest_forum.2.id}}" class="tes__description"></p>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                {% endif %}
+            </div>
         </section>
 
         
