@@ -278,3 +278,12 @@
     background-color: red;
     color: white;
 }
+
+#logout-header {
+    color: red;
+}
+
+#logout-header:hover {
+    background-color:  red !important;
+    color: #fff !important;
+}

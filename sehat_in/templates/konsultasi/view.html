@@ -31,7 +31,7 @@
 
         <div class="forum__link">
             <a class="forum__link__abu" href="/">Home</a> / 
-            <a class="forum__link__abu" href="">Forum</a> / 
+            <a class="forum__link__abu" href="/konsultasi">Konsultasi</a> / 
             <a class="forum__link__active" href="">{{ post.title }}</a>
         </div>
 
@@ -41,7 +41,7 @@
                     <i class="uil uil-user"></i>
                     <P>{% if post.user == null %}deleted{% else %}<a href="/profile/{{ post.user.username }}">{{ post.user.username }}</a>{% endif %}</P>
                     <p>•</p>
-                    <p><span id="date-{{ post.id }}">{{ post.created_at.isoformat }}</span>{% if post.created_at != post.updated_at %} - Edited{% endif %}</p>
+                    <p><span id="date-{{ post.id }}">{{ post.created_at.isoformat }}</span></p>
                     <script>
                         // parse the date into dd-mm-yyyy hh:mm format
                         var date = new Date(document.getElementById('date-{{ post.id }}').innerHTML);

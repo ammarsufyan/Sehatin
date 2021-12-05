@@ -30,24 +30,20 @@
             <input type="text" name="q" placeholder="Cari disini..">
             <button type="submit">Search</button>
         </section>
+        {% if messages %}
+        <section class="container search__container" style="margin-top: 10px;">
+            {% for message in messages %}
+                <p style="color:red">{{ message.message }}</p>
+            {% endfor %}
+        </section>
+        {% endif %}
+
+        <section class="container search__container" style="margin-top: 10px;">
+            <a href="/forum">⟵ Kembali ke Forum</a>
+        </section>
     </form>
 
-    {% if messages %}
-    <div class="message-alert" style="text-align: center;">
-        {% for message in messages %}
-        <div class="message-alert-content">
-            <p style="color:red">{{ message.message }}</p>
-        </div>
-        {% endfor %}
-    </div>
-    {% endif %}
-
-    <section class="container" style="margin-top: 10px;">
-        <div class="back__to__forum">
-            <a href="/forum"><i class="uil uil-angle-left"></i> Kembali ke Forum</a>
-        <div>
-    </section>
-    <main class="container" style="margin-top: 5px;">
+    <main class="container flex" style="margin-top: 5px;">
         {% if posts %}
         <div class="container__forum">
             {% for post in posts %}

@@ -96,7 +96,7 @@
                         {% csrf_token %}
                         {% comment %} <input type="file"> {% endcomment %}
                     
-                        <textarea class="bio" type="text" id="bio" name="bio" placeholder="Biodata">{{ UserProfile.bio }}</textarea>
+                        <textarea class="bio" type="text" id="bio" name="bio" placeholder="Biodata">{% if UserProfile.bio is not None %}{{ UserProfile.bio }}{% endif %}</textarea>
 
                         <input class="first__name" type="text" id="fname" name="firstName" value= "{{ user.first_name }}" placeholder="First Name">
 
@@ -106,7 +106,11 @@
                         <input class="last__name" type="text" id="lname" name="lastName" value= "{{ user.last_name }}" placeholder="Last Name">
                             
                         <select class="provinsi" id="location" name="location">
+                            {% if UserProfile.location %}
                             <option selected hidden value="{{ UserProfile.location }}">{{ UserProfile.location }}</option>
+                            {% else %}
+                            <option selected hidden value="">Belum memilih lokasi</option>
+                            {% endif %}
                             <option value="Aceh">Aceh</option>
                             <option value="Bali">Bali</option>
                             <option value="Banten">Banten</option>
@@ -165,7 +169,7 @@
                 if (this.files && this.files[0]) {
                     var img = document.getElementById('profileImg');
                     img.onload = () => {
-                        URL.revokeObjectURL(img.src);  // no longer needed, free memory
+                        URL.revokeObjectURL(img.src);  // no longer needed
                     }
           
                     img.src = URL.createObjectURL(this.files[0]); // set src to blob url

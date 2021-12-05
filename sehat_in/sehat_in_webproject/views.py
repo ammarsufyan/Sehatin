@@ -872,7 +872,10 @@ def profile_Settings(request, username):
                 # User profile
                 user_Profile = UserProfile.objects.get(user=user)
                 user_Profile.bio = request.POST.get('bio')
-                user_Profile.location = request.POST.get('location')
+
+                location = request.POST.get('location')
+                if location.strip() != '':
+                    user_Profile.location = request.POST.get('location')
                 # user_Profile.img_url = request.POST.get('img')
 
                 # Check bio limit 500 characters
@@ -883,7 +886,7 @@ def profile_Settings(request, username):
                 # Check location limit 250 characters
                 if len(user_Profile.location) > 250:
                     messages.info(request, 'Location too long! Max length is 250 characters')
-                    return redirect('/profile/' + user.username + '/settings')  
+                    return redirect('/profile/' + user.username + '/settings')
 
                 # Check image url ???
                 # if user_Profile.img_url != '':
