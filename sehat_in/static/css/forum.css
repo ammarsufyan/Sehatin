@@ -27,7 +27,9 @@ main {
 }
 
 .forum__about {
-    max-width: 75%;
+    /* max-width: 75%; */
+    min-width: 24rem;
+    max-width: 24rem;
 }
 
 .forum__about h1 {
