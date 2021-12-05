@@ -398,6 +398,9 @@ input[type=text]:focus {
     color: #999999;
 }
 
+.artikel__konten p {
+    overflow-wrap: break-word;
+}
 
 ::-webkit-scrollbar {
     width: .60rem;

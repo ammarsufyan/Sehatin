@@ -10,7 +10,7 @@ import re
 from django.core import serializers
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from itertools import chain
-
+import datetime
 # Views of each URL
 # Assigning the function to each url
 # ----------------------------------------------------------------
@@ -252,8 +252,13 @@ def forum_Url(request, id, title):
             return redirect('/forum/' + str(post.id) + '/' + post.title.replace(' ', '-').replace('?', ''))
         
         if post is not None:
+            # edited = False
             comments = Comment.objects.filter(comment_Forum=post).order_by('created_at') # oldest to newest
             likes = Like.objects.filter(post=post)
+
+            # # check created date and updated date, if updated date is older by 5 minutes of creation time then set edited as true
+            # if post.updated_at > post.created_at + datetime.timedelta(minutes=5):
+            #     edited = True
 
             return render(request, 'forum/view.html', {'post': post, 'comments': comments, 'likes': likes, 'notifications': notifications})
         else:
@@ -434,7 +439,7 @@ def forum_Like(request, id, title):
 
                 # Increase the post likes
                 post.likes += 1
-                post.save()
+                post.save(update_fields=['likes'])
 
                 return HttpResponse(json.dumps(jsonData))
             else: # If user has liked this post
@@ -446,7 +451,7 @@ def forum_Like(request, id, title):
 
                 # Decrease the post likes
                 post.likes -= 1
-                post.save()
+                post.save(update_fields=['likes'])
 
                 return HttpResponse(json.dumps(jsonData))
         else: # If user is not logged in
@@ -523,7 +528,7 @@ def forum_Comment(request, id, title):
 
             # Increase the post comments
             post.comments += 1
-            post.save()
+            post.save(update_fields=['comments'])
 
             # send notification to post owner
             if post.user != user:
@@ -581,7 +586,7 @@ def forum_Comment_Like(request, id, title, comment_id):
 
                 # Increase the comment likes
                 comment.likes += 1
-                comment.save()
+                comment.save(update_fields=['likes'])
 
                 return HttpResponse(json.dumps(jsonData))
             else: # If user has liked this comment
@@ -593,7 +598,7 @@ def forum_Comment_Like(request, id, title, comment_id):
 
                 # Decrease the comment likes
                 comment.likes -= 1
-                comment.save()
+                comment.save(update_fields=['likes'])
 
                 return HttpResponse(json.dumps(jsonData))
         else: # If user is not logged in
@@ -1207,7 +1212,6 @@ def konsultasi_Comment(request, id, title):
             # Comment
             user = request.user
             post = Konsultasi.objects.get(id=id)
-            print(post)
             commentGet = request.POST.get('comment')
 
             # If comment empty
@@ -1226,7 +1230,7 @@ def konsultasi_Comment(request, id, title):
 
             # Increase the post comments
             post.comments += 1
-            post.save()
+            post.save(update_fields=['comments'])
 
             # send notification to post owner
             if post.user != user:
@@ -1292,7 +1296,7 @@ def konsultasi_Comment_Delete(request, id, title, comment_id):
 
             # Decrease the post comments
             post.comments -= 1
-            post.save()
+            post.save(update_fields=['comments'])
 
             # Get current comment count
             comments = Comment.objects.filter(comment_Konsultasi=comment.comment_Konsultasi)
@@ -1706,7 +1710,7 @@ def artikel_url(request, id, title):
     # Title in the link is just for vanity url
     if id is not None and title is not None:
         post = Artikel.objects.get(id=id)
-            # if user is authenticated
+        # if user is authenticated
         if request.user.is_authenticated:
             # Get user's notification
             notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
@@ -1717,11 +1721,16 @@ def artikel_url(request, id, title):
             return redirect('/artikel/' + str(post.id) + '/' + post.title.replace(' ', '-').replace('?', ''))
         
         if post is not None:
+            # edited = False
             # Increase the view of the post
             post.views += 1
 
             # Save the post
-            post.save()
+            post.save(update_fields=['views'])
+
+            # check created date and updated date, if updated date is older by 5 minutes of creation time then set edited as true
+            # if post.updated_at > post.created_at + datetime.timedelta(minutes=5):
+            #     edited = True
             
             return render(request, 'artikel/view.html', {'post': post, 'notifications': notifications})
         else:

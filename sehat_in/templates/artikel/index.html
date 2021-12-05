@@ -52,7 +52,7 @@
                 </div>
                 <div class="tes__container">
                     {% for post in popular_artikel %}
-                    <a href="artikel/{{ post.id }}">
+                    <a href="/artikel/{{ post.id }}">
                         <div class="tes__card">
                             <div class="tes__wrapper">
                                 <img class="tes__image" src="{% if post.thumbnail_url %}{{post.thumbnail_url}}{% else %}/static/img/no_image.png{% endif %}" onerror="this.onerror=null; this.src='/static/img/no_image.png'" alt="{{ post.title }}">
@@ -120,7 +120,7 @@
             </div>
             <div class="tes__container">
                 {% for post in posts %}
-                <a href="artikel/{{ post.id }}">
+                <a href="/artikel/{{ post.id }}">
                     <div class="tes__card">
                         <div class="tes__wrapper">
                             <img class="tes__image" src="{% if post.thumbnail_url %}{{post.thumbnail_url}}{% else %}/static/img/no_image.png{% endif %}" onerror="this.onerror=null; this.src='/static/img/no_image.png'" alt="{{ post.title }}">

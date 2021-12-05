@@ -52,6 +52,7 @@
 
 .isi_forum {
     padding: 1rem 0;
+    overflow-wrap: break-word;
 }
 
 .comment__action {
