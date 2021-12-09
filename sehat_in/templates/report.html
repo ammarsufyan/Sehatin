@@ -53,40 +53,40 @@
                             <p style="width: auto; max-width: 100%; color: gray;" id="report-text-{{ report.id }}">
                             {% endif %} {% endcomment %}
                             <p style="width: auto; max-width: 100%; color: gray;" id="report-text-{{ report.id }}">
-                                Reason "{{ report.reason }}" Reported by {{ report.user }} at {{ report.created_at }}<br>
-                                <b>Report Information:</b> <br> 
+                                Alasan "{{ report.reason }}" Dilaporkan oleh {{ report.user }} pada {{ report.created_at }}<br>
+                                <b>Informmasi Laporan:</b> <br> 
                                 {% if report.reportType == 'post' %}
                                     {% if report.post %}
-                                        Post ID: {{ report.post.id }}<br>
-                                        Post Title: {{ report.post.title }}<br>
-                                        <a href="/forum/{{ report.post.id }}">[Link to the reported forum post]</a>
+                                        ID Postingan: {{ report.post.id }}<br>
+                                        Judul Postingan: {{ report.post.title }}<br>
+                                        <a href="/forum/{{ report.post.id }}">[Tautan postingan forum yang dilaporkan]</a>
                                     {% else %}
-                                        Post is already deleted
+                                        Postingan sudah dihapus
                                     {% endif %}
                                     {% if report.user %}
-                                        <a href="/profile/{{ report.user.username }}">[The user that make the post]</a>
+                                        <a href="/profile/{{ report.user.username }}">[Pengguna yang membuat postingan]</a>
                                     {% else %}
-                                        User is already deleted
+                                        Pengguna sudah dihapus
                                     {% endif %}
                                 {% elif report.reportType == 'comment' %}
                                     {% if report.comment %}
-                                        Comment ID: {{ report.comment.id }}<br>
-                                        Content:<br>{% autoescape off %}{{ report.comment.content }}{% endautoescape %}
+                                        ID Komentar: {{ report.comment.id }}<br>
+                                        Konten:<br>{% autoescape off %}{{ report.comment.content }}{% endautoescape %}
                         
-                                        <a href="/forum/{{ report.post.id }}/{{ report.post.title }}#comments-{{ report.comment.id }}">[Link to the reported Comment]</a>
+                                        <a href="/forum/{{ report.post.id }}/{{ report.post.title }}#comments-{{ report.comment.id }}">[Tautan komentar yang dilaporkan]</a>
                                     {% else %}
-                                        Comment is already deleted
+                                        Komentar sudah dihapus
                                     {% endif %}
                                     {% if report.user %}
-                                        <a href="/profile/{{ report.user.username }}">[The user that make the comment]</a>
+                                        <a href="/profile/{{ report.user.username }}">[Pengguna yang membuat komentar]</a>
                                     {% else %}
-                                        User is already deleted
+                                        Pengguna sudah dihapus
                                     {% endif %}
                                 {% elif report.reportType == 'user' %}
                                     {% if report.user %}
-                                        <a href="/profile/{{ report.user.username }}">[{{ report.user.username }}'s profile]</a>
+                                        <a href="/profile/{{ report.user.username }}">[Profil {{ report.user.username }}]</a>
                                     {% else %}
-                                        User is already deleted
+                                        Pengguna sudah dihapus
                                     {% endif %}
                                 {% endif %}
                                 
@@ -102,7 +102,7 @@
             {% else %}
             <div class="container__card">
                 <div class="forum__about">
-                    <h1>No reports found</h1>
+                    <h1>Tidak ada laporan ditemukan</h1>
                 </div>
             </div>
             {% endif %}

@@ -16,14 +16,14 @@
         href="{% static 'img/favicon/favicon.ico' %}" 
     />
     <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
-    <title>Signup sehat.in</title>
+    <title>Daftar sehat.in</title>
 </head>
 <body>
     <main>
         <div class="container">
             <div class="login__section">
                 <a href="/" class="login__back button--flex">
-                    <i class="uil uil-arrow-left">Back to home</i>
+                    <i class="uil uil-arrow-left">Kembali ke beranda</i>
                 </a>
 
                 <div class="login__form">
@@ -49,18 +49,18 @@
                         <input type="password" name="password" placeholder="Password" minlength="8" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Please match the valid password pattern" autocomplete="off" required><br>
                         <input type="password" name="password_confirmation" placeholder="Konfirmasi Password" minlength="8" autocomplete="off" required><br>
                         <div id="message-password">
-                            <h3>Password must contain the following:</h3>
-                            <p id="letter">&#10008;A <b>lowercase</b> letter</p>
-                            <p id="capital">&#10008;A <b>capital (uppercase)</b> letter</p>
-                            <p id="number">&#10008;A <b>number</b></p>
-                            <p id="length">&#10008;Minimum <b>8 characters</b></p>
+                            <h3>Password harus berisi:</h3>
+                            <p id="letter">&#10008;Huruf</b> kecil</p>
+                            <p id="capital">&#10008;Huruf</b> kapital</p>
+                            <p id="number">&#10008;Angka</b></p>
+                            <p id="length">&#10008;Minimal <b>8 karakter</b></p>
                         </div>
             
                         <div id="message-password-confirmation">
-                            <p id="confirm">&#10008;Matching password and password confirmation</p>
+                            <p id="confirm">&#10008;Password dan konfirmasi password harus sama</p>
                         </div>
                         <button class="button button--flex" id="submit" type="submit">
-                            Signup
+                            Daftar
                         </button>
                     </form>
                 </div>

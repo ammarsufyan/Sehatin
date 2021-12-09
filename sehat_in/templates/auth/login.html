@@ -15,7 +15,7 @@
         href="{% static 'img/favicon/favicon.ico' %}" 
     />
     <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
-    <title>Login sehat.in</title>
+    <title>Masuk sehat.in</title>
 </head>
 <body>
 
@@ -23,14 +23,14 @@
         <div class="container">
             <div class="login__section">
                 <a href="/" class="login__back button--flex">
-                    <i class="uil uil-arrow-left">Back to home</i>
+                    <i class="uil uil-arrow-left">Kembali ke beranda</i>
                 </a>
 
                 <div class="login__form">
                     <form action="login" method="POST">
                         {% csrf_token %}
                         <div class="login__title">
-                            <h2>Login dulu yuk</h2>
+                            <h2>Masuk dulu yuk</h2>
                             <p>Belum punya akun? <a href="/auth/register">Yuk daftar</a> </p>
                             {% if messages %}
                                 <div class="message-alert">

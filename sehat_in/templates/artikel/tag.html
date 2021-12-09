@@ -52,7 +52,7 @@
             <div class="tes__header">
                 <h1>Artikel dengan tag "{{ tag.name }}"</h1>
                 {% if user.is_staff %}
-                    <a href="/forum/create">Create Post</a>
+                    <a href="/artikel/create">Buat Artikel</a>
                 {% endif %}
             </div>
             <div class="tes__container">
@@ -90,19 +90,19 @@
     </main>
 
     <div class="page-num"> 
-        Page {{ posts.number }} of {{ posts.paginator.num_pages }}<br>
+        Halaman {{ posts.number }} dari {{ posts.paginator.num_pages }}<br>
     
         {% if posts.has_previous %}
             <a href="{% if q %}?q={{q}}&page=1{% else %}?page=1{% endif %}">&laquo First</a>
         {% endif %}
 
         {% if posts.has_previous and posts.has_next %}
-            <a href="{% if q %}?q={{q}}&page={{ posts.previous_page_number }}{% else %}?page={{ posts.previous_page_number}}{% endif %}">- Previous</a>
-            <a href="{% if q %}?q={{q}}&page={{ posts.next_page_number }}{% else %}?page={{ posts.next_page_number}}{% endif %}">- Next -</a>
+            <a href="{% if q %}?q={{q}}&page={{ posts.previous_page_number }}{% else %}?page={{ posts.previous_page_number}}{% endif %}">- Sebelumnya</a>
+            <a href="{% if q %}?q={{q}}&page={{ posts.next_page_number }}{% else %}?page={{ posts.next_page_number}}{% endif %}">- Berikutnya -</a>
         {% elif posts.has_previous %}
-            <a href="{% if q %}?q={{q}}&page={{ posts.previous_page_number }}{% else %}?page={{ posts.previous_page_number}}{% endif %}">- Previous</a>
+            <a href="{% if q %}?q={{q}}&page={{ posts.previous_page_number }}{% else %}?page={{ posts.previous_page_number}}{% endif %}">- Sebelumnya</a>
         {% elif posts.has_next %}
-            <a href="{% if q %}?q={{q}}&page={{ posts.next_page_number }}{% else %}?page={{ posts.next_page_number}}{% endif %}">Next -</a>
+            <a href="{% if q %}?q={{q}}&page={{ posts.next_page_number }}{% else %}?page={{ posts.next_page_number}}{% endif %}">Berikutnya -</a>
         {% endif %}
 
         {% if posts.has_next %}

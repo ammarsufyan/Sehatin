@@ -17,7 +17,7 @@
         href="{% static 'img/favicon/favicon.ico' %}" 
     />
     <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
-    <title>{{ theUser.username }}'s Profile</title>
+    <title>Profile {{ theUser.username }}</title>
 </head>
 <body>
     {% include 'templates/header.html' %}
@@ -37,43 +37,43 @@
                         <div>
                             <a class="button__profile" href="/profile/{{ theUser.username }}">
                                 <div><i class="uil uil-user-square"></i></div>
-                                <p>My Profile</p>
+                                <p>Profile Saya</p>
                             </a>
                         </div>
                         <div>
                             <a class="button__profile" href="/profile/{{ theUser.username }}/posts">
                                 <div><i class="uil uil-users-alt"></i></div>
-                                <p>My Forum Post</p>
+                                <p>Post Forum Saya</p>
                             </a>
                         </div>
                         <div>
                             <a class="button__profile" href="/profile/{{ theUser.username }}/konsultasi">
                                 <div><i class="uil uil-comment-alt-message"></i></div>
-                                <p>My Question</p>
+                                <p>Pertanyaan Saya</p>
                             </a>
                         </div>
                         <div>
                             <a class="button__profile" href="/profile/{{ theUser.username }}/history">
                                 <div><i class="uil uil-history"></i></div>
-                                <p>My Test History</p>
+                                <p>Riwayat Tes Saya</p>
                             </a>
                         </div>
                         <div>
                             <a class="button__profile" href="/profile/{{ theUser.username }}/notification">
                                 <div><i class="uil uil-bell"></i></div>
-                                <p>My Notification</p>
+                                <p>Notifikasi Saya</p>
                             </a>
                         </div>
                         <div>
                             <a class="button__profile" href="/profile/{{ theUser.username }}/settings">
                                 <div><i class="uil uil-edit-alt"></i></div>
-                                <p>Edit Profile</p>
+                                <p>Ubah Profile</p>
                             </a>
                         </div>
                         <div>
                             <a class="button__profile logout" href="/logout">
                                 <div><i class="uil uil-sign-out-alt"></i></div>
-                                <p>Logout</p>
+                                <p>Keluar</p>
                             </a>
                         </div>
                         
@@ -81,20 +81,20 @@
                         <div>
                             <a class="button__profile" href="/profile/{{ theUser.username }}/posts">
                                 <div><i class="uil uil-users-alt"></i></div>
-                                <p>User's Post</p>
+                                <p>Postingan User</p>
                             </a>
                         </div>
                         <div>
                             <a class="button__profile" href="/profile/{{ theUser.username }}/konsultasi">
                                 <div><i class="uil uil-comment-alt-message"></i></div>
-                                <p>User's Question</p>
+                                <p>Pertanyaan User</p>
                             </a>
                         </div>
                         {% endif %}
                     </div>
                 </div>
                 <div class="profile">
-                    <h1>My Profile</h1>
+                    <h1>Profile Saya</h1>
                     <div class="profile__header">
                         <div class="container_name_role">
                             <p class="name">{{ theUser.first_name }} {{ theUser.last_name }}</p>
@@ -112,7 +112,7 @@
                     </div>
                     <p>{% if user_profile.bio is None or user_profile.bio == '' %}...{% else %}{{ user_profile.bio }}{% endif %}</p>
                     <br>
-                    <p>Location: {% if user_profile.location is None or user_profile.location == '' %}...{% else %}{{ user_profile.location }}{% endif %}</p>
+                    <p>Lokasi: {% if user_profile.location is None or user_profile.location == '' %}...{% else %}{{ user_profile.location }}{% endif %}</p>
                 </div>
             </div>
         </div>

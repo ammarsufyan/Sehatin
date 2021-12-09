@@ -19,7 +19,7 @@
 
     <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
 
-    <title>Create Forum Post | Sehat.in</title>
+    <title>Buat Post Forum | Sehat.in</title>
 </head>
 <body class="grey">
 
@@ -44,7 +44,7 @@
 
         <div class="input__area">
             {% csrf_token %}
-            <p class="container__title">Title
+            <p class="container__title">Judul
                 <input class="forum__title" type="text" name="title" placeholder="Title" autocomplete="off">
             </p>
             <div style="min-width: 600px;">
@@ -69,8 +69,8 @@
                     </p>
                 </div>
                 <div>
-                    <button class="submit_post button button__flex" value="Create" onclick="createPost()">Submit</button>
-                    <button class="cancel_post button button_flex" onclick="location.href='/forum';">Cancel</button>
+                    <button class="submit_post button button__flex" value="Create" onclick="createPost()">Buat</button>
+                    <button class="cancel_post button button_flex" onclick="location.href='/forum';">Batalkan</button>
                 </div>
             </div>
         </div>

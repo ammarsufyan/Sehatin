@@ -19,7 +19,7 @@
 
     <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
 
-    <title>Create Artikel | Sehat.in</title>
+    <title>Buat Artikel | Sehat.in</title>
 </head>
 <body class="grey">
 
@@ -29,7 +29,7 @@
                 <i class="uil uil-angle-left"></i>
             </a>
     
-            <h3>Post Artikel</h3>
+            <h3>Buat Artikel</h3>
             {% if messages %}
             <div class="message-alert" style="text-align: center;">
                 {% for message in messages %}
@@ -44,7 +44,7 @@
 
         <div class="input__area">
             {% csrf_token %}
-            <p class="container__title" style="margin-bottom: 10px;">Title
+            <p class="container__title" style="margin-bottom: 10px;">Judul
                 <input class="forum__title" type="text" name="title" placeholder="Title" autocomplete="off"><br>
             </p>
             <p class="container__title">Thumbnail

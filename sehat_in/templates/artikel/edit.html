@@ -13,7 +13,7 @@
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" />
     <link rel="icon" type="image/png" href="{% static 'img/favicon/favicon.ico' %}" />
     <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
-    <title>Edit Artikel | Sehat.in</title>
+    <title>Ubah Artikel | Sehat.in</title>
 </head>
 
 <body class="grey">
@@ -22,7 +22,7 @@
             <a href="/artikel">
                 <i class="uil uil-angle-left"></i>
             </a>
-            <h3>Edit Artikel</h3>
+            <h3>Ubah Artikel</h3>
             {% if messages %}
             <div class="message-alert" style="text-align: center;">
                 {% for message in messages %}
@@ -35,7 +35,7 @@
         </div>
         <div class="input__area">
             {% csrf_token %}
-            <p class="container__title" style="margin-bottom: 10px;">Title
+            <p class="container__title" style="margin-bottom: 10px;">Judul
                 <input class="forum__title" type="text" name="title" placeholder="{{post.title}}" value="{{post.title}}" readonly><br>
             </p>
             <p class="container__title">Thumbnail
@@ -59,10 +59,10 @@
                 </div>
                 <div>
                     <button class="submit_post button button__flex" value="Create" onclick="editThePost()">
-                        Submit
+                        Buat
                     </button>
                     <button class="cancel_post button button_flex" onclick="location.href='/artikel';">
-                        Cancel
+                        Batalkan
                     </button>
                 </div>
             </div>
