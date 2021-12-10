@@ -28,7 +28,7 @@
     <form action="/forum" method="get">
         <section class="container search__container">
             <input type="text" name="q" placeholder="Cari disini.." value={% if q %}{{q}}{% endif %}>
-            <button type="submit">Search</button>
+            <button type="submit">Cari</button>
         </section>
 
         {% if messages %}
@@ -77,11 +77,11 @@
                 <div class="forum__info">
                     <div>
                         <i class="uil uil-thumbs-up"></i>
-                        {{ post.likes }} Likes
+                        {{ post.likes }} Suka
                     </div>
                     <div>
                         <i class="uil uil-comment"></i>
-                        {{ post.comments }} Comments
+                        {{ post.comments }} Komentar
                     </div>
                     <div>
                         <i class="uil uil-user"></i>
@@ -104,7 +104,7 @@
         <div class="container__forum">
             <div class="container__card">
                 <div class="forum__about">
-                    <a><h1>Belum ada forum post</h1></a>
+                    <a><h1>Belum ada postingan forum</h1></a>
                     <p id="post-{{post.id}}"></p>
                 </div>
                 <div class="forum__info"></div>
@@ -116,15 +116,15 @@
         <div class="container__forum__button">
             {% if user.is_authenticated %}
             <a href="/forum/create" class="create button button--flex">
-                Buat Post
+                Buat Postingan
             </a>
             <a href="/profile/{{ user.username}}/posts" class="your__post button button--flex">
-                Post Anda
+                Postingan Anda
             </a>
             <a class="your__post button button--flex" style="background-color: #fbfcfe"></a>
             {% else %}
             <a href="/auth/login" class="create button button--flex" style="text-align:center;">
-                Login untuk Membuat Post
+                Masuk untuk Membuat Postingan
             </a>
             <a class="your__post button button--flex" style="background-color: #fbfcfe"></a>
             {% endif %}
@@ -132,7 +132,7 @@
     </main>
 
     <div class="page-num"> 
-        Page {{ posts.number }} of {{ posts.paginator.num_pages }}<br>
+        Halaman {{ posts.number }} dari {{ posts.paginator.num_pages }}<br>
     
         {% if posts.has_previous %}
             <a href="{% if q %}?q={{q}}&page=1{% else %}?page=1{% endif %}">&laquo First</a>

@@ -17,6 +17,8 @@
         href="{% static 'img/favicon/favicon.ico' %}" 
     />
     <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/html2canvas.js' %}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js" integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <title>Sehat.in</title>
 </head>
 <body>
@@ -41,10 +43,10 @@
                 {% endif %}
 
                 <h3 class="home__title">
-                    Anak muda khususnya gen z dan milenial adalah yang paling rentan terkena gangguan mental di era pandemi ini.
+                    Anak muda khususnya Gen Z adalah generasi yang paling rentan terkena gangguan mental di era pandemi ini.
                 </h3>
                 <p class="home__subtitle">
-                    Apakah kamu salah satunya? <br> Yuk cek keadaan mental mu dengan tes psikologi sehat.in
+                    Apakah kamu salah satunya? <br> Yuk cek keadaan mentalmu di sehat.in!
                 </p>
                 <a href="/tests" class="button button--flex">
                     Tes Sekarang<i class="uil uil-message button__icon"></i>
@@ -71,12 +73,11 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="tes__card">
                     <div class="tes__wrapper">
                         <img class="tes__image" src="{% static 'img/tes_image_4.svg' %}" alt="tes image">
                         <div class="tes__wrapper__content">
-                            <a class="tes__category">Kesehatan<a>
+                            <a class="tes__category" href="/tests/health/mindfulness">Kesehatan<a>
                             <a href="/tests/health/depression"><h2 class="tes__title">Tes Depresi</h2></a>
                             <p class="tes__description-fit-text">Ikuti tes ini untuk membantu menentukan apakah kamu memiliki gejala depresi dan untuk menilai apakah kamu harus berbicara dengan tenaga..</p>
                             <a href="/tests/health/depression" class="tes__button">
@@ -85,7 +86,6 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="tes__card">
                     <div class="tes__wrapper">
                         <img class="tes__image" src="{% static 'img/tes_image_2.svg' %}" alt="tes image">
@@ -99,9 +99,7 @@
                         </div>
                     </div>
                 </div>
-
             </div>
-
         </section>
 
         <section class="container home__tes">
@@ -274,9 +272,9 @@
         </section>
 
         
-        <section class="container home__tes">
+        <section class="container home__tes" id='testaaa'>
             <div class="tes__header">
-                <h1>Singkat mengenai Sehatin</h1>
+                <h1>Singkat mengenai Sehat.in</h1>
             </div>
 
             <div class="about" style="text-align: justify; text-justify: inter-word;">
@@ -289,6 +287,39 @@
             </div>
 
         </section>
+
+    <button onclick="takeshot()">
+        Take Screenshot
+    </button>
+
+    <h1>Screenshot:</h1>
+    <div id="output"></div>
+  
+    <script type="text/javascript">
+  
+        // Define the function 
+        // to screenshot the div
+        async function takeshot() {
+            let div =
+                document.getElementById('testaaa');
+  
+            // Use the html2canvas
+            // function to take a screenshot
+            // and append it
+            // to the output div
+            await html2canvas(div).then(
+                function (canvas) {
+                    document
+                    .getElementById('output')
+                    .appendChild(canvas);
+                })
+
+            var divEl = document.getElementById('output');
+
+            console.log(divEl);
+
+        }
+    </script>
 
     </main>
 

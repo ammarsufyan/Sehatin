@@ -46,15 +46,10 @@
                     <div class="container__card" id="report-{{ report.id }}" style="background-color: #d7d7d7; padding-right: 0px; width: auto; height: auto;">
                 {% endif %}
                         <div class="forum__about" style="width: auto;">
-                            <h1>Type: {{ report.reportType }}</h1>
-                            {% comment %} {% if report.isResolved %}
-                            <p style="width: auto; max-width: 100%; color: gray;" id="report-text-{{ report.id }}">
-                            {% else %}
-                            <p style="width: auto; max-width: 100%; color: gray;" id="report-text-{{ report.id }}">
-                            {% endif %} {% endcomment %}
+                            <h1>Tipe: {{ report.reportType }}</h1>
                             <p style="width: auto; max-width: 100%; color: gray;" id="report-text-{{ report.id }}">
                                 Alasan "{{ report.reason }}" Dilaporkan oleh {{ report.user }} pada {{ report.created_at }}<br>
-                                <b>Informmasi Laporan:</b> <br> 
+                                <b>Informasi Laporan:</b> <br> 
                                 {% if report.reportType == 'post' %}
                                     {% if report.post %}
                                         ID Postingan: {{ report.post.id }}<br>
@@ -64,7 +59,7 @@
                                         Postingan sudah dihapus
                                     {% endif %}
                                     {% if report.user %}
-                                        <a href="/profile/{{ report.user.username }}">[Pengguna yang membuat postingan]</a>
+                                        <a href="/profile/{{ report.user.username }}">[Tautan Pengguna]</a>
                                     {% else %}
                                         Pengguna sudah dihapus
                                     {% endif %}
@@ -78,7 +73,7 @@
                                         Komentar sudah dihapus
                                     {% endif %}
                                     {% if report.user %}
-                                        <a href="/profile/{{ report.user.username }}">[Pengguna yang membuat komentar]</a>
+                                        <a href="/profile/{{ report.user.username }}">[Tautan Pengguna]</a>
                                     {% else %}
                                         Pengguna sudah dihapus
                                     {% endif %}
@@ -91,10 +86,10 @@
                                 {% endif %}
                                 
                                 <br><br>
-                                Status: <span id="status-{{ report.id }}"><b>{% if report.isResolved %}Resolved{% else %}Not Resolved{% endif %}</b></span></br>
+                                Status: <span id="status-{{ report.id }}"><b>{% if report.isResolved %}Terselesaikan{% else %}Belum Terselesaikan{% endif %}</b></span></br>
                             </p>
                             <button id="resolvebtn-{{ report.id }}" onclick="statusChange('{{ report.id }}', '{{ csrf_token }}')">
-                                {% if report.isResolved %}Mark as unresolved{% else %}Mark as resolved{% endif %}
+                                {% if report.isResolved %}Ditandai Belum Selesai{% else %}Ditandai Selesai{% endif %}
                             </button>
                         </div>
                     </div>
@@ -111,7 +106,7 @@
     </main>
     
     <div class="page-num" style="margin-bottom: 10px;"> 
-        Page {{ reportsPaged.number }} of {{ reportsPaged.paginator.num_pages }}<br>
+        Halaman {{ reportsPaged.number }} dari {{ reportsPaged.paginator.num_pages }}<br>
     
         {% if reportsPaged.has_previous %}
             <a href="{% if q %}?q={{q}}&page=1{% else %}?page=1{% endif %}">&laquo First</a>
@@ -125,7 +120,6 @@
         {% elif reportsPaged.has_next %}
             <a href="{% if q %}?q={{q}}&page={{ reportsPaged.next_page_number }}{% else %}?page={{ reportsPaged.next_page_number}}{% endif %}">Next -</a>
         {% endif %}
-
         {% if reportsPaged.has_next %}
             <a href="{% if q %}?q={{q}}&page={{ reportsPaged.paginator.num_pages }}{% else %}?page={{ reportsPaged.paginator.num_pages}}{% endif %}">Last &raquo</a>
         {% endif %}
@@ -142,21 +136,19 @@
                 success: function (data) {
                     dataJson = JSON.parse(data);
                     if (dataJson.status == 'success') {
-                        if (dataJson.isResolved) { 
-                            document.querySelector('#resolvebtn-' + reportId).textContent = 'Mark as unresolved';
-                            document.querySelector('#status-' + reportId).innerHTML = '<b>Resolved</b>';
+                        if (dataJson.isResolved) {  
+                            document.querySelector('#resolvebtn-' + reportId).textContent = 'Ditandai Belum Selesai';
+                            document.querySelector('#status-' + reportId).innerHTML = '<b>Terselesaikan</b>';
                             $('#report-'+ reportId).css("background-color", "white");
-                            // $('#report-text-'+ reportId).css("color", "gray");
-                            alert("Report has been marked as resolved!");
-                        } else {
-                            document.querySelector('#resolvebtn-' + reportId).textContent = 'Mark as resolved';
-                            document.querySelector('#status-' + reportId).innerHTML = '<b>Not Resolved</b>';
+                            alert("Laporan selesai!");
+                        } else { 
+                            document.querySelector('#resolvebtn-' + reportId).textContent = 'Ditandai Selesai';
+                            document.querySelector('#status-' + reportId).innerHTML = '<b>Belum terselesaikan</b>';
                             $('#report-'+ reportId).css("background-color", "#d7d7d7");
-                            // $('#report-text-'+ reportId).css("color", "white");
-                            alert("Report has been marked as not resolved!");
+                            alert("Laporan belum selesai!");
                         }
                     } else {
-                        alert("Error! Fail to resolve report!");
+                        alert("Error! Gagal menyelesaikan laporan!");
                     }
                 }
             });

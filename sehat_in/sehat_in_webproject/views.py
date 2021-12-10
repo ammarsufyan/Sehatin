@@ -66,50 +66,50 @@ def register(request):
         
         # Empty Validation -> in case the user play with inspect element
         if len(first_name) == 0 or len(last_name) == 0 or len(username) == 0 or len(email) == 0 or len(password) == 0 or len(password_confirmation) == 0:
-            messages.info(request, 'Please fill out all fields!')
+            messages.info(request, 'Silakan isi semua kolom!')
             return redirect('/auth/register')
 
         # Check length
         if len(username) < 5 or len(username) > 50:
-            messages.info(request, 'Username must be between 5 and 50 characters!')
+            messages.info(request, 'Nama pengguna harus diantara 5 sampai 50 karakter!')
             return redirect('/auth/register')
         
         regex = "[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$"
         if not re.search(regex, email) or len(email) < 3:
-            messages.info(request, 'Invalid email address!')
+            messages.info(request, 'Alamat email Anda salah!')
             return redirect('/auth/register')
 
         lowercase = re.compile('[a-z]')
         uppercase = re.compile('[A-Z]')
         if not lowercase.search(password) or not uppercase.search(password) or len(password) < 8 or len(password) > 50:
-            messages.info(request, 'Password must be between 8 and 50 characters and contain at least one lowercase and one uppercase letter!')
+            messages.info(request, 'Kata sandi harus diantara 8 sampai 50 karakter dan mengandung setidaknya satu huruf kecil dan satu huruf kapital!')
             return redirect('/auth/register')
 
         # Prevent special characters on username
         regex = "[^a-zA-Z0-9_]"
         if re.search(regex, username):
-            messages.info(request, 'Username must not contain special characters!')
+            messages.info(request, 'Nama pengguna tidak boleh mengandung karakter khusus!')
             return redirect('/auth/register')
 
         if password == password_confirmation:
             # Invalid username
             if username.lower() == "deleted":
-                messages.info(request, 'Invalid Username!')
+                messages.info(request, 'Nama pengguna tidak valid!')
                 return render(request, 'auth/register.html', {'email': str(email), 'username': str(username), 'first_name': str(first_name), 'last_name': str(last_name)})
 
             # if user contain admin
             if 'admin' in username.lower():
-                messages.info(request, 'Invalid Username!')
+                messages.info(request, 'Nama pengguna tidak valid!')
                 return render(request, 'auth/register.html', {'email': str(email), 'username': str(username), 'first_name': str(first_name), 'last_name': str(last_name)})
 
             # Check if username already exists 
             elif User.objects.filter(username__iexact=username).exists():
-                messages.info(request, f'Username "{username}" Already Taken! Please use a different username!')
+                messages.info(request, f'Nama pengguna "{username}" Telah diambil! Harap gunakan nama pengguna yang berbeda!')
                 return render(request, 'auth/register.html', {'email': str(email), 'username': str(username), 'first_name': str(first_name), 'last_name': str(last_name)})
 
             # Check if email already exists case insensitive
             elif User.objects.filter(email__iexact=email).exists():
-                messages.info(request, f'The email "{email}" Already Registered!')
+                messages.info(request, f'Email "{email}" Sudah terdaftar!')
                 return render(request, 'auth/register.html', {'email': str(email), 'username': str(username), 'first_name': str(first_name), 'last_name': str(last_name)})
             
             # If everything is fine, create a new user
@@ -121,10 +121,10 @@ def register(request):
                 user_profile = UserProfile(user=user)
                 user_profile.save()
 
-                messages.info(request, 'You have been registered successfully, you can now log in to your account')
+                messages.info(request, 'Anda telah berhasil terdaftar, sekarang Anda dapat masuk ke akun Anda')
                 return redirect('/auth/login')
         else: # If password and password confirmation are not the same
-            messages.info(request, 'Password and Confirmation do not match!')
+            messages.info(request, 'Kata sandi tidak cocok!')
             return redirect('/auth/register')
     else: # If there is no post request
         return render(request, 'auth/register.html')
@@ -146,7 +146,7 @@ def login(request):
         password = request.POST.get('password')
 
         if username == "deleted":
-            messages.info(request, 'Invalid Credentials!')
+            messages.info(request, 'Identitas tidak valid!')
             return redirect('/auth/login')
 
         user = auth.authenticate(username=username, password=password)
@@ -154,7 +154,7 @@ def login(request):
             auth.login(request, user)
             return redirect('/')
         else:
-            messages.info(request, 'Invalid Credentials!')
+            messages.info(request, 'Identitas tidak valid!')
             return redirect('/auth/login')
     else:
         return render(request, 'auth/login.html')
@@ -191,9 +191,9 @@ def forum(request):
         searching = True
         q = query
 
-        # Check if no result found
+        # Check if Tidak ada hasil yang ditemukan
         if paginator.count == 0:
-            messages.info(request, 'No result found')
+            messages.info(request, 'Tidak ada hasil yang ditemukan')
             return redirect('/forum')
     else:
         paginator = Paginator(Forum.objects.all().order_by('-created_at'), 25)
@@ -282,33 +282,33 @@ def forum_Create(request):
             
             # Check if tag is found
             if tag_get is None:
-                messages.info(request, 'Invalid tag options!')
+                messages.info(request, 'Opsi tag tidak valid!')
                 return HttpResponse('error')
 
             # Check tittle length
             if len(title) < 5:
-                messages.info(request, 'Title is too short, Min title length is 5 characters')
+                messages.info(request, 'Judul terlalu pendek, Panjang judul minimal 5 karakter')
                 return HttpResponse('error')
 
             if len(title) > 200:
-                messages.info(request, 'Title is too long, Max title length is 200 characters')
+                messages.info(request, 'Judul terlalu panjang, Panjang judul maksimal 200 karakter')
                 return HttpResponse('error')
 
             # Check content length
             if len(content) < 25:
-                messages.info(request, 'Content must be at least 25 characters!')
+                messages.info(request, 'Konten setidaknya harus memiliki 25 karakter')
                 return HttpResponse('limit')
 
             # Max 40k
             if len(content) > 40000:
-                messages.info(request, 'Invalid content length! Max allowed are 40k including formatting')
+                messages.info(request, 'Panjang konten tidak valid! Maksimum yang diizinkan adalah 40k termasuk pemformatan')
                 return HttpResponse('limit')
 
             # Check if tag is found
             tag = Tag.objects.get(name=tag_get)
 
             if tag is None:
-                messages.info(request, 'Invalid tag options! No tag found!')
+                messages.info(request, 'Opsi tag tidak valid! No tag found!')
                 return HttpResponse('error')
 
             # remove ? from title
@@ -326,7 +326,7 @@ def forum_Create(request):
             tags = Tag.objects.filter(type="Forum")
             return render(request, 'forum/create.html', {'tags': tags, 'notifications': notifications})
     else: # user is not logged in
-        messages.info(request, 'Need to login first!')
+        messages.info(request, 'Anda harus masuk terlebih dahulu!')
         return redirect('/auth/login')
 
 def forum_Edit(request, id, title):
@@ -346,12 +346,12 @@ def forum_Edit(request, id, title):
             tag_name = request.POST.get('tag') # if user change the tag, it will be changed
 
             if len(content) < 25:
-                messages.info(request, 'Content must be at least 25 characters!')
+                messages.info(request, 'Konten setidaknya harus memiliki 25 karakter')
                 return HttpResponse('limit')
 
             # Max 40k
             if len(content) > 40000:
-                messages.info(request, 'Invalid content length! Max allowed are 40k including formatting')
+                messages.info(request, 'Panjang konten tidak valid! Maksimum yang diizinkan adalah 40k termasuk pemformatan')
                 return HttpResponse('limit')
 
             # Get the post and tag object
@@ -377,7 +377,7 @@ def forum_Edit(request, id, title):
 
             return render(request, 'forum/edit.html', {'post': post, 'tags': tag, 'notifications': notifications})
     else: # Double check, this shouldn't actually happen
-        messages.info(request, 'Need to login first!')
+        messages.info(request, 'Anda harus masuk terlebih dahulu!')
         return HttpResponse('error')
 
 def forum_Delete(request, id, title):
@@ -394,8 +394,8 @@ def forum_Delete(request, id, title):
 
         if not user.is_superuser:
             if user != post.user:
-                messages.info(request, 'Need to login first!')
-                dataJson = {'status': 'error', 'message': 'Need to login first!'}
+                messages.info(request, 'Anda harus masuk terlebih dahulu!')
+                dataJson = {'status': 'error', 'message': 'Anda harus masuk terlebih dahulu!'}
                 return HttpResponse(json.dumps(dataJson))
 
         # If delete mode admin send notification to the user
@@ -406,14 +406,14 @@ def forum_Delete(request, id, title):
                     # Get reason for deletion by admin
                     reason = request.POST.get('reason')
                     # Send notification to user
-                    notification = Notification(user=post.user, notification_Content='Your post has been deleted by admin (' + user.username + '). Reason: ' + reason)
+                    notification = Notification(user=post.user, notification_Content='Post forum Anda telah dihapus oleh admin (' + user.username + '). Alasan: ' + reason)
                     notification.save()
 
         # Delete the post
         post.delete()
 
         # Return success
-        dataJson = {'status': 'success', 'message': 'The post has been deleted successfully!'}
+        dataJson = {'status': 'success', 'message': 'Postingan telah berhasil dihapus!'}
         return HttpResponse(json.dumps(dataJson))
     else: # If no request, throw 404
         raise Http404
@@ -470,13 +470,13 @@ def forum_Report(request, id, title):
 
             # Validate reason
             if len(reason) < 4:
-                messages.info(request, 'Invalid Reason Length! Min input are 4 characters')
-                jsonData = {'status': 'limit', 'message': 'Reason inputted is too short (Min input are 4 characters)! '}
+                messages.info(request, 'Panjang alasan tidak valid! Masukkan minimal 4 karakter')
+                jsonData = {'status': 'limit', 'message': 'Alasan yang dimasukkan terlalu pendek (Minimal 4 karakter)!'}
                 return HttpResponse(json.dumps(jsonData))
 
             if len(reason) > 200:
-                messages.info(request, 'Invalid Reason Length! Max input are 200 characters!')
-                jsonData = {'status': 'limit', 'message': 'Reason inputted is too long (Max input are 200 characters)!'}
+                messages.info(request, 'Panjang alasan tidak valid! Masukkan maksimal 200 karakter!')
+                jsonData = {'status': 'limit', 'message': 'Alasan yang dimasukkan terlalu panjang (Maksimal 200 karakter)!'}
                 return HttpResponse(json.dumps(jsonData))
 
             # Check if user has already reported this post
@@ -484,15 +484,15 @@ def forum_Report(request, id, title):
             if report.count() == 0:
                 report = Report(user=user, reportedUser=post.user, post=post, reason=reason, reportType='post')
                 report.save()
-                jsonData = {'status': 'success', 'message': 'Post has been reported successfully!'}
+                jsonData = {'status': 'success', 'message': 'Postingan telah berhasil dilaporkan!'}
                 return HttpResponse(json.dumps(jsonData))
             else:
-                messages.info(request, 'You have already reported this post!')
-                jsonData = {'status': 'error', 'message': 'You have already reported this post!'}
+                messages.info(request, 'Anda telah melaporkan postingan ini!')
+                jsonData = {'status': 'error', 'message': 'Anda telah melaporkan postingan ini!'}
                 return HttpResponse(json.dumps(jsonData))
         else:
-            messages.info(request, 'Need to login first!')
-            jsonData = {'status': 'error', 'message': 'Need to login first!'}
+            messages.info(request, 'Anda harus masuk terlebih dahulu!')
+            jsonData = {'status': 'error', 'message': 'Anda harus masuk terlebih dahulu!'}
             return HttpResponse(json.dumps(jsonData))
     else:
         raise Http404
@@ -514,12 +514,12 @@ def forum_Comment(request, id, title):
 
             # If comment empty
             if commentGet == None:
-                messages.info(request, 'Invalid comment length!')
+                messages.info(request, 'Panjang komentar tidak valid!')
                 return HttpResponse('error')
 
             # If comment too long or too short
             if len(commentGet) > 10000 or len(commentGet) < 20:
-                messages.info(request, 'Invalid comment length!')
+                messages.info(request, 'Panjang komentar tidak valid!')
                 return HttpResponse('limit')
 
             # Save comment first
@@ -533,7 +533,7 @@ def forum_Comment(request, id, title):
             # send notification to post owner
             if post.user != user:
                 if post.user != None: # Check if post user's account still exist
-                    notification = Notification(user=post.user, post_Forum=post, comment=comment, notification_Content=user.username + ' posted a comment on your post')
+                    notification = Notification(user=post.user, post_Forum=post, comment=comment, notification_Content=user.username + ' meninggalkan komentar di post Anda')
                     notification.save()
 
             # Send notification to mentioned users @
@@ -551,14 +551,14 @@ def forum_Comment(request, id, title):
                         # Get the comment object
                         mentionedComment = Comment.objects.get(user=user, comment_Forum=post, content=commentGet)
                     
-                        notification = Notification(user=mentionedUserObject, comment=mentionedComment, post_Forum=post, notification_Content=user.username + ' mentioned you in a comment')
+                        notification = Notification(user=mentionedUserObject, comment=mentionedComment, post_Forum=post, notification_Content=user.username + ' menyebutkan Anda di komentar')
                         notification.save()
                     except:
                         continue
 
             return HttpResponse('success')
         else: # If user is not logged in
-            messages.info(request, 'Need to login first!')
+            messages.info(request, 'Anda harus masuk terlebih dahulu!')
             return HttpResponse('error')
     else: # If no request, throw 404
         raise Http404
@@ -622,12 +622,12 @@ def forum_Comment_Edit(request, id, title, comment_id):
 
             # Check length of comment
             if len(commentGet) > 10000 or len(commentGet) < 20:
-                messages.info(request, 'Invalid comment length!')
+                messages.info(request, 'Panjang komentar tidak valid!')
                 return HttpResponse('limit')
 
             # If comment empty
             if commentGet == None:
-                messages.info(request, 'Invalid comment length!')
+                messages.info(request, 'Panjang komentar tidak valid!')
                 return HttpResponse('error')
 
             # Edit comment
@@ -636,7 +636,7 @@ def forum_Comment_Edit(request, id, title, comment_id):
 
             return HttpResponse('success')
         else: # If user is not logged in
-            messages.info(request, 'Need to login first!')
+            messages.info(request, 'Anda harus masuk terlebih dahulu!')
             return HttpResponse('error')
     else: # If no request, throw 404
         raise Http404
@@ -668,7 +668,7 @@ def forum_Comment_Delete(request, id, title, comment_id):
                         # Get reason for deletion by admin
                         reason = request.POST.get('reason')
                         # Send notification to user
-                        notification = Notification(user=comment.user, notification_Content='Your comment has been deleted by admin (' + user.username + '). Reason: ' + reason)
+                        notification = Notification(user=comment.user, notification_Content='Komentar Anda telah dihapus oleh admin (' + user.username + '). Alasan: ' + reason)
                         notification.save()
 
             # Delete comment
@@ -683,8 +683,8 @@ def forum_Comment_Delete(request, id, title, comment_id):
             dataJson = {'status': 'success', 'message': comments.count()}
             return HttpResponse(json.dumps(dataJson))
         else: # If user is not logged in
-            messages.info(request, 'Need to login first!')
-            dataJson = {'status': 'error', 'message': 'Need to login first!'}
+            messages.info(request, 'Anda harus masuk terlebih dahulu!')
+            dataJson = {'status': 'error', 'message': 'Anda harus masuk terlebih dahulu!'}
             return HttpResponse(json.dumps(dataJson))
     else: # If no request, throw 404
         raise Http404
@@ -704,13 +704,13 @@ def forum_Comment_Report(request, id, title, comment_id):
 
             # Validate reason
             if len(reason) < 4:
-                messages.info(request, 'Invalid Reason Length! Min input are 4 characters')
-                jsonData = {'status': 'limit', 'message': 'Reason inputted is too short (Min input are 4 characters)! '}
+                messages.info(request, 'Panjang alasan tidak valid! Masukkan minimal 4 karakter')
+                jsonData = {'status': 'limit', 'message': 'Alasan yang dimasukkan terlalu pendek (Minimal 4 karakter)!'}
                 return HttpResponse(json.dumps(jsonData))
 
             if len(reason) > 200:
-                messages.info(request, 'Invalid Reason Length! Max input are 200 characters!')
-                jsonData = {'status': 'limit', 'message': 'Reason inputted is too long (Max input are 200 characters)!'}
+                messages.info(request, 'Panjang alasan tidak valid! Masukkan maksimal 200 karakter!')
+                jsonData = {'status': 'limit', 'message': 'Alasan yang dimasukkan terlalu panjang (Maksimal 200 karakter)!'}
                 return HttpResponse(json.dumps(jsonData))
 
             # Check if user has already reported this comment
@@ -726,11 +726,11 @@ def forum_Comment_Report(request, id, title, comment_id):
                 dataJson = {'status': 'success', 'message': reports.count()}
                 return HttpResponse(json.dumps(dataJson))
             else: # If user has already reported this comment
-                dataJson = {'status': 'error', 'message': 'You have already reported this comment!'}
+                dataJson = {'status': 'error', 'message': 'Anda telah melaporkan komentar ini!'}
                 return HttpResponse(json.dumps(dataJson))
         else: # If user is not logged in
-            messages.info(request, 'Need to login first!')
-            dataJson = {'status': 'error', 'message': 'Need to login first!'}
+            messages.info(request, 'Anda harus masuk terlebih dahulu!')
+            dataJson = {'status': 'error', 'message': 'Anda harus masuk terlebih dahulu!'}
             return HttpResponse(json.dumps(dataJson))
     else: # If no request, throw 404
         raise Http404
@@ -885,12 +885,12 @@ def profile_Settings(request, username):
 
                 # Check bio limit 500 characters
                 if len(user_Profile.bio) > 500:
-                    messages.info(request, 'Bio to long! Max length is 500 characters')
+                    messages.info(request, 'Deskripsi terlalu panjang! Panjang maksimal adalah 500 karakter')
                     return redirect('/profile/' + user.username + '/settings')
 
                 # Check location limit 250 characters
                 if len(user_Profile.location) > 250:
-                    messages.info(request, 'Location too long! Max length is 250 characters')
+                    messages.info(request, 'Lokasi terlalu panjang! Panjang maksimal 250 karakter')
                     return redirect('/profile/' + user.username + '/settings')
 
                 # Check image url ???
@@ -903,7 +903,7 @@ def profile_Settings(request, username):
                 user.save()
                 user_Profile.save()
 
-                messages.info(request, 'Profile updated successfully!')
+                messages.info(request, 'Profil berhasil diperbarui!')
                 return redirect('/profile/' + user.username + '/settings')
             else: # If Open normally
                 notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
@@ -912,7 +912,7 @@ def profile_Settings(request, username):
         else: # If not the user
             raise PermissionDenied()
     else: # If user is not logged in
-        messages.info(request, 'You have to be logged in first!')
+        messages.info(request, 'Anda harus masuk terlebih dahulu!')
         return render(request, 'auth/login')
 
 def profile_Notification(request, username):
@@ -924,7 +924,7 @@ def profile_Notification(request, username):
         else:
             raise PermissionDenied()
     else:
-        messages.info(request, 'You have to be logged in first!')
+        messages.info(request, 'Anda harus masuk terlebih dahulu!')
         return render(request, 'auth/login')
 
 def profile_Notification_Read(request, username, notification_id):
@@ -1046,9 +1046,9 @@ def konsultasi(request):
         searching = True
         q = query
 
-        # Check if no result found
+        # Check if Tidak ada hasil yang ditemukan
         if paginator.count == 0:
-            messages.info(request, 'No result found')
+            messages.info(request, 'Tidak ada hasil yang ditemukan')
             return redirect('/konsultasi')
     else:
         paginator = Paginator(Konsultasi.objects.all().order_by('-created_at'), 25)
@@ -1072,33 +1072,33 @@ def konsultasi_Create(request):
             
             # Check if tag is found
             if tag_get is None:
-                messages.info(request, 'Invalid tag options!')
+                messages.info(request, 'Opsi tag tidak valid!')
                 return HttpResponse('error')
 
             # Check tittle length
             if len(title) < 5:
-                messages.info(request, 'Title is too short, Min title length is 5 characters')
+                messages.info(request, 'Judul terlalu pendek, Panjang judul minimal 5 karakter')
                 return HttpResponse('error')
 
             if len(title) > 200:
-                messages.info(request, 'Title is too long, Max title length is 200 characters')
+                messages.info(request, 'Judul terlalu panjang, Panjang judul maksimal 200 karakter')
                 return HttpResponse('error')
 
             # Check content length
             if len(content) < 25:
-                messages.info(request, 'Content must be at least 25 characters!')
+                messages.info(request, 'Konten setidaknya harus memiliki 25 karakter')
                 return HttpResponse('limit')
 
             # Max 40k
             if len(content) > 40000:
-                messages.info(request, 'Invalid content length! Max allowed are 40k including formatting')
+                messages.info(request, 'Panjang konten tidak valid! Maksimum yang diizinkan adalah 40k termasuk pemformatan')
                 return HttpResponse('limit')
 
             # Check if tag is found
             tag = Tag.objects.get(name=tag_get)
 
             if tag is None:
-                messages.info(request, 'Invalid tag options! No tag found!')
+                messages.info(request, 'Opsi tag tidak valid!')
                 return HttpResponse('error')
 
             # remove ? from title
@@ -1115,7 +1115,7 @@ def konsultasi_Create(request):
             notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
             return render(request, 'konsultasi/create.html', {'tags': tags, 'notifications': notifications})
     else: # user is not logged in
-        messages.info(request, 'Need to login first!')
+        messages.info(request, 'Anda harus masuk terlebih dahulu!')
         return redirect('/auth/login')
 
 def konsultasi_Tag(request, tagName):
@@ -1140,8 +1140,8 @@ def konsultasi_Delete(request, id, title):
 
         if not user.is_superuser:
             if user != konsultasi.user:
-                messages.info(request, 'Need to login first!')
-                dataJson = {'status': 'error', 'message': 'Need to login first!'}
+                messages.info(request, 'Anda harus masuk terlebih dahulu!')
+                dataJson = {'status': 'error', 'message': 'Anda harus masuk terlebih dahulu!'}
                 return HttpResponse(json.dumps(dataJson))
 
         # If delete mode admin send notification to the user
@@ -1153,7 +1153,7 @@ def konsultasi_Delete(request, id, title):
 
                     # Kirim notif ke user
                     user = konsultasi.konsultasi_User
-                    message = "Konsultasi anda dengan judul '" + konsultasi.konsultasi_Title + "' telah dihapus oleh admin. Alasan: " + reason
+                    message = "Konsultasi Anda dengan judul '" + konsultasi.konsultasi_Title + "' telah dihapus oleh admin. Alasan: " + reason
                     notification = Notification(user=user, notification_content=message)
                     notification.save()
 
@@ -1216,12 +1216,12 @@ def konsultasi_Comment(request, id, title):
 
             # If comment empty
             if commentGet == None:
-                messages.info(request, 'Invalid comment length!')
+                messages.info(request, 'Panjang komentar tidak valid!')
                 return HttpResponse('error')
 
             # If comment too long or too short
             if len(commentGet) > 10000 or len(commentGet) < 20:
-                messages.info(request, 'Invalid comment length!')
+                messages.info(request, 'Panjang komentar tidak valid!')
                 return HttpResponse('limit')
 
             # Save comment first
@@ -1235,7 +1235,7 @@ def konsultasi_Comment(request, id, title):
             # send notification to post owner
             if post.user != user:
                 if post.user != None: # Check if post user's account still exist
-                    notification = Notification(user=post.user, post_Konsultasi=post, comment=comment, notification_Content=user.username + ' posted a comment on your post')
+                    notification = Notification(user=post.user, post_Konsultasi=post, comment=comment, notification_Content=user.username + ' meninggalkan komentar di post Anda')
                     notification.save()
 
             # Send notification to mentioned users @
@@ -1253,14 +1253,14 @@ def konsultasi_Comment(request, id, title):
                         # Get the comment object
                         mentionedComment = Comment.objects.get(user=user, comment_Konsultasi=post, content=commentGet)
                     
-                        notification = Notification(user=mentionedUserObject, comment=mentionedComment, post_Konsultasi=post, notification_Content=user.username + ' mentioned you in a comment')
+                        notification = Notification(user=mentionedUserObject, comment=mentionedComment, post_Konsultasi=post, notification_Content=user.username + ' menyebutkan Anda di komentar you in a comment')
                         notification.save()
                     except:
                         continue
 
             return HttpResponse('success')
         else: # If user is not logged in
-            messages.info(request, 'Need to login first!')
+            messages.info(request, 'Anda harus masuk terlebih dahulu!')
             return HttpResponse('error')
     else: # If no request, throw 404
         raise Http404
@@ -1288,7 +1288,7 @@ def konsultasi_Comment_Delete(request, id, title, comment_id):
                         # Get reason for deletion by admin
                         reason = request.POST.get('reason')
                         # Send notification to user
-                        notification = Notification(user=comment.user, notification_Content='Your comment has been deleted by admin (' + user.username + '). Reason: ' + reason)
+                        notification = Notification(user=comment.user, notification_Content='Jawaban konsultasi Anda telah dihapus oleh admin (' + user.username + '). Alasan: ' + reason)
                         notification.save()
 
             # Delete comment
@@ -1303,8 +1303,8 @@ def konsultasi_Comment_Delete(request, id, title, comment_id):
             dataJson = {'status': 'success', 'message': comments.count()}
             return HttpResponse(json.dumps(dataJson))
         else: # If user is not logged in
-            messages.info(request, 'Need to login first!')
-            dataJson = {'status': 'error', 'message': 'Need to login first!'}
+            messages.info(request, 'Anda harus masuk terlebih dahulu!')
+            dataJson = {'status': 'error', 'message': 'Anda harus masuk terlebih dahulu!'}
             return HttpResponse(json.dumps(dataJson))
     else: # If no request, throw 404
         raise Http404
@@ -1320,12 +1320,12 @@ def konsultasi_Comment_Edit(request, id, title, comment_id):
 
             # Check length of comment
             if len(commentGet) > 10000 or len(commentGet) < 20:
-                messages.info(request, 'Invalid comment length!')
+                messages.info(request, 'Panjang komentar tidak valid!')
                 return HttpResponse('limit')
 
             # If comment empty
             if commentGet == None:
-                messages.info(request, 'Invalid comment length!')
+                messages.info(request, 'Panjang komentar tidak valid!')
                 return HttpResponse('error')
 
             # Edit comment
@@ -1334,7 +1334,7 @@ def konsultasi_Comment_Edit(request, id, title, comment_id):
 
             return HttpResponse('success')
         else: # If user is not logged in
-            messages.info(request, 'Need to login first!')
+            messages.info(request, 'Anda harus masuk terlebih dahulu!')
             return HttpResponse('error')
     else: # If no request, throw 404
         raise Http404
@@ -1415,31 +1415,31 @@ def test_Loneliness_Result(request):
         # 3 2 == 3 3 
         if (kesepian == 1 and sosial == 1): # 1 1 
             resultKey = 1
-            resultType = "Tidak mengalami kesepian dan Penuh dukungan sosial"
+            resultType = "Tidak mengalami kesepian dan penuh dukungan sosial"
         elif (kesepian == 1 and sosial == 2): # 1 2
             resultKey = 2
-            resultType = "Tidak mengalami kesepian. Namun, Kurang dukungan sosial"
+            resultType = "Tidak mengalami kesepian. Namun, kurang dukungan sosial"
         elif (kesepian == 1 and sosial == 3): # 1 3
             resultKey = 2
-            resultType = "Tidak mengalami kesepian. Namun, Sangat kurang dukungan sosial"
+            resultType = "Tidak mengalami kesepian. Namun, sangat kurang dukungan sosial"
         elif (kesepian == 2 and sosial == 1): # 2 1
             resultKey = 3
             resultType = "Penuh dukungan sosial. Namun, Kesepian"
         elif (kesepian == 2 and sosial == 2): # 2 2
             resultKey = 4
-            resultType = "Kesepian dan Kurang dukungan sosial"
+            resultType = "Kesepian dan kurang dukungan sosial"
         elif (kesepian == 2 and sosial == 3): # 2 3
             resultKey = 4
-            resultType = "Kesepian dan Sangat kurang dukungan sosial"
+            resultType = "Kesepian dan sangat kurang dukungan sosial"
         elif (kesepian == 3 and sosial == 1): # 3 1
             resultKey = 3
-            resultType = "Penuh dukungan sosial. Nammun, Sangat kesepian"
+            resultType = "Penuh dukungan sosial. Namun, Sangat kesepian"
         elif (kesepian == 3 and sosial == 2): # 3 2
             resultKey = 5
-            resultType = "Sangat kesepian dan Kurang dukungan sosial"
+            resultType = "Sangat kesepian dan kurang dukungan sosial"
         elif (kesepian == 3 and sosial == 3): # 3 3
             resultKey = 5
-            resultType = "Sangat kesepian dan Sangat kurang dukungan sosial"
+            resultType = "Sangat kesepian dan sangat kurang dukungan sosial"
         else:
             resultKey = 0
             resultType = "Error!"
@@ -1469,7 +1469,7 @@ def test_Loneliness_Result(request):
         # Nanti bisa di return banyak, style json -> title, hasil text, apa2 lah
         return render(request, 'tests/result.html', {'res_type': resultType, 'res_data': result_data[resultKey], 'notifications': notifications, 'quiz_type': 'Test Skala Kesepian'})
     else:
-        messages.info(request, 'Silahkan test terlebih dahulu!')        
+        messages.info(request, 'Silakan test terlebih dahulu!')        
         return redirect('/tests')
 
 # ------------------------------
@@ -1533,7 +1533,7 @@ def test_Depression_Result(request):
         # Save to history if user is logged in
         if request.user.is_authenticated:
             # Save to history
-            history = History(user=user, quiz_type='Test Depresi', res_type=resultType, res_data=result_data[resultKey])
+            history = History(user=user, quiz_type='Tes Depresi', res_type=resultType, res_data=result_data[resultKey])
             history.save()
         
             notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
@@ -1542,7 +1542,7 @@ def test_Depression_Result(request):
         # Nanti bisa di return banyak, style json -> title, hasil text, apa2 lah
         return render(request, 'tests/result.html', {'res_type': resultType, 'res_data': result_data[resultKey], 'notifications': notifications, 'quiz_type': 'Test Depresi'})
     else:
-        messages.info(request, 'Silahkan test terlebih dahulu!')        
+        messages.info(request, 'Silakan test terlebih dahulu!')        
         return redirect('/tests')
 
 # ------------------------------
@@ -1606,7 +1606,7 @@ def test_Mindfulness_Result(request):
         # Save to history if user is logged in
         if request.user.is_authenticated:
             # Save to history
-            history = History(user=user, quiz_type='Test Kesadaran', res_type=resultType, res_data=result_data[resultKey])
+            history = History(user=user, quiz_type='Tes Kesadaran Diri', res_type=resultType, res_data=result_data[resultKey])
             history.save()
         
             notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
@@ -1615,7 +1615,7 @@ def test_Mindfulness_Result(request):
         # Nanti bisa di return banyak, style json -> title, hasil text, apa2 lah
         return render(request, 'tests/result.html', {'res_type': resultType, 'res_data': result_data[resultKey], 'notifications': notifications, 'quiz_type': 'Test Kesadaran'})
     else:
-        messages.info(request, 'Silahkan test terlebih dahulu!')        
+        messages.info(request, 'Silakan test terlebih dahulu!')        
         return redirect('/tests')
 
 def test_Result(request):
@@ -1631,7 +1631,7 @@ def test_Result(request):
         quiz_type = request.POST.get('quiz_type')
         return render(request, 'tests/result.html', {'res_type': res_type, 'res_data': res_data, 'notifications': notifications, 'quiz_type': quiz_type})
     else:
-        messages.info(request, 'Silahkan test terlebih dahulu!')        
+        messages.info(request, 'Silakan test terlebih dahulu!')        
         return redirect('/tests')
 
 # ----------------------------------------------------------------
@@ -1657,9 +1657,9 @@ def artikel(request):
         searching = True
         q = query
 
-        # Check if no result found
+        # Check if Tidak ada hasil yang ditemukan
         if paginator.count == 0:
-            messages.info(request, 'No result found')
+            messages.info(request, 'Tidak ada hasil yang ditemukan')
             return redirect('/artikel')
     else:
         paginator = Paginator(Artikel.objects.all().order_by('-created_at'), 25)
@@ -1755,33 +1755,33 @@ def artikel_create(request):
             
             # Check if tag is found
             if tag_get is None:
-                messages.info(request, 'Invalid tag options!')
+                messages.info(request, 'Opsi tag tidak valid!')
                 return HttpResponse('error')
 
             # Check tittle length
             if len(title) < 5:
-                messages.info(request, 'Title is too short, Min title length is 5 characters')
+                messages.info(request, 'Judul terlalu pendek, Panjang judul minimal 5 karakter')
                 return HttpResponse('error')
 
             if len(title) > 200:
-                messages.info(request, 'Title is too long, Max title length is 200 characters')
+                messages.info(request, 'Judul terlalu panjang, Panjang judul maksimal 200 karakter')
                 return HttpResponse('error')
 
             # Check content length
             if len(content) < 25:
-                messages.info(request, 'Content must be at least 25 characters!')
+                messages.info(request, 'Konten setidaknya harus memiliki 25 karakter')
                 return HttpResponse('limit')
 
             # Max 40k
             if len(content) > 40000:
-                messages.info(request, 'Invalid content length! Max allowed are 40k including formatting')
+                messages.info(request, 'Panjang konten tidak valid! Maksimum yang diizinkan adalah 40k termasuk pemformatan')
                 return HttpResponse('limit')
 
             # Check if tag is found
             tag = Tag.objects.get(name=tag_get)
 
             if tag is None:
-                messages.info(request, 'Invalid tag options! No tag found!')
+                messages.info(request, 'Opsi tag tidak valid! No tag found!')
                 return HttpResponse('error')
 
             # remove ? from title
@@ -1798,7 +1798,7 @@ def artikel_create(request):
             notifications = Notification.objects.filter(user=request.user).order_by('-created_at')
             return render(request, 'artikel/create.html', {'tags': tags, 'notifications': notifications})
     else: # user is not logged in
-        messages.info(request, 'Need to login first!')
+        messages.info(request, 'Anda harus masuk terlebih dahulu!')
         return redirect('/auth/login')
 
 def artikel_edit(request, id, title):
@@ -1819,12 +1819,12 @@ def artikel_edit(request, id, title):
             thumbnail_url = request.POST.get('thumbnail_url')
 
             if len(content) < 25:
-                messages.info(request, 'Content must be at least 25 characters!')
+                messages.info(request, 'Konten setidaknya harus memiliki 25 karakter')
                 return HttpResponse('limit')
 
             # Max 40k
             if len(content) > 40000:
-                messages.info(request, 'Invalid content length! Max allowed are 40k including formatting')
+                messages.info(request, 'Panjang konten tidak valid! Maksimum yang diizinkan adalah 40k termasuk pemformatan')
                 return HttpResponse('limit')
 
             # Get the post and tag object
@@ -1852,7 +1852,7 @@ def artikel_edit(request, id, title):
 
             return render(request, 'artikel/edit.html', {'post': post, 'tags': tag, 'notifications': notifications})
     else: # Double check, this shouldn't actually happen
-        messages.info(request, 'Need to login first!')
+        messages.info(request, 'Anda harus masuk terlebih dahulu!')
         return HttpResponse('error')
 
 def artikel_delete(request, id, title):
@@ -1869,8 +1869,8 @@ def artikel_delete(request, id, title):
 
         if not user.is_superuser:
             if user != post.user:
-                messages.info(request, 'Need to login first!')
-                dataJson = {'status': 'error', 'message': 'Need to login first!'}
+                messages.info(request, 'Anda harus masuk terlebih dahulu!')
+                dataJson = {'status': 'error', 'message': 'Anda harus masuk terlebih dahulu!'}
                 return HttpResponse(json.dumps(dataJson))
 
         # If delete mode admin send notification to the user
@@ -1881,14 +1881,14 @@ def artikel_delete(request, id, title):
                     # Get reason for deletion by admin
                     reason = request.POST.get('reason')
                     # Send notification to user
-                    notification = Notification(user=post.user, notification_Content='Your post has been deleted by admin (' + user.username + '). Reason: ' + reason)
+                    notification = Notification(user=post.user, notification_Content='Post artikel Anda telah dihapus oleh admin (' + user.username + '). Alasan: ' + reason)
                     notification.save()
 
         # Delete the post
         post.delete()
 
         # Return success
-        dataJson = {'status': 'success', 'message': 'The post has been deleted successfully!'}
+        dataJson = {'status': 'success', 'message': 'Postingan telah berhasil dihapus!'}
         return HttpResponse(json.dumps(dataJson))
     else: # If no request, throw 404
         raise Http404

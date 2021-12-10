@@ -45,10 +45,10 @@
         <div class="input__area">
             {% csrf_token %}
             <p class="container__title" style="margin-bottom: 10px;">Judul
-                <input class="forum__title" type="text" name="title" placeholder="Title" autocomplete="off"><br>
+                <input class="forum__title" type="text" name="title" placeholder="Judul" autocomplete="off"><br>
             </p>
             <p class="container__title">Thumbnail
-                <input class="forum__title" type="text" name="thumbnail_url" placeholder="thumbnail" autocomplete="off"/>
+                <input class="forum__title" type="text" name="thumbnail_url" placeholder="Thumbnail" autocomplete="off"/>
             </p>
             <div style="min-width: 600px;">
                 <div id="editor"></div>
@@ -64,8 +64,8 @@
                     </p>
                 </div>
                 <div>
-                    <button class="submit_post button button__flex" value="Create" onclick="createPost()">Submit</button>
-                    <button class="cancel_post button button_flex" onclick="location.href='/artikel';">Cancel</button>
+                    <button class="submit_post button button__flex" value="Create" onclick="createPost()">Buat</button>
+                    <button class="cancel_post button button_flex" onclick="location.href='/artikel';">Batal</button>
                 </div>
             </div>
         </div>
@@ -81,33 +81,33 @@
 
             // Title min 5
             if (title.length < 5) {
-                alert("Title is too short, Min title length is 5 characters");
+                alert("Judul terlalu pendek, panjang judul minimal 5 karakter");
                 return false;
             }
 
             // title max 200
             if (title.length > 200) {
-                alert("Title is too long, Max title length is 200 characters");
+                alert("Judul terlalu panjang, panjang judul maksimal 200 karakter");
                 return false;
             }
 
             // Content min 25
             if (content.length < 25) {
-                alert("Content too short! Min content including formatting are 25 characters long");
+                alert("Konten terlalu pendek! Konten minimum termasuk pemformatan memiliki panjang 25 karakter");
                 return false;
             }
             // content max 40k
             if (content.length > 40000) {
-                alert("Content too long! Max content including formatting are 40,000 characters long");
+                alert("Konten terlalu panjang! Konten maksimal termasuk pemformatan memiliki panjang 40.000 karakter");
                 return false;
             }
             // Validate thumbnail
             if (!(thumbnail.startsWith('https://') && (thumbnail.endsWith('.png') || thumbnail.endsWith('.jpg') || thumbnail.endsWith('.jpeg')))) {
                 // Check if img is http
                 if (thumbnail.startsWith('http://')) {
-                    alert('Image linked needs to be secured (HTTPS)!');
+                    alert('Tautan gambar perlu diamankan (HTTPS)!');
                 } else {
-                    alert('Invalid linked image! Image must be a png, jpg or jpeg!');
+                    alert('Gambar tertaut tidak valid! Gambar harus berupa png, jpg, atau jpeg!');
                 }
                 return false;
             }
@@ -143,7 +143,7 @@
                             window.location.href = '/artikel/create';
                         } else
                         if (data == 'limit')  {
-                            alert('Character length invalid!')
+                            alert('Panjang karakter tidak valid!')
                         } else {
                             window.location.href = '/artikel/' + data.toString();
                         }
@@ -158,7 +158,7 @@
     <script>
         var quill = new Quill('#editor', {
             theme: 'snow',
-            placeholder: 'Post content...',
+            placeholder: 'Isi artikel Anda di sini...',
             modules: {
                 toolbar: {
                     container: myToolbar,

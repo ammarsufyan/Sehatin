@@ -17,7 +17,7 @@
         href="{% static 'img/favicon/favicon.ico' %}" 
     />
     <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
-    <title>Profile {{ theUser.username }}</title>
+    <title>Profil {{ theUser.username }}</title>
 </head>
 <body>
     {% include 'templates/header.html' %}
@@ -28,7 +28,6 @@
                 <div class="navigation">
                     <div class="info">
                         <div><i class="uil uil-user-circle profile__image"></i></div>
-
                         <p><b>{{ theUser.first_name }} {{ theUser.last_name }}</b></p>
                         <p class="email">{{ theUser.email }}</p>
                     </div>
@@ -37,7 +36,7 @@
                         <div>
                             <a class="button__profile" href="/profile/{{ theUser.username }}">
                                 <div><i class="uil uil-user-square"></i></div>
-                                <p>Profile Saya</p>
+                                <p>Profil Saya</p>
                             </a>
                         </div>
                         <div>
@@ -67,7 +66,7 @@
                         <div>
                             <a class="button__profile" href="/profile/{{ theUser.username }}/settings">
                                 <div><i class="uil uil-edit-alt"></i></div>
-                                <p>Ubah Profile</p>
+                                <p>Ubah Profil</p>
                             </a>
                         </div>
                         <div>
@@ -76,7 +75,6 @@
                                 <p>Keluar</p>
                             </a>
                         </div>
-                        
                         {% else %}
                         <div>
                             <a class="button__profile" href="/profile/{{ theUser.username }}/posts">
@@ -94,7 +92,7 @@
                     </div>
                 </div>
                 <div class="profile">
-                    <h1>Profile Saya</h1>
+                    <h1>Profil Saya</h1>
                     <div class="profile__header">
                         <div class="container_name_role">
                             <p class="name">{{ theUser.first_name }} {{ theUser.last_name }}</p>

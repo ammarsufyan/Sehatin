@@ -30,7 +30,7 @@
 
         <section>
             <div class="artikel__link">
-                <a class="artikel__link__abu" href="/">Home</a> /
+                <a class="artikel__link__abu" href="/">Beranda</a> /
                 <a class="artikel__link__abu" href="/artikel">Artikel</a> /
                 <a href="/artikel/{{ post.id }}/{{ post.title }}">{{ post.title }}</a>
             </div>
@@ -56,7 +56,7 @@
                 {% endautoescape %}
 
                 <br>
-                <p> <b>Author:</b> {% if post.user == null %}deleted{% else %}{{ post.user }}{% endif %}<br><b>Created at </b><span id="date-{{ post.id }}">{{ post.created_at.isoformat }}</span></b>{% if post.created_at != post.updated_at %} - edited{% endif %}</p>
+                <p> <b>Penulis:</b> {% if post.user == null %}deleted{% else %}{{ post.user }}{% endif %}<br><b>Dibuat: </b><span id="date-{{ post.id }}">{{ post.created_at.isoformat }}</span></b>{% if post.created_at != post.updated_at %} - edited{% endif %}</p>
                 <br>
 
                 <script>

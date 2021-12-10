@@ -127,7 +127,7 @@
     </main>
 
     <div class="page-num"> 
-        Page {{ post_konsul.number }} of {{ post_konsul.paginator.num_pages }}<br>
+        Halaman {{ post_konsul.number }} dari {{ post_konsul.paginator.num_pages }}<br>
     
         {% if post_konsul.has_previous %}
             <a href="{% if q %}?q={{q}}&page=1{% else %}?page=1{% endif %}">&laquo First</a>

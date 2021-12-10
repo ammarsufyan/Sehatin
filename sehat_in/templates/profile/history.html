@@ -16,12 +16,11 @@
 	<link rel="icon" type="image/png" href="{% static 'img/favicon/favicon.ico' %}" />
 	<script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'js/jquery.redirect.js' %}"></script>
-	<title>{{ theUser.username }}'s History</title>
+	<title>Riwayat Tes {{ theUser.username }}</title>
 </head>
 
 <body>
 	{% include 'templates/header.html' %}
-
 	<main>
 		<div class="container">
 			<div class="container__profile">
@@ -36,74 +35,71 @@
                         <div>
                             <a class="button__profile" href="/profile/{{ theUser.username }}">
                                 <div><i class="uil uil-user-square"></i></div>
-                                <p>My Profile</p>
+                                <p>Profil Saya</p>
                             </a>
                         </div>
                         <div>
                             <a class="button__profile" href="/profile/{{ theUser.username }}/posts">
                                 <div><i class="uil uil-users-alt"></i></div>
-                                <p>My Forum Post</p>
+                                <p>Post Forum Saya</p>
                             </a>
                         </div>
                         <div>
                             <a class="button__profile" href="/profile/{{ theUser.username }}/konsultasi">
                                 <div><i class="uil uil-comment-alt-message"></i></div>
-                                <p>My Question</p>
+                                <p>Pertanyaan Saya</p>
                             </a>
                         </div>
                         <div>
                             <a class="button__profile" href="/profile/{{ theUser.username }}/history">
                                 <div><i class="uil uil-history"></i></div>
-                                <p>My Test History</p>
+                                <p>Riwayat Tes Saya</p>
                             </a>
                         </div>
                         <div>
                             <a class="button__profile" href="/profile/{{ theUser.username }}/notification">
                                 <div><i class="uil uil-bell"></i></div>
-                                <p>My Notification</p>
+                                <p>Notifikasi Saya</p>
                             </a>
                         </div>
                         <div>
                             <a class="button__profile" href="/profile/{{ theUser.username }}/settings">
                                 <div><i class="uil uil-edit-alt"></i></div>
-                                <p>Edit Profile</p>
+                                <p>Ubah Profil</p>
                             </a>
                         </div>
                         <div>
                             <a class="button__profile logout" href="/logout">
                                 <div><i class="uil uil-sign-out-alt"></i></div>
-                                <p>Logout</p>
+                                <p>Keluar</p>
                             </a>
                         </div>
-                        
                         {% else %}
-                        
                         <div>
-                            <a class="button__profile logout" href="/profile/{{ theUser.username }}/posts">
-                                <img src="{% static 'img/my_forum.png' %}" alt="icon">
-                                <p>User's Post</p>
+                            <a class="button__profile" href="/profile/{{ theUser.username }}/posts">
+                                <div><i class="uil uil-users-alt"></i></div>
+                                <p>Postingan User</p>
                             </a>
                         </div>
                         <div>
-                            <a class="button__profile logout" href="/profile/{{ theUser.username }}/konsultasi">
-                                <img src="{% static 'img/my_question.png' %}" alt="icon">
-                                <p>User's Question</p>
+                            <a class="button__profile" href="/profile/{{ theUser.username }}/konsultasi">
+                                <div><i class="uil uil-comment-alt-message"></i></div>
+                                <p>Pertanyaan User</p>
                             </a>
                         </div>
                         {% endif %}
                     </div>
 				</div>
 				<div class="history__container profile">
-					<h1>Test History</h1>
-
+					<h1>Riwayat Tes</h1>
 					<div class="tbl-header">
 						<table cellpadding="0" cellspacing="0" border="0">
 							<thead>
 								<tr>
-									<th width="28%">TEST NAME</th>
-									<th width="20%">DATE/TIME</th>
-									<th width="25%">RESULT</th>
-									<th width="15%">VIEW</th>
+									<th width="28%">Nama Tes</th>
+									<th width="20%">Tanggal</th>
+									<th width="25%">Hasil</th>
+									<th width="15%">Lihat</th>
 									<th width="10%"></th>
 								</tr>
 							</thead>
@@ -117,8 +113,7 @@
 									<td width="30%">{{ history.quiz_type }}</td>
 									<td width="20%">{{ history.created_at }}</td>
 									<td width="25%">{{ history.res_type }}</td>
-									<td width="15%"><span style="cursor: pointer;" id="res-{{history.id}}">Lihat
-											Hasil</span></td>
+									<td width="15%"><span style="cursor: pointer;" id="res-{{history.id}}">Lihat</span></td>
 									<td width="10%" class="trash" style="cursor: pointer;"><span id="{{history.id}}"><i
 												class="uil uil-trash-alt"></i></span></td>
 

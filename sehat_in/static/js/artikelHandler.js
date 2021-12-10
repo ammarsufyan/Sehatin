@@ -15,7 +15,7 @@ var myToolbar = [
 
 function imageHandler() {
     var range = this.quill.getSelection();
-    var value = prompt('please copy paste the image url here.');
+    var value = prompt('Salin tautan gambar disini!');
     if (value == "") { // If empty value
         return;
     }
@@ -26,9 +26,9 @@ function imageHandler() {
     } else {
         // Check if img is http
         if (value.startsWith('http://')) {
-            alert('Image linked needs to be secured (HTTPS)!');
+            alert('Gambar yang ditautkan harus aman (HTTPS)!');
         } else {
-            alert('Invalid linked image! Image must be a png, jpg or jpeg!');
+            alert('Format tautan gambar invalid! Gambar harus berupa png, jpg, atau jpeg!');
         }
     }
 }
@@ -36,7 +36,7 @@ function imageHandler() {
 function editPost(logged_in, id, title) {
     /* edit post, move page to edit page */
     if (logged_in == "False") {
-        alert("You must be logged in to edit a post");
+        alert("Anda harus masuk untuk mengubah post!");
         return;
     }
     window.location.href = '/artikel/' + id + '/' + title.replaceAll(' ', '-').replaceAll('?', '') + '/edit';
@@ -45,11 +45,11 @@ function editPost(logged_in, id, title) {
 function deletePost(logged_in, postid, title, csrf_token, mode) {
     /* delete post, alert post has been deleted successfully and redirect to post lists on success, alert fail otherwise */
     if (logged_in == "False") {
-        alert('You must be logged in to delete a comment');
+        alert('Anda harus masuk untuk menghapus post!');
         return;
     }
 
-    let isExecuted = confirm("Are you sure you want to delete this post?");
+    let isExecuted = confirm("Apakah anda yakin ingin menghapus post ini?");
     if (!isExecuted) {
         return;
     }
@@ -58,31 +58,31 @@ function deletePost(logged_in, postid, title, csrf_token, mode) {
     // Admin prompt for reason
     if (mode == 'admin') {
         // prompt for reason
-        reason = prompt("Please enter a reason for deleting this post:");
+        reason = prompt("Tolong masukkan alasan penghapusan post:");
         if (reason == null) { // cancel button pressed
             return;
         }
         if (reason == "") {
-            alert("Please enter a reason for deleting this post!");
+            alert("Harap masukkan alasan yang valid!");
             return;
         }
-        if (reason.length < 4) {
-            alert("Invalid Reason Length! Must be between 4 and 200 characters!");
+        if (reason.length < 4 || reason.length > 200) {
+            alert("Panjang alasan tidak valid! Harus sepanjang 4-200 karakter!");
             return;
         }
     }
 
     // prompt for the title
-    let confirmTitle = prompt("Please enter the title of the post to confirm deletion:");
+    let confirmTitle = prompt("Tolong masukkan judul postnya untuk konfirmasi penghapusan:");
     if (confirmTitle == null) { // cancel button pressed
         return;
     }
     if (confirmTitle == "") {
-        alert("Please enter the title of the post to confirm deletion!");
+        alert("Harap masukkan judul yang valid!");
         return;
     }
     if (confirmTitle.trim() != title) {
-        alert("The title you entered does not match the title of the post!");
+        alert("Judul yang anda masukkan tidak sesuai dengan judul postnya!");
         return;
     }
 
@@ -100,7 +100,7 @@ function deletePost(logged_in, postid, title, csrf_token, mode) {
                 alert("Post has been deleted successfully!");
                 window.location.href = '/artikel';
             } else {
-                alert("Error! Fail to delete post!" + dataJson.message);
+                alert("Error! Gagal menghapus post!" + dataJson.message);
             }
         }
     });

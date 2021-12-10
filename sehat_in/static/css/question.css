@@ -66,15 +66,15 @@ main {
 }
 
 .dot:hover {
-    background-color: grey;
+    background-color: grey !important;
 }
 
 .blue:hover {
-    background-color: #61AEF2;
+    background-color: #61AEF2 !important;
 }
 
 .green:hover {
-    background-color: #9AE782;
+    background-color: #9AE782 !important;
 }
 
 main a {

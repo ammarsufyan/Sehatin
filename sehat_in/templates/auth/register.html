@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <script src="{% static 'js/sweetalert2.all.min.js' static %}"></script>
     <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <link rel="stylesheet" href="{% static 'css/login.css' %}">
@@ -16,7 +17,7 @@
         href="{% static 'img/favicon/favicon.ico' %}" 
     />
     <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
-    <title>Daftar sehat.in</title>
+    <title>Daftar Sehat.in</title>
 </head>
 <body>
     <main>
@@ -30,8 +31,8 @@
                     <form name="registration" action="register" method="POST" onsubmit="return validateForm()">
                         {% csrf_token %}
                         <div class="login__title">
-                            <h2>Daftar dulu yuk!</h2>
-                            <p>Sudah punya akun? <a href="/auth/login">Yuk masuk</a> </p>
+                            <h2>Daftar Sehat.in</h2>
+                            <p>Sudah punya akun? <a href="/auth/login">Yuk masuk!</a> </p>
                             {% if messages %}
                                 <div class="message-alert">
                                     {% for message in messages %}
@@ -42,22 +43,22 @@
                                 </div>
                             {% endif %}
                         </div>
-                        <input type="text" name="first_name" placeholder="First Name" required><br>
-                        <input type="text" name="last_name" placeholder="Last Name" required><br>
-                        <input type="text" name="username" placeholder="Username" minlength="5" maxlength="50" required><br>
-                        <input type="text" name="email" placeholder="Email" minlength="3" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="Please enter a valid email address" autocomplete="off" required><br>
-                        <input type="password" name="password" placeholder="Password" minlength="8" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Please match the valid password pattern" autocomplete="off" required><br>
-                        <input type="password" name="password_confirmation" placeholder="Konfirmasi Password" minlength="8" autocomplete="off" required><br>
+                        <input type="text" name="first_name" placeholder="Nama depan" required><br>
+                        <input type="text" name="last_name" placeholder="Nama belakang" required><br>
+                        <input type="text" name="username" placeholder="Nama pengguna" minlength="5" maxlength="50" required><br>
+                        <input type="text" name="email" placeholder="Alamat email" minlength="3" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$" title="Silakan isi alamat email yang valid" autocomplete="off" required><br>
+                        <input type="password" name="password" placeholder="Kata sandi" minlength="8" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}" title="Harap cocokkan dengan pola kata sandi yang valid" autocomplete="off" required><br>
+                        <input type="password" name="password_confirmation" placeholder="Konfirmasi kata sandi" minlength="8" autocomplete="off" required><br>
                         <div id="message-password">
-                            <h3>Password harus berisi:</h3>
-                            <p id="letter">&#10008;Huruf</b> kecil</p>
-                            <p id="capital">&#10008;Huruf</b> kapital</p>
-                            <p id="number">&#10008;Angka</b></p>
-                            <p id="length">&#10008;Minimal <b>8 karakter</b></p>
+                            <h3>Kata sandi harus berisi:</h3>
+                            <p id="letter">&#10008;<b>Huruf kecil</b></p>
+                            <p id="capital">&#10008;<b>Huruf kapital</b></p>
+                            <p id="number">&#10008;<b>Angka</b></p>
+                            <p id="length">&#10008;<b>Minimal 8 karakter</b></p>
                         </div>
             
                         <div id="message-password-confirmation">
-                            <p id="confirm">&#10008;Password dan konfirmasi password harus sama</p>
+                            <p id="confirm">&#10008;<b>Kata sandi tidak cocok</b></p>
                         </div>
                         <button class="button button--flex" id="submit" type="submit">
                             Daftar
@@ -131,40 +132,40 @@
             // Validate lowercase letters
             var lowerCaseLetters = /[a-z]/g;
             if (field_password.value.match(lowerCaseLetters)) {
-                letter.innerHTML = "&#10004;A <b>lowercase</b> letter";
+                letter.innerHTML = "&#10004;<b>Huruf kecil</b>";
             } else {
-                letter.innerHTML = "&#10008;A <b>lowercase</b> letter";
+                letter.innerHTML = "&#10008;<b>Huruf kecil</b>";
             }
 
             // Validate capital letters
             var upperCaseLetters = /[A-Z]/g;
             if (field_password.value.match(upperCaseLetters)) {
-                capital.innerHTML = "&#10004;A <b>capital (uppercase)</b> letter"
+                capital.innerHTML = "&#10004;<b>Huruf kapital</b>"
             } else {
-                capital.innerHTML = "&#10008;A <b>capital (uppercase)</b> letter"
+                capital.innerHTML = "&#10008;<b>Huruf kapital</b>"
             }
 
             // Validate numbers
             var numbers = /[0-9]/g;
             if (field_password.value.match(numbers)) {
-                number.innerHTML = "&#10004;A <b>number</b>";
+                number.innerHTML = "&#10004;<b>Angka</b>";
             } else {
-                number.innerHTML = "&#10008;A <b>number</b>";
+                number.innerHTML = "&#10008;<b>Angka</b>";
             }
 
             // Validate length
             if (field_password.value.length >= 8) {
-                length.innerHTML = "&#10004;Minimum <b>8 characters</b>";
+                length.innerHTML = "&#10004;<b>Minimal 8 karakter</b>";
             } else {
-                length.innerHTML = "&#10008;Minimum <b>8 characters</b>";
+                length.innerHTML = "&#10008;<b>Minimal 8 karakter</b>";
             }
         }
 
         field_password_confirmation.onkeyup = function () {
             if (field_password.value == field_password_confirmation.value) {
-                confirm.innerHTML = "&#10004; Matching password and password confirmation";
+                confirm.innerHTML = "&#10004; <b>Kata sandi tidak cocok</b>";
             } else {
-                confirm.innerHTML = "&#10008; Matching password and password confirmation";
+                confirm.innerHTML = "&#10008; <b>Kata sandi tidak cocok</b>";
             }
         }
 
@@ -180,27 +181,27 @@
             var upperCaseLetters = /[A-Z]/g;
             var numbers = /[0-9]/g;
             if (first_name == "") {
-                alert("First name must be filled out");
+                alert("Nama depan harus diisi");
                 return false;
             }
             if (last_name == "") {
-                alert("Last name must be filled out");
+                alert("Nama belakang harus diisi");
                 return false;
             }
             if (username.length < 5 || username.length > 50) {
-                alert("Username must be between 5 and 50 characters");
+                alert("Nama pengguna harus diantara 5 sampai 50 karakter");
                 return false;
             }
             if (email.length < 3 || !email.match(mailRegex)) {
-                alert("Please enter a valid email address");
+                alert("Silakan isi alamat email yang valid");
                 return false;
             }
             if (password < 8 || password.match(lowerCaseLetters) == null || password.match(upperCaseLetters) == null || password.match(numbers) == null) {
-                alert("Invalid password");
+                alert("Kata sandi salah");
                 return false;
             }
             if (password != password_confirmation) {
-                alert("Passwords do not match");
+                alert("Kata sandi tidak cocok");
                 return false;
             }
         }

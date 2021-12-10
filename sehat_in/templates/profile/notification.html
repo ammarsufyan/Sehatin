@@ -17,12 +17,11 @@
 	<link rel="icon" type="image/png" href="{% static 'img/favicon/favicon.ico' %}" />
 	<script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
 	<script type="text/javascript" src="{% static 'js/jquery.redirect.js' %}"></script>
-	<title>{{ user.username }}'s Notification</title>
+	<title>Notifikasi {{ user.username }}</title>
 </head>
 
 <body>
 	{% include 'templates/header.html' %}
-
 	<main>
 		<div class="container">
 			<div class="container__profile">
@@ -34,59 +33,58 @@
 					</div>
 					<div class="button__container">
 						<div>
-							<a class="button__profile" href="/profile/{{ user.username }}">
+                            <a class="button__profile" href="/profile/{{ user.username }}">
                                 <div><i class="uil uil-user-square"></i></div>
-								<p>My Profile</p>
-							</a>
-						</div>
-						<div>
-							<a class="button__profile" href="/profile/{{ user.username }}/posts">
+                                <p>Profil Saya</p>
+                            </a>
+                        </div>
+                        <div>
+                            <a class="button__profile" href="/profile/{{ user.username }}/posts">
                                 <div><i class="uil uil-users-alt"></i></div>
-								<p>My Forum Post</p>
-							</a>
-						</div>
-						<div>
-							<a class="button__profile" href="/profile/{{ user.username }}/konsultasi">
+                                <p>Post Forum Saya</p>
+                            </a>
+                        </div>
+                        <div>
+                            <a class="button__profile" href="/profile/{{ user.username }}/konsultasi">
                                 <div><i class="uil uil-comment-alt-message"></i></div>
-								<p>My Question</p>
-							</a>
-						</div>
-						<div>
-							<a class="button__profile" href="/profile/{{ user.username }}/history">
+                                <p>Pertanyaan Saya</p>
+                            </a>
+                        </div>
+                        <div>
+                            <a class="button__profile" href="/profile/{{ user.username }}/history">
                                 <div><i class="uil uil-history"></i></div>
-								<p>My Test History</p>
-							</a>
-						</div>
-						<div>
-							<a class="button__profile" href="/profile/{{ user.username }}/notification">
+                                <p>Riwayat Tes Saya</p>
+                            </a>
+                        </div>
+                        <div>
+                            <a class="button__profile" href="/profile/{{ user.username }}/notification">
                                 <div><i class="uil uil-bell"></i></div>
-								<p>My Notification</p>
-							</a>
-						</div>
-						<div>
-							<a class="button__profile" href="/profile/{{ user.username }}/settings">
+                                <p>Notifikasi Saya</p>
+                            </a>
+                        </div>
+                        <div>
+                            <a class="button__profile" href="/profile/{{ user.username }}/settings">
                                 <div><i class="uil uil-edit-alt"></i></div>
-								<p>Edit Profile</p>
-							</a>
-						</div>
-						<div>
-							<a class="button__profile logout" href="/logout">
+                                <p>Ubah Profil</p>
+                            </a>
+                        </div>
+                        <div>
+                            <a class="button__profile logout" href="/logout">
                                 <div><i class="uil uil-sign-out-alt"></i></div>
-								<p>Logout</p>
-							</a>
-						</div>
+                                <p>Keluar</p>
+                            </a>
+                        </div>
 					</div>
 				</div>
 				<div class="history__container profile">
-					<h1>Notification</h1>
-                    <a style="color: blue; cursor: pointer;" onclick="readAll('{{ user.username }}' ,'{{ csrf_token }}')">Click here to Read all</a>
-
+					<h1>Notifikasi</h1>
+                    <a style="color: blue; cursor: pointer;" onclick="readAll('{{ user.username }}' ,'{{ csrf_token }}')">Klik disini untuk baca semua</a>
 					<div class="tbl-header">
 						<table cellpadding="0" cellspacing="0" border="0">
 							<thead>
 								<tr>
-									<th width="21%">Type</th>
-									<th width="40%">Content</th>
+									<th width="21%">Tipe</th>
+									<th width="40%">Konten</th>
 									<th width="15%">Status</th>
 									<th width="3%"></th>
 								</tr>
@@ -103,12 +101,12 @@
                                     <tr style="background-color:#d7d7d7;" name="notif-id" id="notif-tr-{{ notif.id }}">
                                 {% endif %}
                                 {% if notif.post_Forum %}
-									<td width="20%">Post-Comment</td>
+									<td width="20%">Komentar Postingan</td>
 									<td width="40%" style="cursor: pointer;" onclick="window.location.href='/forum/{{ notif.post_Forum.id }}/{{ notif.post_Forum.title|remove_unused }}#comments-{{ notif.comment.id }}'">{{ notif.notification_Content }}</td>
 									{% if not notif.read %}
                                     <td width="15%" style="cursor: pointer;" name="btn-notif-id" id="btn-notif-{{ notif.id }}" onclick="markRead('{{ notif.id }}', '{{ user.username }}' ,'{{ csrf_token }}')">Not read</td>
                                     {% else %}
-                                    <td width="15%">Already Read</td>
+                                    <td width="15%">Sudah Dibaca</td>
                                     {% endif %}
                                 {% elif notif.post_Konsultasi %}
                                     <td width="20%">Jawaban Konsultasi</td>
@@ -116,10 +114,10 @@
                                     {% if not notif.read %}
                                     <td width="15%" style="cursor: pointer;" name="btn-notif-id" id="btn-notif-{{ notif.id }}" onclick="markRead('{{ notif.id }}', '{{ user.username }}' ,'{{ csrf_token }}')">Not read</td>
                                     {% else %}
-                                    <td width="15%">Already Read</td>
+                                    <td width="15%">Sudah Dibaca</td>
                                     {% endif %}
                                 {% elif notif.comment %}
-                                    <td width="20%">Comment Mention</td>
+                                    <td width="20%">Mention Komentar</td>
                                     {% if notif.post_Forum %}
                                     <td width="40%" style="cursor: pointer;" onclick="window.location.href='/forum/{{ notif.post.id }}/{{ notif.post.title|remove_unused }}#comments-{{ notif.comment.id }}'">{{ notif.notification_Content }}</td>
                                     {% else %}
@@ -128,7 +126,7 @@
                                     {% if not notif.read %}
                                     <td width="15%" style="cursor: pointer;" name="btn-notif-id" id="btn-notif-{{ notif.id }}" onclick="markRead('{{ notif.id }}', '{{ user.username }}' ,'{{ csrf_token }}')">Not read</td>
                                     {% else %}
-                                    <td width="15%">Already Read</td>
+                                    <td width="15%">Sudah Dibaca</td>
                                     {% endif %}
                                 {% else %}
                                     <td width="20%">Notif</td>
@@ -136,13 +134,9 @@
 									{% if not notif.read %}
                                     <td width="15%" style="cursor: pointer;" name="btn-notif-id" id="btn-notif-{{ notif.id }}" onclick="markRead('{{ notif.id }}', '{{ user.username }}' ,'{{ csrf_token }}')">Not read</td>
                                     {% else %}
-                                    <td width="15%">Already Read</td>
+                                    <td width="15%">Sudah Dibaca</td>
                                     {% endif %}
                                 {% endif %}
-									{% comment %} <td width="15%"><span style="cursor: pointer;" id="res-{{history.id}}">Lihat
-											Hasil</span></td>
-									<td width="10%" class="trash" style="cursor: pointer;"><span id="{{history.id}}"><i
-												class="uil uil-trash-alt"></i></span></td> {% endcomment %}
 								</tr>
 								{% endfor %}
 							</tbody>
@@ -163,10 +157,10 @@
                     dataJson = JSON.parse(data);
                     if (dataJson.status == 'success') { 
 						document.getElementById('notif-tr-' + notification_id).style.backgroundColor = "white";
-                        $('#btn-notif-' + notification_id).html("Already Read");
+                        $('#btn-notif-' + notification_id).html("Sudah dibaca");
                         $('#btn-notif-' + notification_id).css('cursor', 'default');
                     } else {
-                        alert("Error, failed to mark notification as read: ");
+                        alert("Error, gagal menandakan notifikasi sebagai sudah dibaca. Silakan coba lagi.");
                     }
                 }
             });
@@ -174,7 +168,7 @@
 
         function readAll(username, csrf_token) {
             // ask for confirmation
-            if (confirm('Are you sure you want to mark all notifications as read?')) {
+            if (confirm('Apakah Anda yakin ingin menandai semua notifikasi sebagai telah dibaca?')) {
                 $.ajax({
                     url: "/profile/" + username + "/notification/readall",
                     type: "POST",
@@ -183,19 +177,17 @@
                         dataJson = JSON.parse(data);
                         if (dataJson.status == 'success') {
                             $('tr[name*=\'notif-id\']').css('background-color', 'white');
-                            $('td[name*=\'btn-notif-id\']').html("Already Read");
+                            $('td[name*=\'btn-notif-id\']').html("Sudah dibaca");
                             $('td[name*=\'btn-notif-id\']').css("cursor", "default");
                         } else {
-                            alert("Error, failed to mark all notifications as read: ");
+                            alert("Error, gagal menandakan semua notifikasi sebagai sudah dibaca. Silakan coba lagi.");
                         }
                     }
                 });
             }
         }
     </script>
-
 	<script src="{% static 'js/swiper-bundle.min.js' %}"></script>
 	<script src="{% static 'js/main.js' %}"></script>
 </body>
-
 </html>

@@ -19,7 +19,7 @@
 
     <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
 
-    <title>Buat Post Forum | Sehat.in</title>
+    <title>Buat Postingan Forum | Sehat.in</title>
 </head>
 <body class="grey">
 
@@ -29,7 +29,7 @@
                 <i class="uil uil-angle-left"></i>
             </a>
     
-            <h3>Buat Post Forum</h3>
+            <h3>Buat Postingan Forum</h3>
             {% if messages %}
             <div class="message-alert" style="text-align: center;">
                 {% for message in messages %}
@@ -85,24 +85,24 @@
 
             // Title min 5
             if (title.length < 5) {
-                alert("Title is too short, Min title length is 5 characters");
+                alert("Judul terlalu pendek, panjang judul minimal 5 karakter");
                 return false;
             }
 
             // title max 200
             if (title.length > 200) {
-                alert("Title is too long, Max title length is 200 characters");
+                alert("Judul terlalu panjang, panjang judul maksimal 200 karakter");
                 return false;
             }
 
             // Content min 25
             if (content.length < 25) {
-                alert("Content too short! Min content including formatting are 25 characters long");
+                alert("Konten terlalu pendek! Konten minimum termasuk pemformatan memiliki panjang 25 karakter");
                 return false;
             }
             // content max 40k
             if (content.length > 40000) {
-                alert("Content too long! Max content including formatting are 40,000 characters long");
+                alert("Konten terlalu panjang! Konten maksimal termasuk pemformatan memiliki panjang 40.000 karakter");
                 return false;
             }
 
@@ -115,7 +115,7 @@
                 return;
             }
 
-            if (confirm("Are you sure?")) {
+            if (confirm("Apakah kamu yakin?")) {
                 var content = document.getElementById('editor').children[0].innerHTML;
                 var title = document.getElementsByName('title')[0].value;
                 var tag = $('#tag').val();
@@ -135,7 +135,7 @@
                             window.location.href = '/forum/create';
                         } else
                         if (data == 'limit')  {
-                            alert('Character length invalid!')
+                            alert('Panjang karakter tidak valid!')
                         } else {
                             window.location.href = '/forum/' + data.toString();
                         }

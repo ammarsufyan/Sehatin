@@ -17,7 +17,7 @@
         href="{% static 'img/favicon/favicon.ico' %}" 
     />
     <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
-    <title>{{ user.username }}'s Settings</title>
+    <title>Ubah Profil {{ user.username }}</title>
 </head>
 <body>
     {% include 'templates/header.html' %}
@@ -34,49 +34,49 @@
                         <div>
                             <a class="button__profile" href="/profile/{{ user.username }}">
                                 <div><i class="uil uil-user-square"></i></div>
-                                <p>My Profile</p>
+                                <p>Profil Saya</p>
                             </a>
                         </div>
                         <div>
                             <a class="button__profile" href="/profile/{{ user.username }}/posts">
                                 <div><i class="uil uil-users-alt"></i></div>
-                                <p>My Forum Post</p>
+                                <p>Post Forum Saya</p>
                             </a>
                         </div>
                         <div>
                             <a class="button__profile" href="/profile/{{ user.username }}/konsultasi">
                                 <div><i class="uil uil-comment-alt-message"></i></div>
-                                <p>My Question</p>
+                                <p>Pertanyaan Saya</p>
                             </a>
                         </div>
                         <div>
                             <a class="button__profile" href="/profile/{{ user.username }}/history">
                                 <div><i class="uil uil-history"></i></div>
-                                <p>My Test History</p>
+                                <p>Riwayat Tes Saya</p>
                             </a>
                         </div>
                         <div>
                             <a class="button__profile" href="/profile/{{ user.username }}/notification">
                                 <div><i class="uil uil-bell"></i></div>
-                                <p>My Notification</p>
+                                <p>Notifikasi Saya</p>
                             </a>
                         </div>
                         <div>
                             <a class="button__profile" href="/profile/{{ user.username }}/settings">
                                 <div><i class="uil uil-edit-alt"></i></div>
-                                <p>Edit Profile</p>
+                                <p>Ubah Profil</p>
                             </a>
                         </div>
                         <div>
                             <a class="button__profile logout" href="/logout">
                                 <div><i class="uil uil-sign-out-alt"></i></div>
-                                <p>Logout</p>
+                                <p>Keluar</p>
                             </a>
                         </div>
                     </div>
                 </div>
                 <div class="profile">
-                    <h1>Edit Profile</h1>
+                    <h1>Ubah Profil</h1>
                     <div class="profile__header">
                         <div class="container_name_role">
                             <p class="name">{{ user.first_name }} {{ user.last_name }}</p>
@@ -94,17 +94,9 @@
                     </div>
                     <form name="settings" method="post" action="settings" onsubmit="return">
                         {% csrf_token %}
-                        {% comment %} <input type="file"> {% endcomment %}
-                    
-                        <textarea class="bio" type="text" id="bio" name="bio" placeholder="Biodata">{% if UserProfile.bio is not None %}{{ UserProfile.bio }}{% endif %}</textarea>
-
-                        <input class="first__name" type="text" id="fname" name="firstName" value= "{{ user.first_name }}" placeholder="First Name">
-
-                        {% comment %} hidden input for img source  {% endcomment %}
-                        {% comment %} <input type="hidden" id="imgHidden" name="img" value="{{ user_profile.img }}"> {% endcomment %}
-                    
-                        <input class="last__name" type="text" id="lname" name="lastName" value= "{{ user.last_name }}" placeholder="Last Name">
-                            
+                        <textarea class="bio" type="text" id="bio" name="bio" placeholder="Deskripsi">{% if UserProfile.bio is not None %}{{ UserProfile.bio }}{% endif %}</textarea>
+                        <input class="first__name" type="text" id="fname" name="firstName" value= "{{ user.first_name }}" placeholder="Nama Depan">                    
+                        <input class="last__name" type="text" id="lname" name="lastName" value= "{{ user.last_name }}" placeholder="Nama Belakang">
                         <select class="provinsi" id="location" name="location">
                             {% if UserProfile.location %}
                             <option selected hidden value="{{ UserProfile.location }}">{{ UserProfile.location }}</option>
@@ -147,15 +139,14 @@
                             <option value="Sumatera Utara">Sumatera Utara</option>
                         </select>
                         <div class="cancel__apply">
-                            <button class="button button--flex cancel" type="button" id="cancel">Cancel</button>
-                            <button class="button button--flex" type="submit">Apply</button>
+                            <button class="button button--flex cancel" type="button" id="cancel">Batalkan</button>
+                            <button class="button button--flex" type="submit">Simpan</button>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     </main>
-
     <script>
         // get element cancel by id
         var cancel = document.getElementById('cancel');
@@ -163,22 +154,6 @@
         cancel.onclick = function() {
             location.reload();
         }
-
-        {% comment %} window.addEventListener('load', function() {
-            document.querySelector('input[type="file"]').addEventListener('change', function() {
-                if (this.files && this.files[0]) {
-                    var img = document.getElementById('profileImg');
-                    img.onload = () => {
-                        URL.revokeObjectURL(img.src);  // no longer needed
-                    }
-          
-                    img.src = URL.createObjectURL(this.files[0]); // set src to blob url
-                    // update hidden value
-                    document.getElementById('imgHidden').value = img.src;
-                }
-            });
-        }); {% endcomment %}
-        
     </script>
 
     <script src="{% static 'js/swiper-bundle.min.js' %}"></script>

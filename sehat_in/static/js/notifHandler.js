@@ -6,7 +6,7 @@ function markRead(notification_id, username, csrf_token) {
         success: function(data) {
             dataJson = JSON.parse(data);
             if (dataJson.status != 'success') { 
-                alert("Error, opening notification!");
+                alert("Error saat membuka notifikasi!");
             }
         }
     });
@@ -23,7 +23,7 @@ function readAll(username, csrf_token) {
             success: function(data) {
                 dataJson = JSON.parse(data);
                 if (dataJson.status != 'success') { 
-                    alert("Error, opening notification!");
+                    alert("Error saat membuka notifikasi!");
                 }
             }
         });
