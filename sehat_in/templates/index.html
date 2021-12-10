@@ -287,40 +287,6 @@
             </div>
 
         </section>
-
-    <button onclick="takeshot()">
-        Take Screenshot
-    </button>
-
-    <h1>Screenshot:</h1>
-    <div id="output"></div>
-  
-    <script type="text/javascript">
-  
-        // Define the function 
-        // to screenshot the div
-        async function takeshot() {
-            let div =
-                document.getElementById('testaaa');
-  
-            // Use the html2canvas
-            // function to take a screenshot
-            // and append it
-            // to the output div
-            await html2canvas(div).then(
-                function (canvas) {
-                    document
-                    .getElementById('output')
-                    .appendChild(canvas);
-                })
-
-            var divEl = document.getElementById('output');
-
-            console.log(divEl);
-
-        }
-    </script>
-
     </main>
 
     {% include 'templates/footer.html' %}
