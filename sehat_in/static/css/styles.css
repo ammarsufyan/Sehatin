@@ -392,6 +392,7 @@ input[type=text]:focus {
     margin-bottom: 2rem;
     font-size: .8rem;
     color: black;
+    overflow-wrap: break-word;
 }
 
 .artikel__link__abu {

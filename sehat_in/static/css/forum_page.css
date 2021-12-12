@@ -9,6 +9,9 @@
     color: #999999;
 }
 
+h1 {
+    overflow-wrap: break-word;
+}
 
 .container__main_forum {
     margin-top: 2rem;
