@@ -39,7 +39,7 @@
             <div class="header__main_forum">
                 <div class="account_info">
                     <i class="uil uil-user"></i>
-                    <P>{% if post.user == null %}deleted{% else %}<a href="/profile/{{ post.user.username }}">{{ post.user.username }}</a>{% endif %}</P>
+                    <P class="username">{% if post.user == null %}deleted{% else %}<a href="/profile/{{ post.user.username }}">{{ post.user.username }}</a>{% endif %}</P>
                     <p>•</p>
                     <p><span id="date-{{ post.id }}">{{ post.created_at.isoformat }}</span></p>
                     <script>
@@ -87,7 +87,7 @@
             <div class="header__main_forum">
                 <div class="account_info">
                     <i class="uil uil-user"></i>
-                    <P><a href="/profile/{{ comment.user.username }}">{{ comment.user.username }}</a></P>
+                    <P class="username">{% if comment.user == null %}deleted{% else %}<a href="/profile/{{ comment.user.username }}">{{ comment.user.username }}</a>{% endif %}</P>
                     <p>•</p>
                     <p><span id="comment-date-{{ comment.id }}">{{ comment.created_at.isoformat }}</span>{% if comment.created_at != comment.updated_at %} - Edited{% endif %}</p>
                     <script>

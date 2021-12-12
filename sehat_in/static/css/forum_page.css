@@ -101,8 +101,34 @@ hr {
     margin: 2rem 0;
 }
 
+a {
+    overflow-wrap: break-word;
+}
+
+p {
+    overflow-wrap: break-word;
+}
+
+.username {
+    max-width: 400px;
+}
+
 @media (max-width: 768px) { 
     .container__main_forum {
         min-width: auto;
+    }
+
+    .forum__link {
+        margin-top: 1.5rem;
+    }
+
+    .username {
+        max-width: 180px;
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .username {
+        max-width: 100px;
     }
 }
