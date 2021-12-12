@@ -100,7 +100,8 @@ body {
     display: flex;
     background-color: #fff;
     border-radius: 25px;
-
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .penjelasan__tes {
@@ -147,7 +148,33 @@ body {
 }
 
 
-@media screen and (max-width: 350px) {
+@media screen and (max-width: 500px) {
+    .tes__title h2 {
+        margin-top: 1rem;
+    }
+
+    .container {
+        margin-left: var(--mb-1);
+        margin-right: var(--mb-1);
+    }
+
+    .container__tes {
+        width: 19rem;
+        height: 52rem;
+        flex-direction: column;
+        margin-top: 2rem;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .img__wrapper {
+        width: 19rem;
+        height: 100%;
+        margin-top: 2rem;
+    }
+}
+
+/* @media screen and (max-width:768px) {
     .container {
         margin-left: var(--mb-1);
         margin-right: var(--mb-1);
@@ -166,10 +193,4 @@ body {
         margin-top: 2rem;
     }
 
-
-}
-
-@media screen and (min-width:768px) {
-
-
-}
+} */

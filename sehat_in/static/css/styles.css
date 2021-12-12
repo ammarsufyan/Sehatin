@@ -485,8 +485,6 @@ input[type=text]:focus {
         margin-left: 5rem;
         margin-top: 0;
     }
-
-    
 }
 
 @media screen and (max-width:500px) {
@@ -494,6 +492,7 @@ input[type=text]:focus {
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        margin-top: 0;
     }
 
     .main__image {
@@ -503,5 +502,14 @@ input[type=text]:focus {
 
     .home__text {
         padding-top: 16px;
+    }
+
+    .section__title {
+        margin-top: 0 !important;
+    }
+
+    .section__title h2 {
+        text-align: center !important;
+        padding-right: 10px;
     }
 }

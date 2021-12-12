@@ -82,6 +82,12 @@ main a {
     max-width: 50%;
 }
 
+@media screen and (max-width: 768px) {
+    .container {
+        margin-top: 0 !important;
+    }
+}
+
 @media screen and (max-width: 350px) {
 
     .question p {
