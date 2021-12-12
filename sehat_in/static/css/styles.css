@@ -387,6 +387,11 @@ input[type=text]:focus {
     transition: background 0.2s;
 }
 
+.thumbnail-artikel {
+    margin: 1rem auto;
+    display: block;
+}
+
 .artikel__link {
     margin-top: 7rem;
     margin-bottom: 2rem;

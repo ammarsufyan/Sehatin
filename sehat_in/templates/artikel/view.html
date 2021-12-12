@@ -49,7 +49,7 @@
                 <h1>{{ post.title }}</h1>
                 <p>Tag: <a href="/artikel/tag/{{ post.tag.name|space_to_dash }}">{{ post.tag.name }}</a></p>
  
-                <img src="{% if post.thumbnail_url %}{{post.thumbnail_url}}{% else %}/static/img/no_image.png{% endif %}" onerror="this.onerror=null; this.src='/static/img/no_image.png'" alt="{{ post.title }}">
+                <img class="thumbnail-artikel" src="{% if post.thumbnail_url %}{{post.thumbnail_url}}{% else %}/static/img/no_image.png{% endif %}" onerror="this.onerror=null; this.src='/static/img/no_image.png'" alt="{{ post.title }}">
 
                 {% autoescape off %}
                 {{ post.content }}
