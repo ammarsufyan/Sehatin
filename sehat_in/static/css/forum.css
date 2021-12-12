@@ -119,6 +119,7 @@ main {
 
 .input__area {
     margin-top: 2rem;
+    min-width: 700px;
 }
 
 .container__title {
@@ -189,4 +190,23 @@ button {
 
 .forum__link__active {
     color:  #3B8EE4;
+}
+
+@Media (max-width: 768px) {
+    .input__area {
+        min-width: auto;
+    }
+}
+
+@media (max-width: 500px) {
+    .button__area {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .forum__title {
+        width: auto;
+    }
 }
