@@ -22,7 +22,7 @@
 
     <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
 
-    <title>{{ post.title }} | Forum Post Sehat.in</title>
+    <title>{{ post.title }} | Konsultasi Sehat.in</title>
 </head>
 <body class="grey">
     {% include 'templates/header.html' %}
@@ -30,7 +30,7 @@
     <main class="container flex_col">
 
         <div class="forum__link">
-            <a class="forum__link__abu" href="/">Home</a> / 
+            <a class="forum__link__abu" href="/">Beranda</a> / 
             <a class="forum__link__abu" href="/konsultasi">Konsultasi</a> / 
             <a class="forum__link__active" href="">{{ post.title }}</a>
         </div>
@@ -75,12 +75,12 @@
         <div>
             <div id="editor"></div>
             {% if user.is_staff %}
-                <button class="button button_flex comment_button" type="submit" onclick="comment('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ csrf_token }}')">Submit</button>
+                <button class="button button_flex comment_button" type="submit" onclick="comment('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ csrf_token }}')">Kirim</button>
             {% endif %}
         </div>
         <hr>
 
-        <h2>Answers (<span id="comment-counter">{{ comments|length }}</span>)</h2>
+        <h2>Jawaban (<span id="comment-counter">{{ comments|length }}</span>)</h2>
 
         {% for comment in comments %}
         <div class="container__comment" id="comments-{{ comment.id }}">
@@ -130,7 +130,7 @@
     <script>
         var quill = new Quill('#editor', {
             theme: 'snow',
-            placeholder: 'Submit an answer',
+            placeholder: 'Ketik jawaban di sini...',
             modules: {
                 toolbar: {
                     container: myToolbar,

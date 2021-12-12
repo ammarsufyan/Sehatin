@@ -19,7 +19,7 @@
 
     <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
 
-    <title>Create Konsultasi | Sehat.in</title>
+    <title>Buat Konsultasi | Sehat.in</title>
 </head>
 <body class="grey">
 
@@ -44,8 +44,8 @@
 
         <div class="input__area">
             {% csrf_token %}
-            <p class="container__title">Title
-                <input class="forum__title" type="text" name="title" placeholder="Title" autocomplete="off">
+            <p class="container__title">Judul
+                <input class="forum__title" type="text" name="title" placeholder="Judul" autocomplete="off">
             </p>
             <div style="min-width: 600px;">
                 <div id="editor"></div>
@@ -69,8 +69,8 @@
                     </p>
                 </div>
                 <div>
-                    <button class="submit_post button button__flex" value="Create" onclick="createPost()">Submit</button>
-                    <button class="cancel_post button button_flex" onclick="location.href='/konsultasi';">Cancel</button>
+                    <button class="submit_post button button__flex" value="Create" onclick="createPost()">Buat</button>
+                    <button class="cancel_post button button_flex" onclick="location.href='/konsultasi';">Batal</button>
                 </div>
             </div>
         </div>
@@ -85,24 +85,24 @@
 
             // Title min 5
             if (title.length < 5) {
-                alert("Title is too short, Min title length is 5 characters");
+                alert("Judul terlalu pendek, panjang judul minimal 5 karakter");
                 return false;
             }
 
             // title max 200
             if (title.length > 200) {
-                alert("Title is too long, Max title length is 200 characters");
+                alert("Judul terlalu panjang, panjang judul maksimal 200 karakter");
                 return false;
             }
 
             // Content min 25
             if (content.length < 25) {
-                alert("Content too short! Min content including formatting are 25 characters long");
+                alert("Konten terlalu pendek! Konten minimum termasuk pemformatan memiliki panjang 25 karakter");
                 return false;
             }
             // content max 40k
             if (content.length > 40000) {
-                alert("Content too long! Max content including formatting are 40,000 characters long");
+                alert("Konten terlalu panjang! Konten maksimal termasuk pemformatan memiliki panjang 40.000 karakter");
                 return false;
             }
 
@@ -115,7 +115,7 @@
                 return;
             }
 
-            if (confirm("Are you sure?")) {
+            if (confirm("Apakah Anda yakin?")) {
                 var content = document.getElementById('editor').children[0].innerHTML;
                 var title = document.getElementsByName('title')[0].value;
                 var tag = $('#tag').val();
@@ -162,7 +162,7 @@
 
         var quill = new Quill('#editor', {
             theme: 'snow',
-            placeholder: 'Question...',
+            placeholder: 'Ketik pertanyaan Anda...',
             modules: {
                 toolbar: {
                     container: myToolbar

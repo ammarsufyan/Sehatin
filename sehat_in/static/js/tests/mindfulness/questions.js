@@ -107,7 +107,7 @@ choices_El.forEach(choice => {
         // If user play around with inspect element, things will break that's why we tell them to not do it
         if (selectedAnswer == undefined || correctAnswer.includes(selectedAnswer) == false) {
             selectedAnswer = 0;
-            alert('Please do not play around with the answers!');
+            alert('Tolong jangan main-main dengan jawabannya!');
         }
 
         // check for all items with the same id
@@ -141,7 +141,7 @@ choices_El.forEach(choice => {
 btnNext.addEventListener('click', e => {
     // check if all choices are selected
     if (currentAnswer.includes(0)) {
-        alert('Please select all answers!');
+        alert('Silakan pilih semua jawaban!');
     } else {
         // if yes, sum the answer
         sumAllAnswer();

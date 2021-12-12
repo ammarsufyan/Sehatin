@@ -27,8 +27,8 @@
 
     <form action="/konsultasi" method="get">
         <section class="container search__container">
-            <input type="text" name="q" placeholder="Cari disini.." value={% if q %}{{q}}{% endif %}>
-            <button type="submit">Search</button>
+            <input type="text" name="q" placeholder="Cari di sini.." value={% if q %}{{q}}{% endif %}>
+            <button type="submit">Cari</button>
         </section>
         {% if messages %}
         <section class="container search__container" style="margin-top: 10px;">
@@ -69,7 +69,7 @@
                 <div class="forum__info">
                     <div>
                         <i class="uil uil-comment"></i>
-                        {{ post.comments }} Answers
+                        {{ post.comments }} Jawaban
                     </div>
                     <div>
                         <i class="uil uil-user"></i>
@@ -96,14 +96,14 @@
             </a>
             {% if user.is_authenticated %}
             <a href="/konsultasi/create" class="create button button--flex" style="margin-top: 16px;">
-                Ayo Tanya
+                Buat Pertanyaan
             </a>
             <a href="/profile/{{ user.username }}/konsultasi" class="your__post button button--flex" style="text-align:center;">
                 Pertanyaan Anda
             </a>
             {% else %}
             <a href="/auth/login" class="your__post button button--flex">
-                Login untuk Bertanya
+                Masuk untuk Bertanya
             </a>
             {% endif %}
             <a class="your__post button button--flex" style="background-color: #8ee586"></a>
@@ -114,20 +114,20 @@
         Halaman {{ post_konsul.number }} dari {{ post_konsul.paginator.num_pages }}<br>
     
         {% if post_konsul.has_previous %}
-            <a href="{% if q %}?q={{q}}&page=1{% else %}?page=1{% endif %}">&laquo First</a>
+            <a href="{% if q %}?q={{q}}&page=1{% else %}?page=1{% endif %}">&laquo Pertama</a>
         {% endif %}
 
         {% if post_konsul.has_previous and post_konsul.has_next %}
-            <a href="{% if q %}?q={{q}}&page={{ post_konsul.previous_page_number }}{% else %}?page={{ post_konsul.previous_page_number}}{% endif %}">- Previous</a>
-            <a href="{% if q %}?q={{q}}&page={{ post_konsul.next_page_number }}{% else %}?page={{ post_konsul.next_page_number}}{% endif %}">- Next -</a>
+            <a href="{% if q %}?q={{q}}&page={{ post_konsul.previous_page_number }}{% else %}?page={{ post_konsul.previous_page_number}}{% endif %}">- Sebelumnya</a>
+            <a href="{% if q %}?q={{q}}&page={{ post_konsul.next_page_number }}{% else %}?page={{ post_konsul.next_page_number}}{% endif %}">- Berikutnya -</a>
         {% elif post_konsul.has_previous %}
-            <a href="{% if q %}?q={{q}}&page={{ post_konsul.previous_page_number }}{% else %}?page={{ post_konsul.previous_page_number}}{% endif %}">- Previous</a>
+            <a href="{% if q %}?q={{q}}&page={{ post_konsul.previous_page_number }}{% else %}?page={{ post_konsul.previous_page_number}}{% endif %}">- Sebelumnya</a>
         {% elif post_konsul.has_next %}
-            <a href="{% if q %}?q={{q}}&page={{ post_konsul.next_page_number }}{% else %}?page={{ post_konsul.next_page_number}}{% endif %}">Next -</a>
+            <a href="{% if q %}?q={{q}}&page={{ post_konsul.next_page_number }}{% else %}?page={{ post_konsul.next_page_number}}{% endif %}">Berikutnya -</a>
         {% endif %}
 
         {% if post_konsul.has_next %}
-            <a href="{% if q %}?q={{q}}&page={{ post_konsul.paginator.num_pages }}{% else %}?page={{ post_konsul.paginator.num_pages}}{% endif %}">Last &raquo</a>
+            <a href="{% if q %}?q={{q}}&page={{ post_konsul.paginator.num_pages }}{% else %}?page={{ post_konsul.paginator.num_pages}}{% endif %}">Terakhir &raquo</a>
         {% endif %}
     </div>
 

@@ -70,7 +70,7 @@
                 <div class="forum__info">
                     <div>
                         <i class="uil uil-comment"></i>
-                        {{ post.comments }} Answers
+                        {{ post.comments }} Jawaban
                     </div>
                     <div>
                         <i class="uil uil-user"></i>
@@ -116,23 +116,23 @@
     </main>
 
     <div class="page-num"> 
-        Page {{ post_konsul.number }} of {{ post_konsul.paginator.num_pages }}<br>
+        Halaman {{ post_konsul.number }} dari {{ post_konsul.paginator.num_pages }}<br>
     
         {% if post_konsul.has_previous %}
-            <a href="{% if q %}?q={{q}}&page=1{% else %}?page=1{% endif %}">&laquo First</a>
+            <a href="{% if q %}?q={{q}}&page=1{% else %}?page=1{% endif %}">&laquo Pertama</a>
         {% endif %}
 
         {% if post_konsul.has_previous and post_konsul.has_next %}
-            <a href="{% if q %}?q={{q}}&page={{ post_konsul.previous_page_number }}{% else %}?page={{ post_konsul.previous_page_number}}{% endif %}">- Previous</a>
-            <a href="{% if q %}?q={{q}}&page={{ post_konsul.next_page_number }}{% else %}?page={{ post_konsul.next_page_number}}{% endif %}">- Next -</a>
+            <a href="{% if q %}?q={{q}}&page={{ post_konsul.previous_page_number }}{% else %}?page={{ post_konsul.previous_page_number}}{% endif %}">- Sebelumnya</a>
+            <a href="{% if q %}?q={{q}}&page={{ post_konsul.next_page_number }}{% else %}?page={{ post_konsul.next_page_number}}{% endif %}">- Berikutnya -</a>
         {% elif post_konsul.has_previous %}
-            <a href="{% if q %}?q={{q}}&page={{ post_konsul.previous_page_number }}{% else %}?page={{ post_konsul.previous_page_number}}{% endif %}">- Previous</a>
+            <a href="{% if q %}?q={{q}}&page={{ post_konsul.previous_page_number }}{% else %}?page={{ post_konsul.previous_page_number}}{% endif %}">- Sebelumnya</a>
         {% elif post_konsul.has_next %}
-            <a href="{% if q %}?q={{q}}&page={{ post_konsul.next_page_number }}{% else %}?page={{ post_konsul.next_page_number}}{% endif %}">Next -</a>
+            <a href="{% if q %}?q={{q}}&page={{ post_konsul.next_page_number }}{% else %}?page={{ post_konsul.next_page_number}}{% endif %}">Berikutnya -</a>
         {% endif %}
 
         {% if post_konsul.has_next %}
-            <a href="{% if q %}?q={{q}}&page={{ post_konsul.paginator.num_pages }}{% else %}?page={{ post_konsul.paginator.num_pages}}{% endif %}">Last &raquo</a>
+            <a href="{% if q %}?q={{q}}&page={{ post_konsul.paginator.num_pages }}{% else %}?page={{ post_konsul.paginator.num_pages}}{% endif %}">Terakhir &raquo</a>
         {% endif %}
     </div>
 

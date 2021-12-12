@@ -22,7 +22,7 @@
 
     <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
 
-    <title>{{ post.title }} | Forum Post Sehat.in</title>
+    <title>{{ post.title }} | Postingan Forum Sehat.in</title>
 </head>
 <body class="grey">
     {% include 'templates/header.html' %}
@@ -30,7 +30,7 @@
     <main class="container flex_col">
 
         <div class="forum__link">
-            <a class="forum__link__abu" href="/">Home</a> / 
+            <a class="forum__link__abu" href="/">Beranda</a> / 
             <a class="forum__link__abu" href="/forum">Forum</a> / 
             <a class="forum__link__active" href="">{{ post.title }}</a>
         </div>
@@ -73,7 +73,7 @@
                 </p>
                 <br>
                 <div class="like">
-                    <span style="color: #0055f2; cursor: pointer;" onclick="likePost('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ csrf_token }}')"><i class="uil uil-thumbs-up"></i><span id="post-like-count">{{ likes|length }}</span> Like</span>
+                    <span style="color: #0055f2; cursor: pointer;" onclick="likePost('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ csrf_token }}')"><i class="uil uil-thumbs-up"></i><span id="post-like-count">{{ likes|length }}</span> Suka</span>
                 </div>
             </div>
         </div>
@@ -81,14 +81,14 @@
         <div>
             <div id="editor"></div>
             {% if user.is_authenticated %}
-                <button class="button button_flex comment_button" type="submit" onclick="comment('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ csrf_token }}')">Submit</button>
+                <button class="button button_flex comment_button" type="submit" onclick="comment('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ csrf_token }}')">Kirim</button>
             {% else %}
-                <button class="button button_flex comment_button" type="submit" onclick="comment('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ csrf_token }}')" disabled>Submit</button>
+                <button class="button button_flex comment_button" type="submit" onclick="comment('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ csrf_token }}')" disabled>Kirim</button>
             {% endif %}
         </div>
         <hr>
 
-        <h2>Comments (<span id="comment-counter">{{ comments|length }}</span>)</h2>
+        <h2>Komentar (<span id="comment-counter">{{ comments|length }}</span>)</h2>
 
         {% for comment in comments %}
         <div class="container__comment" id="comments-{{ comment.id }}">
@@ -129,7 +129,7 @@
                 </span>
                 <br>
                 <div class="like">
-                    <span style="color: #0055f2; cursor: pointer;" onclick="likeComment('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ comment.id }}', '{{ csrf_token }}')"><i class="uil uil-thumbs-up"></i><span id="comment-like-count-{{ comment.id }}">{{ comment.likes }}</span> Like</span>
+                    <span style="color: #0055f2; cursor: pointer;" onclick="likeComment('{{ user.is_authenticated }}', '{{ post.id }}', '{{ post.title }}', '{{ comment.id }}', '{{ csrf_token }}')"><i class="uil uil-thumbs-up"></i><span id="comment-like-count-{{ comment.id }}">{{ comment.likes }}</span> Suka</span>
                 </div>
             </div>
         </div>
@@ -143,7 +143,7 @@
     <script>
         var quill = new Quill('#editor', {
             theme: 'snow',
-            placeholder: 'Submit a comment',
+            placeholder: 'Ketik komentar di sini...',
             modules: {
                 toolbar: {
                     container: myToolbar,
@@ -158,7 +158,7 @@
     <script>
         var quill = new Quill('#editor', {
             theme: 'snow',
-            placeholder: 'Login to submit a comment',
+            placeholder: 'Masuk untuk mengirim komentar',
             readOnly: true,
             modules: {
                 toolbar: {

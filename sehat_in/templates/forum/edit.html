@@ -19,7 +19,7 @@
 
     <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
 
-    <title>Edit Forum Post | Sehat.in</title>
+    <title>Ubah Postingan Forum | Sehat.in</title>
 </head>
 <body class="grey">
 
@@ -29,7 +29,7 @@
                 <i class="uil uil-angle-left"></i>
             </a>
     
-            <h3>Edit Post Forum</h3>
+            <h3>Ubah Postingan Forum</h3>
             {% if messages %}
             <div class="message-alert" style="text-align: center;">
                 {% for message in messages %}
@@ -44,7 +44,7 @@
 
         <div class="input__area">
             {% csrf_token %}
-            <p class="container__title">Title
+            <p class="container__title">Judul
                 <input class="forum__title" type="text" name="title" placeholder="{{post.title}}" value="{{post.title}}" readonly>
             </p>
             <div style="min-width: 600px;">
@@ -77,8 +77,8 @@
                     </p>
                 </div>
                 <div>
-                    <button class="submit_post button button__flex" value="Edit" onclick="editThePost()">Submit</button>
-                    <button class="cancel_post button button_flex" onclick="location.href='/forum/{{post.id}}';">Cancel</button>
+                    <button class="submit_post button button__flex" value="Edit" onclick="editThePost()">Simpan</button>
+                    <button class="cancel_post button button_flex" onclick="location.href='/forum/{{post.id}}';">Batal</button>
                 </div>
             </div>
         </div>
@@ -91,7 +91,7 @@
                 return;
             }
 
-            if (confirm("Are you sure?")) {
+            if (confirm("Apakah Anda yakin?")) {
                 // send ajax
                 var content = document.getElementById('editor').children[0].innerHTML;
                 var tag = $('#tag').val();
@@ -112,7 +112,7 @@
                             window.location.href = '/forum/' + id + '/' + title.replaceAll(' ', '-');
                         } else
                         if (data == 'limit')  {
-                            alert('Character length invalid!')
+                            alert('Panjang karakter tidak valid!')
                         } else {
                             alert("Error: " + data);
                         }
@@ -127,12 +127,12 @@
 
             // Content min 25
             if (content.length < 25) {
-                alert("Content too short! Min content including formatting are 25 characters long");
+                alert("Konten terlalu pendek! Konten minimum termasuk pemformatan memiliki panjang 25 karakter");
                 return false;
             }
             // content max 40k
             if (content.length > 40000) {
-                alert("Content too long! Max content including formatting are 40,000 characters long");
+                alert("Konten terlalu panjang! Konten maksimal termasuk pemformatan memiliki panjang 40.000 karakter");
                 return false;
             }
 
@@ -151,7 +151,7 @@
     <script>
         var quill = new Quill('#editor', {
             theme: 'snow',
-            placeholder: 'Post content...',
+            placeholder: 'Isi konten di sini...',
             modules: {
                 toolbar: {
                     container: myToolbar,

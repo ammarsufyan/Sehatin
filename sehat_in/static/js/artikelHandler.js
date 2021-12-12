@@ -15,7 +15,7 @@ var myToolbar = [
 
 function imageHandler() {
     var range = this.quill.getSelection();
-    var value = prompt('Salin tautan gambar disini!');
+    var value = prompt('Salin tautan gambar di sini!');
     if (value == "") { // If empty value
         return;
     }

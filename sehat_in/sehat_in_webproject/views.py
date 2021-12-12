@@ -121,7 +121,7 @@ def register(request):
                 user_profile = UserProfile(user=user)
                 user_profile.save()
 
-                messages.info(request, 'Anda telah berhasil terdaftar, sekarang Anda dapat masuk ke akun Anda')
+                messages.info(request, 'Anda telah berhasil terdaftar, sekarang Anda dapat masuk.')
                 return redirect('/auth/login')
         else: # If password and password confirmation are not the same
             messages.info(request, 'Kata sandi tidak cocok!')

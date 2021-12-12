@@ -16,7 +16,7 @@ var myToolbar = [
 
 function imageHandler() {
     var range = this.quill.getSelection();
-    var value = prompt('Salin tautan gambar disini!');
+    var value = prompt('Salin tautan gambar di sini!');
     if (value == "") { // If empty value
         return;
     }
@@ -90,7 +90,7 @@ function deletePost(logged_in, postid, title, csrf_token, mode) {
         success: function (data) {
             dataJson = JSON.parse(data);
             if (dataJson.status == 'success') {
-                alert("Post has been deleted successfully!");
+                alert("Postingan berhasil dihapus!");
                 window.location.href = '/konsultasi';
             } else {
                 alert("Error! Gagal menghapus post!" + dataJson.message);

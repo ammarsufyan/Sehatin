@@ -27,8 +27,8 @@
 
     <form action="/forum" method="get">
         <section class="container search__container">
-            <input type="text" name="q" placeholder="Cari disini..">
-            <button type="submit">Search</button>
+            <input type="text" name="q" placeholder="Cari di sini..">
+            <button type="submit">Cari</button>
         </section>
         {% if messages %}
         <section class="container search__container" style="margin-top: 10px;">
@@ -62,11 +62,11 @@
                 <div class="forum__info">
                     <div>
                         <i class="uil uil-thumbs-up"></i>
-                        {{ post.likes }} Likes
+                        {{ post.likes }} Suka
                     </div>
                     <div>
                         <i class="uil uil-comment"></i>
-                        {{ post.comments }} Comments
+                        {{ post.comments }} Komentar
                     </div>
                     <div>
                         <i class="uil uil-user"></i>
@@ -89,7 +89,7 @@
         <div class="container__forum">
             <div class="container__card">
                 <div class="forum__about">
-                    <a><h1>Tidak ada forum post yang dibuat oleh {{theUser.username}}</h1></a>
+                    <a><h1>Tidak ada postingan forum yang dibuat oleh {{theUser.username}}</h1></a>
                     <p id="post-{{post.id}}"></p>
                 </div>
                 <div class="forum__info"></div>
@@ -101,36 +101,36 @@
         <div class="container__forum__button">
             <a class="create button button--flex" style="background-color: #0270a6">
                 {% if theUser == user %}
-                <span style="text-align: center;">Sedang Melihat Post Forum Anda</spam>
+                <span style="text-align: center;">Sedang Melihat Postingan Forum Anda</spam>
                 {% else %}
-                <span style="text-align: center;">Sedang Melihat Post Forum {{ theUser.username }}</spam>
+                <span style="text-align: center;">Sedang Melihat Postingan Forum {{ theUser.username }}</spam>
                 {% endif %}
             </a>
             <a href="/forum/create" class="create button button--flex" style="margin-top: 16px;">
-                Buat Post
+                Buat Postingan
             </a>
             <a class="your__post button button--flex" style="background-color: #fbfcfe"></a>
         </div>
     </main>
 
     <div class="page-num"> 
-        Page {{ posts.number }} of {{ posts.paginator.num_pages }}<br>
+        Halaman {{ posts.number }} dari {{ posts.paginator.num_pages }}<br>
     
         {% if posts.has_previous %}
-            <a href="?page=1">&laquo First</a>
+            <a href="?page=1">&laquo Pertama</a>
         {% endif %}
 
         {% if posts.has_previous and posts.has_next %}
-            <a href="?page={{ posts.previous_page_number }}">- Previous</a>
-            <a href="?page={{ posts.next_page_number }}">- Next -</a>
+            <a href="?page={{ posts.previous_page_number }}">- Sebelumnya</a>
+            <a href="?page={{ posts.next_page_number }}">- Berikutnya -</a>
         {% elif posts.has_previous %}
-            <a href="?page={{ posts.previous_page_number }}">- Previous</a>
+            <a href="?page={{ posts.previous_page_number }}">- Sebelumnya</a>
         {% elif posts.has_next %}
-            <a href="?page={{ posts.next_page_number }}">Next -</a>
+            <a href="?page={{ posts.next_page_number }}">Berikutnya -</a>
         {% endif %}
 
         {% if posts.has_next %}
-            <a href="?page={{ posts.paginator.num_pages }}">Last &raquo</a>
+            <a href="?page={{ posts.paginator.num_pages }}">Terakhir &raquo</a>
         {% endif %}
     </div>
 

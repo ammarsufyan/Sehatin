@@ -157,7 +157,7 @@
         Halaman {{ posts.number }} dari {{ posts.paginator.num_pages }}<br>
     
         {% if posts.has_previous %}
-            <a href="{% if q %}?q={{q}}&page=1{% else %}?page=1{% endif %}">&laquo First</a>
+            <a href="{% if q %}?q={{q}}&page=1{% else %}?page=1{% endif %}">&laquo Pertama</a>
         {% endif %}
 
         {% if posts.has_previous and posts.has_next %}
@@ -170,7 +170,7 @@
         {% endif %}
 
         {% if posts.has_next %}
-            <a href="{% if q %}?q={{q}}&page={{ posts.paginator.num_pages }}{% else %}?page={{ posts.paginator.num_pages}}{% endif %}">Last &raquo</a>
+            <a href="{% if q %}?q={{q}}&page={{ posts.paginator.num_pages }}{% else %}?page={{ posts.paginator.num_pages}}{% endif %}">Terakhir &raquo</a>
         {% endif %}
     </div>
 

@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 {% load static %}
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -12,15 +13,13 @@
     <link rel="stylesheet" href="{% static 'css/forum.css' %}">
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 
-    <link rel="icon" 
-        type="image/png" 
-        href="{% static 'img/favicon/favicon.ico' %}" 
-    />
+    <link rel="icon" type="image/png" href="{% static 'img/favicon/favicon.ico' %}" />
 
     <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
 
     <title>Buat Postingan Forum | Sehat.in</title>
 </head>
+
 <body class="grey">
 
     <main class="container create_post_container">
@@ -28,7 +27,7 @@
             <a href="/forum">
                 <i class="uil uil-angle-left"></i>
             </a>
-    
+
             <h3>Buat Postingan Forum</h3>
             {% if messages %}
             <div class="message-alert" style="text-align: center;">
@@ -45,32 +44,32 @@
         <div class="input__area">
             {% csrf_token %}
             <p class="container__title">Judul
-                <input class="forum__title" type="text" name="title" placeholder="Title" autocomplete="off">
+                <input class="forum__title" type="text" name="title" placeholder="Judul" autocomplete="off">
             </p>
             <div style="min-width: 600px;">
                 <div id="editor"></div>
             </div>
-            <div class="button__area" >
+            <div class="button__area">
                 <div>
                     <p>Tag
                         <select name="tag" id="tag">
                             {% if user.is_superuser %}
-                                {% for tag in tags %}
-                                    <option value="{{ tag.name }}">{{ tag.name }}</option>
-                                {% endfor %}
+                            {% for tag in tags %}
+                            <option value="{{ tag.name }}">{{ tag.name }}</option>
+                            {% endfor %}
                             {% else %}
-                                {% for tag in tags %}
-                                    {% if not tag.adminOnly %}
-                                        <option value="{{ tag.name }}">{{ tag.name }}</option>
-                                    {% endif %}
-                                {% endfor %}
+                            {% for tag in tags %}
+                            {% if not tag.adminOnly %}
+                            <option value="{{ tag.name }}">{{ tag.name }}</option>
+                            {% endif %}
+                            {% endfor %}
                             {% endif %}
                         </select>
                     </p>
                 </div>
                 <div>
                     <button class="submit_post button button__flex" value="Create" onclick="createPost()">Buat</button>
-                    <button class="cancel_post button button_flex" onclick="location.href='/forum';">Batalkan</button>
+                    <button class="cancel_post button button_flex" onclick="location.href='/forum';">Batal</button>
                 </div>
             </div>
         </div>
@@ -108,14 +107,14 @@
 
             return true;
         }
-    
+
         function createPost() {
             /* send ajax, if sucess go to the post, if fail reload the page */
-            if (!validateForm()){
+            if (!validateForm()) {
                 return;
             }
 
-            if (confirm("Apakah kamu yakin?")) {
+            if (confirm("Apakah Anda yakin?")) {
                 var content = document.getElementById('editor').children[0].innerHTML;
                 var title = document.getElementsByName('title')[0].value;
                 var tag = $('#tag').val();
@@ -129,12 +128,12 @@
                         'content': content.trim(),
                         'tag': tag,
                     },
-                    success: function(data) {
+                    success: function (data) {
                         // data returned on success is post id
                         if (data == 'error') {
                             window.location.href = '/forum/create';
                         } else
-                        if (data == 'limit')  {
+                        if (data == 'limit') {
                             alert('Panjang karakter tidak valid!')
                         } else {
                             window.location.href = '/forum/' + data.toString();
@@ -151,7 +150,7 @@
     <script>
         var quill = new Quill('#editor', {
             theme: 'snow',
-            placeholder: 'Post content...',
+            placeholder: 'Isi konten di sini...',
             modules: {
                 toolbar: {
                     container: myToolbar,
@@ -166,4 +165,5 @@
     <script src="{% static 'js/swiper-bundle.min.js' %}"></script>
     <script src="{% static 'js/main.js' %}"></script>
 </body>
+
 </html>
