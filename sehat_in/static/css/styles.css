@@ -420,6 +420,12 @@ input[type=text]:focus {
 
 /*==================== MEDIA QUERIES ====================*/
 /* For small devices */
+@media screen and (max-width: 768px) {
+    .tes__header {
+        margin-top: 1rem !important;
+    }
+}
+
 @media screen and (max-width: 350px) {
     .container {
         margin-left: var(--mb-1);

@@ -40,3 +40,13 @@
 .container {
     max-width: 816px;
 }
+
+@media screen and (max-width: 768px) {
+    .container {
+        margin-top: 0 !important;
+    }
+
+    .container__result h4 {
+        margin-top: 1.5rem;
+    }
+}
