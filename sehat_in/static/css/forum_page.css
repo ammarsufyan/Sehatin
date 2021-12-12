@@ -18,6 +18,7 @@
     box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.2);
     border-radius: 10px;
     margin-bottom: 2rem;
+    min-width: 700px;
 }
 
 .header__main_forum {
@@ -95,4 +96,10 @@ textarea:focus {
 
 hr {
     margin: 2rem 0;
+}
+
+@media (max-width: 768px) { 
+    .container__main_forum {
+        min-width: auto;
+    }
 }
