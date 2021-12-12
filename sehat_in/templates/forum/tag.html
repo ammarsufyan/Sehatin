@@ -42,7 +42,7 @@
         </section>
     </form>
 
-    <main class="container flex" style="margin-top: 5px;">
+    <main class="container flex" id="container-forum" style="margin-top: 5px;">
         <div class="container__forum">
         {% for post in posts %}
             <div class="container__card">
@@ -67,21 +67,21 @@
                     </p>
                 </div>
                 <div class="forum__info">
-                    <div>
+                    <div class="info-content">
                         <i class="uil uil-thumbs-up"></i>
-                        {{ post.likes }} Suka
+                        <span class="info-content-text">{{ post.likes }} Suka</span>
                     </div>
-                    <div>
+                    <div class="info-content">
                         <i class="uil uil-comment"></i>
-                        {{ post.comments }} Komentar
+                        <span class="info-content-text">{{ post.comments }} Komentar</span>
                     </div>
-                    <div>
+                    <div class="info-content">
                         <i class="uil uil-user"></i>
-                        {% if post.user == null %}deleted{% else %}{{ post.user }}{% endif %}
+                        <span class="info-content-text">{% if post.user == null %}deleted{% else %}{{ post.user }}{% endif %}</span>
                     </div>
-                    <div>
+                    <div class="info-content">
                         <i class="uil uil-calendar-alt"></i>
-                        <span id="date-{{ post.id }}">{{ post.created_at.isoformat }}</span>
+                        <span id="date-{{ post.id }}" class="info-content-text">{{ post.created_at.isoformat }}</span>
                         <script>
                             // parse the date into dd-mm-yyyy hh:mm format
                             var date = new Date(document.getElementById('date-{{ post.id }}').innerHTML);
@@ -94,23 +94,23 @@
         {% endfor %}
         </div>
 
-        <div class="container__forum__button">
+        <div class="container__forum__button" id="tag-btn">
             <a class="create button button--flex" style="background-color: #0270a6">
                 <span style="text-align: center;">Sedang Melihat Tag "{{ tag.name }}"</spam>
             </a>
             {% if user.is_authenticated %}
-            <a href="/forum/create" style="margin-top: 16px;" class="create button button--flex">
+            <a href="/forum/create" style="margin-top: 16px;" class="create button button--flex" id="your__post">
                 Buat Postingan
             </a>
-            <a href="/profile/{{ user.username}}/posts" class="your__post button button--flex">
+            <a href="/profile/{{ user.username}}/posts" class="your__post button button--flex" id="your__post">
                 Postingan Anda
             </a>
-            <a class="your__post button button--flex" style="background-color: #fbfcfe"></a>
+            <a class="your__post button button--flex" style="background-color: #fbfcfe" id="hidden"></a>
             {% else %}
             <a href="/auth/login" class="create button button--flex" style="text-align:center; margin-top: 16px;">
                 Masuk untuk Membuat Postingan
             </a>
-            <a class="your__post button button--flex" style="background-color: #fbfcfe"></a>
+            <a class="your__post button button--flex" style="background-color: #fbfcfe" id="hidden"></a>
             {% endif %}
         </div>
     </main>

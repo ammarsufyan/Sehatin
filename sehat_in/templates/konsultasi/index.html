@@ -45,9 +45,9 @@
     </form>
 
     {% if searching or messages %}
-    <main class="container flex" style="margin-top: 5px;">
+    <main class="container flex" id="container-forum" style="margin-top: 5px;">
     {% else %}
-    <main class="container flex">
+    <main class="container flex" id="container-forum">
     {% endif %}
     {% if post_konsul %}
         <div class="container__forum">
@@ -74,17 +74,17 @@
                     </p>
                 </div>
                 <div class="forum__info">
-                    <div>
+                    <div class="info-content">
                         <i class="uil uil-comment"></i>
-                        {{ post.comments }} Jawaban
+                        <span class="info-content-text">{{ post.comments }} Jawaban</span>
                     </div>
-                    <div>
+                    <div class="info-content">
                         <i class="uil uil-user"></i>
-                        {% if post.user == null %}deleted{% else %}{{ post.user }}{% endif %}
+                        <span class="info-content-text">{% if post.user == null %}deleted{% else %}{{ post.user }}{% endif %}</span>
                     </div>
-                    <div>
+                    <div class="info-content">
                         <i class="uil uil-calendar-alt"></i>
-                        <span id="date-{{ post.id }}">{{ post.created_at.isoformat }}</span>
+                        <span class="info-content-text" id="date-{{ post.id }}">{{ post.created_at.isoformat }}</span>
                         <script>
                             // parse the date into dd-mm-yyyy hh:mm format
                             var date = new Date(document.getElementById('date-{{ post.id }}').innerHTML);
@@ -113,16 +113,16 @@
             <a href="/konsultasi/create" class="create button button--flex">
                 Buat Pertanyaan
             </a>
-            <a href="/profile/{{ user.username }}/konsultasi" class="your__post button button--flex" style="text-align:center;">
+            <a href="/profile/{{ user.username }}/konsultasi" class="your__post button button--flex" style="text-align:center;" id="your__post">
                 Pertanyaan Anda
             </a>
-            <a class="your__post button button--flex" style="background-color: #fbfcfe"></a>
+            <a class="your__post button button--flex" style="background-color: #fbfcfe" id="hidden"></a>
             {% else %}
             <a href="/auth/login" class="create button button--flex" style="text-align:center;">
                 Masuk untuk Bertanya
             </a>
             {% endif %}
-            <a class="your__post button button--flex" style="background-color: #fbfcfe"></a>
+            <a class="your__post button button--flex" style="background-color: #fbfcfe" id="hidden"></a>
         </div>
     </main>
 

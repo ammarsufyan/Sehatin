@@ -52,6 +52,17 @@ main {
     margin-left: 1rem;
 }
 
+.forum__info .info-content {
+    max-width: 155px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: row;
+}
+
+.info-content-text {
+    padding-left: 3px;
+}
+
 .forum__info div {
     margin-bottom: .5rem;
 }
@@ -196,9 +207,84 @@ button {
     .input__area {
         min-width: auto;
     }
+
+    .forum__about {
+        min-width: 30rem;
+        max-width: 30rem;
+    }
+
+    .forum__about p {
+        max-width: 30rem;
+    }
+
+    .forum__info {
+        flex-direction: row;
+    }
+
+    .forum__info .info-content {
+        padding-top: 8px;
+        padding-left: 8px;
+        padding-right: 8px;
+    }
+
+    .container__card {
+        flex-direction: column;
+        width: 100%;
+        height: auto;
+    }
+
+    #container-forum {
+        flex-direction: column;
+    }
+
+    .container__forum__button {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        margin-top: 1rem;
+    }
+
+    #your__post {
+        margin-top: 0 !important;
+        margin-left: 20px;
+    }
+
+    #hidden {
+        display: none;
+    }
+}
+
+@media (max-width: 600px) { 
+    .forum__about {
+        min-width: 25rem;
+        max-width: 25rem;
+    }
+
+    .forum__about p {
+        max-width: 25rem;
+    }
 }
 
 @media (max-width: 500px) {
+    .text-inside {
+        display:none;
+    }
+
+    #poster-account {
+        max-width: 30px;
+    }
+
+    .forum__about {
+        min-width: 20rem;
+        max-width: 20rem;
+    }
+
+    .forum__about p {
+        max-width: 20rem;
+        min-width: 20rem;
+    }
+
     .button__area {
         display: flex;
         flex-direction: column;
@@ -208,5 +294,45 @@ button {
 
     .forum__title {
         width: auto;
+    }
+
+    .forum__info .info-content {
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+}
+
+
+@media (max-width: 412px) {
+    .forum__about {
+        min-width: 15rem;
+        max-width: 15rem;
+    }
+
+    .forum__about p {
+        max-width: 15rem;
+        min-width: 15rem;
+    }
+}
+
+@media (max-width: 330px) {
+    #tag-btn a {
+        margin-left: 0px !important;
+    } 
+}
+
+@media (max-width: 320px) {
+    .container__card {
+        padding: 1rem 1.25rem;
+    }
+
+    .forum__about {
+        min-width: 13rem;
+        max-width: 13rem;
+    }
+
+    .forum__about p {
+        max-width: 13rem;
+        min-width: 13rem;
     }
 }
