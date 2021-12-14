@@ -43,7 +43,8 @@
                         <li>
                             <i style="padding-bottom: 5px;" class="uil uil-bell dropdown account__icon" onclick="">
                                 {% if notifications %}
-                                <div class="dropdown-content">
+                                <div class="dropdown-content" id="notif-dropdown">
+                                {% comment %} <div class="dropdown-content" id="notif-dropdown"> {% endcomment %}
                                 {% for notif in notifications %}
                                     {% if not notif.read %}
                                         <script>
@@ -120,7 +121,7 @@
                             </i>
                         </li>
                         <li>
-                            <div class="avatar">
+                            <div class="avatar" onclick="window.location.href='/profile/{{user.username}}'">
                                 <i class="uil uil-user account__icon"></i>
                             </div>
                         </li>

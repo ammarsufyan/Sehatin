@@ -197,3 +197,9 @@ td {
 td .uil {
     color: red;
 }
+
+@media screen and (max-width: 768px) {
+    main {
+        padding-top: 2rem !important;
+    }
+}
