@@ -536,8 +536,12 @@ def forum_Comment(request, id, title):
                     notification = Notification(user=post.user, post_Forum=post, comment=comment, notification_Content=user.username + ' meninggalkan komentar di post Anda')
                     notification.save()
 
+            # Get text without html tags
+            CLEANR = re.compile('<.*?>|&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});')
+            commentNoHtml = re.sub(CLEANR, '', commentGet)
+
             # Send notification to mentioned users @
-            mentioned = re.findall(r'@\w+', commentGet)
+            mentioned = re.findall(r'@\w+', commentNoHtml)
             # Remove dupe
             mentionedNoDupe = list(dict.fromkeys(mentioned))
             # Loop
@@ -1238,8 +1242,12 @@ def konsultasi_Comment(request, id, title):
                     notification = Notification(user=post.user, post_Konsultasi=post, comment=comment, notification_Content=user.username + ' meninggalkan komentar di post Anda')
                     notification.save()
 
+            # Get text without html tags
+            CLEANR = re.compile('<.*?>|&([a-z0-9]+|#[0-9]{1,6}|#x[0-9a-f]{1,6});')
+            commentNoHtml = re.sub(CLEANR, '', commentGet)
+
             # Send notification to mentioned users @
-            mentioned = re.findall(r'@\w+', commentGet)
+            mentioned = re.findall(r'@\w+', commentNoHtml)
             # Remove dupe
             mentionedNoDupe = list(dict.fromkeys(mentioned))
             # Loop
