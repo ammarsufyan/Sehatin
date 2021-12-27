@@ -31,14 +31,14 @@
                 {% load crispy_forms_tags %}          
 
                 <!--Reset Password-->
-                <div class="container p-5">
+                <div class="login__title">
                     <h2 class="font-weight-bold mt-3">Ubah Kata Sandi</h2>
                     <hr>
                     <p>Lupa kata sandi? Silakan masukkan email di bawah ini dan kita akan mengirimkan instruksi.</p>
                     <form method="POST">
                         {% csrf_token %}
                         {{ password_reset_form|crispy }}                    
-                        <button class="button button--flex" type="submit">Kirim</button>
+                        <button class="button button--flex" id="submit" type="submit">Kirim</button>
                     </form>
                 </div> 
 

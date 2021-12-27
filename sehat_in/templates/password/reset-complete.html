@@ -29,11 +29,11 @@
             {% block content %} 
     
             <!--Password Reset Complete-->
-            <div class="container p-4">
+            <div class="login__title">
                 <h2 class="font-weight-bold mt-3">Ubah Kata Sandi Selesai</h2>
                 <hr>
                 <p>Kata sandi berhasil diubah. Silakan masuk kembali.</p>                 
-                <a href="/login" class="btn btn-primary">Masuk</a>
+                <button class="button button--flex" href="/auth/login" id="submit" type="submit">Kirim</button>
             </div>
         
         {% endblock %}
