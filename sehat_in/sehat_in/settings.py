@@ -34,7 +34,7 @@ SECRET_KEY = os.environ['SECRET_KEY']
 DEBUG = os.getenv("DEBUG", "False") == "True"
 DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "False") == "True"
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'sehatin-uj3kb.ondigitalocean.app']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'sehatin-uj3kb.ondigitalocean.app', 'ammarsufyan.me']
 
 
 # Application definition
