@@ -253,15 +253,15 @@ def forum_Url(request, id, title):
             return redirect('/forum/' + str(post.id) + '/' + post.title.replace(' ', '-').replace('?', ''))
         
         if post is not None:
-            # edited = False
+            edited = False
             comments = Comment.objects.filter(comment_Forum=post).order_by('created_at') # oldest to newest
             likes = Like.objects.filter(post=post)
 
             # # check created date and updated date, if updated date is older by 5 minutes of creation time then set edited as true
-            # if post.updated_at > post.created_at + datetime.timedelta(minutes=5):
-            #     edited = True
+            if post.updated_at > post.created_at + datetime.timedelta(minutes=5):
+                edited = True
 
-            return render(request, 'forum/view.html', {'post': post, 'comments': comments, 'likes': likes, 'notifications': notifications})
+            return render(request, 'forum/view.html', {'post': post, 'comments': comments, 'likes': likes, 'notifications': notifications, 'edited': edited})
         else:
             raise Http404
     else:
@@ -1740,7 +1740,7 @@ def artikel_url(request, id, title):
             return redirect('/artikel/' + str(post.id) + '/' + post.title.replace(' ', '-').replace('?', ''))
         
         if post is not None:
-            # edited = False
+            edited = False
             # Increase the view of the post
             post.views += 1
 
@@ -1748,10 +1748,10 @@ def artikel_url(request, id, title):
             post.save(update_fields=['views'])
 
             # check created date and updated date, if updated date is older by 5 minutes of creation time then set edited as true
-            # if post.updated_at > post.created_at + datetime.timedelta(minutes=5):
-            #     edited = True
+            if post.updated_at > post.created_at + datetime.timedelta(minutes=5):
+                edited = True
             
-            return render(request, 'artikel/view.html', {'post': post, 'notifications': notifications})
+            return render(request, 'artikel/view.html', {'post': post, 'notifications': notifications, 'edited': edited})
         else:
             raise Http404
     else:

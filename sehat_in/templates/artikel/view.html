@@ -56,7 +56,7 @@
                 {% endautoescape %}
 
                 <br>
-                <p> <b>Penulis:</b> {% if post.user == null %}deleted{% else %}{{ post.user }}{% endif %}<br><b>Dibuat: </b><span id="date-{{ post.id }}">{{ post.created_at.isoformat }}</span></b>{% if post.created_at != post.updated_at %} - edited{% endif %}</p>
+                <p> <b>Penulis:</b> {% if post.user == null %}deleted{% else %}{{ post.user }}{% endif %}<br><b>Dibuat: </b><span id="date-{{ post.id }}">{{ post.created_at.isoformat }}</span></b>{% if edited %} - edited{% endif %}</p>
                 <br>
 
                 <script>

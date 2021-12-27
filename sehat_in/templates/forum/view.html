@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 {% load static %}
 {% load space_to_dash %}
+{% load check_edited_comments %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -41,7 +42,7 @@
                     <i class="uil uil-user"></i>
                     <P class="forum__link__active username">{% if post.user == null %}deleted{% else %}<a href="/profile/{{ post.user.username }}">{{ post.user.username }}</a>{% endif %}</P>
                     <p>•</p>
-                    <p><span id="date-{{ post.id }}">{{ post.created_at.isoformat }}</span>{% if post.created_at != post.updated_at %} - Edited{% endif %}</p>
+                    <p><span id="date-{{ post.id }}">{{ post.created_at.isoformat }}</span>{% if edited %} - Edited{% endif %}</p>
                     <script>
                         // parse the date into dd-mm-yyyy hh:mm format
                         var date = new Date(document.getElementById('date-{{ post.id }}').innerHTML);
@@ -103,7 +104,7 @@
                     <i class="uil uil-user"></i>
                     <P class="username">{% if comment.user == null %}deleted{% else %}<a href="/profile/{{ comment.user.username }}">{{ comment.user.username }}</a>{% endif %}</P>
                     <p>•</p>
-                    <p><span id="comment-date-{{ comment.id }}">{{ comment.created_at.isoformat }}</span>{% if comment.created_at != comment.updated_at %} - Edited{% endif %}</p>
+                    <p><span id="comment-date-{{ comment.id }}">{{ comment.created_at.isoformat }}</span>{% check_edited_comments comment.created_at comment.updated_at %}</p>
                     <script>
                         // parse the date into dd-mm-yyyy hh:mm format
                         var date = new Date(document.getElementById('comment-date-{{ comment.id }}').innerHTML);
