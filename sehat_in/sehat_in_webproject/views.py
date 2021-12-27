@@ -314,7 +314,8 @@ def forum_Create(request):
             # remove ? from title
             title = title.replace('?', '')
 
-            post = Forum(title=title, content=content, user=user, tag=tag)
+            timeNow = datetime.datetime.now()
+            post = Forum(title=title, content=content, user=user, tag=tag, created_at=timeNow, updated_at=timeNow)
             post.save()
 
             # Return the post id
@@ -1112,7 +1113,9 @@ def konsultasi_Create(request):
             post.save()
 
             # Return the post id
-            getPost = Konsultasi.objects.get(title=title, content=content, user=user)
+            timeNow = datetime.datetime.now()
+            getPost = Konsultasi.objects.get(title=title, content=content, user=user, created_at=timeNow, updated_at=timeNow)
+
             return HttpResponse(getPost.id)
         else: # user enter normally
             tags = Tag.objects.filter(type="Konsultasi")
@@ -1795,7 +1798,8 @@ def artikel_create(request):
             # remove ? from title
             title = title.replace('?', '')
 
-            post = Artikel(title=title, content=content, user=user, tag=tag, thumbnail_url=thumbnail_url)
+            timeNow = datetime.datetime.now()
+            post = Artikel(title=title, content=content, user=user, tag=tag, thumbnail_url=thumbnail_url, created_at=timeNow, updated_at=timeNow)
             post.save()
 
             # Return the post id

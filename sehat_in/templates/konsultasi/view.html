@@ -93,7 +93,13 @@
                     <script>
                         // parse the date into dd-mm-yyyy hh:mm format
                         var date = new Date(document.getElementById('comment-date-{{ comment.id }}').innerHTML);
-                        var formattedDate = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes();
+                        var minutes = date.getMinutes();
+                        // check if 1 digit, if yes add 0
+                        if (minutes < 10) {
+                            minutes = '0' + minutes;
+                        }
+
+                        var formattedDate = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' ' + date.getHours() + ':' + minutes;
                         document.getElementById('comment-date-{{ comment.id }}').innerHTML = formattedDate;
                     </script>
                 </div>
