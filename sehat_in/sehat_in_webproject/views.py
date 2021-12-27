@@ -7,6 +7,7 @@ from django.core.exceptions import PermissionDenied
 from django.http import Http404, JsonResponse
 import json
 import re
+import pytz
 from django.core import serializers
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from itertools import chain
@@ -311,10 +312,11 @@ def forum_Create(request):
                 messages.info(request, 'Opsi tag tidak valid! No tag found!')
                 return HttpResponse('error')
 
-            # remove ? from title
+            # remove ? and # from title
             title = title.replace('?', '')
+            title = title.replace('#', '')
 
-            timeNow = datetime.datetime.now()
+            timeNow = datetime.datetime.now(tz=pytz.timezone('Asia/Jakarta'))
             post = Forum(title=title, content=content, user=user, tag=tag, created_at=timeNow, updated_at=timeNow)
             post.save()
 
@@ -362,6 +364,7 @@ def forum_Edit(request, id, title):
             # Change the stuff
             post.content = content
             post.tag = tag
+            post.updated_at = datetime.datetime.now(tz=pytz.timezone('Asia/Jakarta'))
 
             # Save
             post.save()
@@ -524,7 +527,8 @@ def forum_Comment(request, id, title):
                 return HttpResponse('limit')
 
             # Save comment first
-            comment = Comment(user=user, comment_Forum=post, content=commentGet)
+            timeNow = datetime.datetime.now(tz=pytz.timezone('Asia/Jakarta'))
+            comment = Comment(user=user, comment_Forum=post, content=commentGet, created_at=timeNow, updated_at=timeNow)
             comment.save()
 
             # Increase the post comments
@@ -637,6 +641,7 @@ def forum_Comment_Edit(request, id, title, comment_id):
 
             # Edit comment
             comment.content = commentGet
+            comment.updated_at = datetime.datetime.now(tz=pytz.timezone('Asia/Jakarta'))
             comment.save()
 
             return HttpResponse('success')
@@ -1108,13 +1113,14 @@ def konsultasi_Create(request):
 
             # remove ? from title
             title = title.replace('?', '')
+            title = title.replace('#', '')
 
-            post = Konsultasi(title=title, content=content, user=user, tag=tag)
+            timeNow = datetime.datetime.now(tz=pytz.timezone('Asia/Jakarta'))
+            post = Konsultasi(title=title, content=content, user=user, tag=tag, created_at=timeNow, updated_at=timeNow)
             post.save()
 
             # Return the post id
-            timeNow = datetime.datetime.now()
-            getPost = Konsultasi.objects.get(title=title, content=content, user=user, created_at=timeNow, updated_at=timeNow)
+            getPost = Konsultasi.objects.get(title=title, content=content, user=user)
 
             return HttpResponse(getPost.id)
         else: # user enter normally
@@ -1232,7 +1238,8 @@ def konsultasi_Comment(request, id, title):
                 return HttpResponse('limit')
 
             # Save comment first
-            comment = Comment(user=user, comment_Konsultasi=post, content=commentGet)
+            timenow = datetime.datetime.now(tz=pytz.timezone('Asia/Jakarta'))
+            comment = Comment(user=user, comment_Konsultasi=post, content=commentGet, created_at=timenow, updated_at=timenow)
             comment.save()
 
             # Increase the post comments
@@ -1341,6 +1348,7 @@ def konsultasi_Comment_Edit(request, id, title, comment_id):
 
             # Edit comment
             comment.content = commentGet
+            comment.updated_at = datetime.datetime.now(tz=pytz.timezone('Asia/Jakarta'))
             comment.save()
 
             return HttpResponse('success')
@@ -1797,8 +1805,9 @@ def artikel_create(request):
 
             # remove ? from title
             title = title.replace('?', '')
+            title = title.replace('#', '')
 
-            timeNow = datetime.datetime.now()
+            timeNow = datetime.datetime.now(tz=pytz.timezone('Asia/Jakarta'))
             post = Artikel(title=title, content=content, user=user, tag=tag, thumbnail_url=thumbnail_url, created_at=timeNow, updated_at=timeNow)
             post.save()
 
@@ -1847,6 +1856,7 @@ def artikel_edit(request, id, title):
             post.content = content
             post.tag = tag
             post.thumbnail_url = thumbnail_url
+            post.updated_at = datetime.datetime.now(tz=pytz.timezone('Asia/Jakarta'))
 
             # Save
             post.save()

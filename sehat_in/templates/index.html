@@ -193,8 +193,8 @@
                         <div class="tes__wrapper">
                             <img class="tes__image" src="{% static 'img/forum1.svg' %}" alt="forum-{{ latest_forum.0.id }}">
                             <div class="tes__wrapper__content">
-                                <a class="tes__category" href="">{{ latest_forum.0.tag.name }}<a>
-                                <h2 class="tes__title">{{ latest_forum.0.title }}</h2>
+                                <a class="tes__category" href="{% if latest_forum.0.tag.name %}/forum/tag/{{ latest_forum.0.tag.name }}{% else %}/forum/{% endif %}">{{ latest_forum.0.tag.name }}<a>
+                                <a href="/forum/{{ latest_forum.0.id }}"><h2 class="tes__title">{{ latest_forum.0.title }}</h2></a>
                                 <p id="forum-{{latest_forum.0.id}}" class="tes__description">
                                     <script>
                                     try {
@@ -220,8 +220,8 @@
                         <div class="tes__wrapper">
                             <img class="tes__image" src="{% static 'img/forum2.svg' %}" alt="forum-{{ latest_forum.1.id }}">
                             <div class="tes__wrapper__content">
-                                <a class="tes__category" href="">{{ latest_forum.1.tag.name }}<a>
-                                <h2 class="tes__title">{{ latest_forum.1.title }}</h2>
+                                <a class="tes__category" href="{% if latest_forum.1.tag.name %}/forum/tag/{{ latest_forum.1.tag.name }}{% else %}/forum/{% endif %}">{{ latest_forum.1.tag.name }}<a>
+                                <a href="/forum/{{ latest_forum.1.id }}"><h2 class="tes__title">{{ latest_forum.1.title }}</h2></a>
                                 <p id="forum-{{latest_forum.1.id}}" class="tes__description">
                                     <script>
                                     try {
@@ -247,8 +247,8 @@
                         <div class="tes__wrapper">
                             <img class="tes__image" src="{% static 'img/forum3.svg' %}" alt="forum-{{ latest_forum.2.id }}">
                             <div class="tes__wrapper__content">
-                                <a class="tes__category" href="">{{ latest_forum.2.tag.name }}<a>
-                                <h2 class="tes__title">{{ latest_forum.2.title }}</h2>
+                                <a class="tes__category" href="{% if latest_forum.2.tag.name %}/forum/tag/{{ latest_forum.2.tag.name }}{% else %}/forum/{% endif %}">{{ latest_forum.2.tag.name }}<a>
+                                <a href="/forum/{{ latest_forum.2.id }}"><h2 class="tes__title">{{ latest_forum.2.title }}</h2></a>
                                 <p id="forum-{{latest_forum.2.id}}" class="tes__description">
                                     <script>
                                     try {

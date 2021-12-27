@@ -1,69 +1,61 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
+		<link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+		<link rel="stylesheet" href="{% static 'css/login.css' %}" />
 
-    <link rel="icon" 
-        type="image/png" 
-        href="{% static 'img/favicon/favicon.ico' %}" 
-    />
-    <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
-    <title>Masuk Sehat.in</title>
-</head>
-<body>
-    <main>
-        <div class="container">
-            <div class="login__section">
-                <a href="/" class="login__back button--flex">
-                    <i class="uil uil-arrow-left">Kembali ke beranda</i>
-                </a>
+		<link rel="icon" type="image/png" href="{% static 'img/favicon/favicon.ico' %}" />
+		<script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+		<title>Masuk Sehat.in</title>
+	</head>
+	<body>
+		<main>
+			<div class="container">
+				<div class="login__section">
+					<a href="/" class="login__back button--flex">
+						<i class="uil uil-arrow-left">Kembali ke beranda</i>
+					</a>
 
-                <div class="login__form">
-                    <form action="login" method="POST">
-                        {% csrf_token %}
-                        <div class="login__title">
-                            <h2>Masuk Sehat.in</h2>
-                            <p>Belum punya akun? <a href="/auth/register">Yuk daftar!</a> </p>
-                            {% if messages %}
-                                <div class="message-alert">
-                                    {% for message in messages %}
-                                    <div class="message-alert-content">
-                                        <p style="color:red">{{ message.message }}</p>
-                                    </div>
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
-                        </div>
-                        <input type="text" name="username" placeholder="Nama pengguna"><br>
-                        <input type="password" name="password" placeholder="Kata sandi"><br>
-                        {% comment %} <a class="lupa__password" onclick="showAlert()" style="cursor:pointer;">Lupa kata sandi?</a> {% endcomment %}
-                        <a class="lupa__password" onclick="showAlert()" style="cursor:pointer;">Lupa kata sandi?</a>
-                        <button class="button button--flex" id="submit" type="submit">
-                            Masuk
-                        </button>
-                    </form>
-                </div>
+					<div class="login__form">
+						<form action="login" method="POST">
+							{% csrf_token %}
+							<div class="login__title">
+								<h2>Masuk Sehat.in</h2>
+								<p>Belum punya akun? <a href="/auth/register">Yuk daftar!</a></p>
+								{% if messages %}
+								<div class="message-alert">
+									{% for message in messages %}
+									<div class="message-alert-content">
+										<p style="color: red">{{ message.message }}</p>
+									</div>
+									{% endfor %}
+								</div>
+								{% endif %}
+							</div>
+							<input type="text" name="username" placeholder="Nama pengguna" /><br />
+							<input type="password" name="password" placeholder="Kata sandi" /><br />
+							{% comment %} <a class="lupa__password" onclick="showAlert()" style="cursor: pointer">Lupa kata sandi?</a> {% endcomment %}
+							<a class="lupa__password" onclick="showAlert()" style="cursor: pointer">Lupa kata sandi?</a>
+							<button class="button button--flex" id="submit" type="submit">Masuk</button>
+						</form>
+					</div>
+				</div>
 
-            </div>
+				<div>
+					<img class="login__image" src="{% static 'img/login-image.svg' %}" alt="image" />
+				</div>
 
-            <div>
-                <img class="login__image" src="{% static 'img/login-image.svg' %}" alt="image">
-            </div>
-
-            <script>
-                function showAlert() {
-                    alert("Silakan hubungi admin di contact.sehatin@gmail.com untuk mengubah password");
-                }
-            </script>
-
-        </div>
-    </main>
-    
-</body>
+				<script>
+					function showAlert() {
+						alert("Silakan hubungi admin di contact.sehatin@gmail.com untuk mengubah kata sandi");
+					}
+				</script>
+			</div>
+		</main>
+	</body>
 </html>
