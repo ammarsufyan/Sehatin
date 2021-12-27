@@ -34,7 +34,7 @@ SECRET_KEY = os.environ['SECRET_KEY']
 DEBUG = os.getenv("DEBUG", "False") == "True"
 DEVELOPMENT_MODE = os.getenv("DEVELOPMENT_MODE", "False") == "True"
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', '626c-125-167-13-162.ngrok.io', '3717-125-167-13-162.ngrok.io', 'cdb3-180-252-175-196.ngrok.io']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'sehatin-uj3kb.ondigitalocean.app']
 
 
 # Application definition
