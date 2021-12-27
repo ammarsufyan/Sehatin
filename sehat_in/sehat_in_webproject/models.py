@@ -18,7 +18,7 @@ class Forum(models.Model): # Post
     likes = models.IntegerField(default=0)
     comments = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField()
     def __str__(self):
         return self.title + " (" + str(self.id) + ")"
     
@@ -30,7 +30,7 @@ class Artikel(models.Model): # Post
     tag = models.ForeignKey(Tag, on_delete=models.CASCADE, null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField()
     views = models.IntegerField(default=0)
     def __str__(self):
         return self.title + " (" + str(self.id) + ")"
@@ -43,7 +43,7 @@ class Konsultasi(models.Model): # Konsultasi
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
     comments = models.IntegerField(default=0)
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField()
     def __str__(self):
         return self.title + " (" + str(self.id) + ")"
 
@@ -51,7 +51,7 @@ class Comment(models.Model): # Comment of a post
     id = models.AutoField(primary_key=True)
     content = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
-    updated_at = models.DateTimeField(auto_now=True)
+    updated_at = models.DateTimeField()
     comment_Forum = models.ForeignKey(Forum, on_delete=models.CASCADE, null=True, blank=True)
     comment_Konsultasi = models.ForeignKey(Konsultasi, on_delete=models.CASCADE, null=True, blank=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
