@@ -18,7 +18,7 @@ from django.urls import path, include
 from django.views.generic.base import RedirectView
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('s3cr3t4dm1n/', admin.site.urls),
     path('', include('sehat_in_webproject.urls')),
     path('favicon.ico', RedirectView.as_view(url='/static/img/favicon/favicon.ico'))
 ]
