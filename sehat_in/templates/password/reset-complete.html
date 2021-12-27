@@ -24,18 +24,20 @@
 
 <body>
     {% include 'templates/header.html' %}
-    <main>
-        {% block content %} 
-  
-        <!--Password Reset Complete-->
-          <div class="container p-4">
-              <h2 class="font-weight-bold mt-3">Ubah Kata Sandi Selesai</h2>
-              <hr>
-              <p>Kata sandi berhasil diubah. Silakan masuk kembali.</p>                 
-              <a href="/login" class="btn btn-primary">Masuk</a>
-          </div>
-      
-      {% endblock %}
+    <main  class="container">
+        <div style="margin-top: 100px;">
+            {% block content %} 
+    
+            <!--Password Reset Complete-->
+            <div class="container p-4">
+                <h2 class="font-weight-bold mt-3">Ubah Kata Sandi Selesai</h2>
+                <hr>
+                <p>Kata sandi berhasil diubah. Silakan masuk kembali.</p>                 
+                <a href="/login" class="btn btn-primary">Masuk</a>
+            </div>
+        
+        {% endblock %}
+        </div>
     </main>
 
     {% include 'templates/footer.html' %}

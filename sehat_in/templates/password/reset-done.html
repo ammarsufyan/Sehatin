@@ -24,17 +24,19 @@
 
 <body>
     {% include 'templates/header.html' %}
-    <main>
-        {% block content %}
+    <main  class="container">
+        <div style="margin-top: 100px;">
+            {% block content %}
 
-        <!--Password reset sent-->
-        <div class="container p-5">
-          <h2 class="font-weight-bold mt-3">Ubah Kata Sandi Telah Dikirim</h2>
-            <hr>
-            <p>Kami telah mengirim email untuk mengubah kata sandi, jika akun tersebut ada di email yang kami kirimkan, silahkan cek email anda.<br>Jika tidak menerima email, pastikan Anda memasukkan email yang benar.</p>
-      </div>
-    
-        {% endblock %}
+            <!--Password reset sent-->
+            <div class="container p-5">
+            <h2 class="font-weight-bold mt-3">Ubah Kata Sandi Telah Dikirim</h2>
+                <hr>
+                <p>Kami telah mengirim email untuk mengubah kata sandi, jika akun tersebut ada di email yang kami kirimkan, silahkan cek email anda.<br>Jika tidak menerima email, pastikan Anda memasukkan email yang benar.</p>
+            </div>
+        
+            {% endblock %}
+        </div>
     </main>
 
     {% include 'templates/footer.html' %}

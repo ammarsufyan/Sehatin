@@ -5,7 +5,7 @@ Kami menerima pesan untuk mengubah kata sandi akun Anda dengan email ini. Untuk 
 
 {{ protocol }}://{{ domain }}{% url 'reset-confirm' uidb64=uid token=token %}
 
-Link ini hanya bisa dipakai sekali. Jika Anda ingin mengubah kata sandi lagi, silakan kunjungi {{ protocol }}://{{domain}}.
+Link ini hanya bisa dipakai sekali. Jika Anda ingin mengubah kata sandi lagi, silakan kunjungi {{ protocol }}://{{domain}}/reset.
 
 Jika Anda tidak meminta untuk mengubah kata sandi, silakan abaikan email ini.
 

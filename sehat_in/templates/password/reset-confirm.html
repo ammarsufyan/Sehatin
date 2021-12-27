@@ -24,24 +24,26 @@
 
 <body>
     {% include 'templates/header.html' %}
-    <main>
-        {% block content %}
+    <main  class="container">
+        <div style="margin-top: 100px;">
+            {% block content %}
 
-        {% load crispy_forms_tags %}  
+            {% load crispy_forms_tags %}  
+            
+            <!--Password Reset Confirm-->
+            <div class="container p-5">
+                <h2 class="font-weight-bold mt-3">Konfirmasi Ubah Kata Sandi</h2>
+                <hr>
+                <p>Silakan masukkan kata sandi baru.</p>
+                <form method="POST">
+                    {% csrf_token %}
+                    {{ form|crispy }}                    
+                    <button class="btn btn-primary" type="submit">Ubah</button>
+                </form>
+            </div>
         
-        <!--Password Reset Confirm-->
-          <div class="container p-5">
-              <h2 class="font-weight-bold mt-3">Konfirmasi Ubah Kata Sandi</h2>
-              <hr>
-              <p>Silakan masukkan kata sandi baru.</p>
-              <form method="POST">
-                  {% csrf_token %}
-                  {{ form|crispy }}                    
-                  <button class="btn btn-primary" type="submit">Ubah</button>
-              </form>
-          </div>
-      
-      {% endblock %}
+        {% endblock %}
+        </div>
     </main>
 
     {% include 'templates/footer.html' %}
