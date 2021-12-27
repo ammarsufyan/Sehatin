@@ -28,10 +28,10 @@
     <main>
         <section class="container search__container">
             <form action="/artikel" method="get">
-                <input type="text" name="q" placeholder="Cari artikel disini.." value={% if q %}{{q}}{% endif %}>
-                <button type="submit">Search</button>
+                <input id="cari-artikel" type="text" name="q" placeholder="Cari artikel disini.." value={% if q %}{{q}}{% endif %}>
+                <button id="cari-artikel-tombol" type="submit">Cari</button>
             </form>
-        {% if messages %}
+            {% if messages %}
             <div class="message-alert">
                 {% for message in messages %}
                 <div class="message-alert-content">
@@ -39,7 +39,7 @@
                 </div>
                 {% endfor %}
             </div>
-        {% endif %}
+            {% endif %}
         </section>
 
         {% if not searching %}

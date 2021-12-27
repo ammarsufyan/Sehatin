@@ -3,7 +3,7 @@
     <header class="header" id="header">
         <nav class="nav container scroll-header">
             <a href="/" class="nav__logo">
-                <img src="{% static 'img/logo_horizontal.svg' %}" alt="logo">            </a>
+                <img src="{% static 'img/logo_horizontal.svg' %}" alt="logo"></a>
             <div class="nav__menu" id="nav-menu">
                 <ul class="nav__list grid">
                     <li class="nav__item">
@@ -147,6 +147,57 @@
             </div>
         </nav>
     </header>
+
+    <script>
+        $(document).ready(function() {
+            $('#logout-header').click(function() {
+                // check if width mobile
+                if ($(window).width() < 768) {
+                    // remove the href
+                    $(this).removeAttr('href');
+
+                    // check for click in between 2 seconds, need to double click to go to the link
+                    var clickedOnce;
+                    $(this).click(function(e) {
+                        if (clickedOnce) {
+                            window.location.href = '/logout';
+                        } else {
+                            clickedOnce = true;
+                            setTimeout(function() {
+                                clickedOnce = false;
+                            }, 2000);
+                        }
+                    });
+                } else {
+                    // add back the href
+                    $(this).attr('href', '/logout');
+                }
+            });
+        });
+
+        $(document).ready(function() {
+            // on resize
+            $(window).resize(function() {
+                if ($(window).width() < 768) {
+                    // add (Tap 2x) to the word
+                    $('#logout-header').html('<i class="uil uil-sign-out-alt"></i> Keluar (Tap 2x)');
+                } else {
+                    // remove (Tap 2x)
+                    $('#logout-header').html('<i class="uil uil-sign-out-alt"></i> Keluar');
+                }
+            });
+        });
+
+        $(document).ready(function() {
+            if ($(window).width() < 768) {
+                // add (Tap 2x) to the word
+                $('#logout-header').html('<i class="uil uil-sign-out-alt"></i> Keluar (Tap 2x)');
+            } else {
+                // remove (Tap 2x)
+                $('#logout-header').html('<i class="uil uil-sign-out-alt"></i> Keluar');
+            }
+        });
+    </script>
 
     {% if user.is_authenticated %}
     <script type="text/javascript" src="{% static 'js/notifHandler.js' %}"></script>
