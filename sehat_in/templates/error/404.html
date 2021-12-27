@@ -1,36 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-{% load static %}
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <link rel="stylesheet" href="{% static 'css/result.css' %}">
-    <link rel="stylesheet" href="{% static 'css/header.css' %}">
-    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
-    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
+	{% load static %}
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+		<link rel="stylesheet" href="{% static 'css/result.css' %}" />
+		<link rel="stylesheet" href="{% static 'css/header.css' %}" />
+		<link rel="stylesheet" href="{% static 'css/footer.css' %}" />
+		<link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
 
-    <link rel="icon" 
-        type="image/png" 
-        href="{% static 'img/favicon/favicon.ico' %}" 
-    />
+		<link rel="icon" type="image/png" href="{% static 'img/favicon/favicon.ico' %}" />
 
-    <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
-    <title>404 - Page Not Found</title>
-</head>
-<body>
-    {% include 'templates/header.html' %}
+		<script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+		<title>404 - Page Not Found</title>
+	</head>
+	<body>
+		{% include 'templates/header.html' %}
 
+		<main class="container">
+			<div class="container__result" style="margin-top: 100px">
+				<h1>404 - Page Not Found</h1>
+				<p>Halaman yang Anda cari tidak ditemukan! Jika Anda memasukkan URL secara manual, harap periksa kembali apa yang telah Anda masukkan.</p>
+			</div>
+		</main>
 
-    <main class="container" style="margin-bottom: 300px;">
-        <div class="container__result">
-            <h1>404 - Page Not Found</h1>
-            <p>Halaman yang Anda cari tidak ditemukan! Jika Anda memasukkan URL secara manual, harap periksa kembali apa yang telah Anda masukkan.</p>
-        </div>
-    </main>
-
-
-    {% include 'templates/footer.html' %}
-</body>
+		{% include 'templates/footer.html' %}
+	</body>
 </html>
