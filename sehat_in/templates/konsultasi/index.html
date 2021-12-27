@@ -76,7 +76,7 @@
                 <div class="forum__info">
                     <div class="info-content">
                         <i class="uil uil-comment"></i>
-                        <span class="info-content-text">{{ post.comments }} Jawaban</span>
+                        <span class="info-content-text">{{ post.comments }}<span class="text-inside"> Jawaban</span></span>
                     </div>
                     <div class="info-content">
                         <i class="uil uil-user"></i>
@@ -84,11 +84,16 @@
                     </div>
                     <div class="info-content">
                         <i class="uil uil-calendar-alt"></i>
-                        <span class="info-content-text" id="date-{{ post.id }}">{{ post.created_at.isoformat }}</span>
+                        <span class="info-content-text post-date" id="date-{{ post.id }}">{{ post.created_at.isoformat }}</span>
                         <script>
                             // parse the date into dd-mm-yyyy hh:mm format
                             var date = new Date(document.getElementById('date-{{ post.id }}').innerHTML);
-                            var formattedDate = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' ' + date.getHours() + ':' + date.getMinutes();
+                            var minutes = date.getMinutes();
+                            // check if 1 digit, if yes add 0
+                            if (minutes < 10) {
+                                minutes = '0' + minutes;
+                            }
+                            var formattedDate = date.getDate() + '/' + (date.getMonth() + 1) + '/' + date.getFullYear() + ' ' + date.getHours() + ':' + minutes;
                             document.getElementById('date-{{ post.id }}').innerHTML = formattedDate;
                         </script>
                     </div>

@@ -62,19 +62,19 @@
                 <div class="forum__info">
                     <div class="info-content">
                         <i class="uil uil-thumbs-up"></i>
-                        <span class="info-content-text">{{ post.likes }} Suka</span>
+                        <span class="info-content-text">{{ post.likes }}<span class="text-inside"> Suka</span></span>
                     </div>
                     <div class="info-content">
                         <i class="uil uil-comment"></i>
-                        <span class="info-content-text">{{ post.comments }} Komentar</span>
+                        <span class="info-content-text">{{ post.comments }}<span class="text-inside"> Komentar</span></span>
                     </div>
                     <div class="info-content">
                         <i class="uil uil-user"></i>
-                        <span class="info-content-text">{% if post.user == null %}deleted{% else %}{{ post.user }}{% endif %}</span>
+                        <span class="info-content-text" id="poster-account">{% if post.user == null %}deleted{% else %}{{ post.user }}{% endif %}</span>
                     </div>
                     <div class="info-content">
                         <i class="uil uil-calendar-alt"></i>
-                        <span id="date-{{ post.id }}" class="info-content-text">{{ post.created_at.isoformat }}</span>
+                        <span id="date-{{ post.id }}" class="info-content-text post-date">{{ post.created_at.isoformat }}</span>
                         <script>
                             // parse the date into dd-mm-yyyy hh:mm format
                             var date = new Date(document.getElementById('date-{{ post.id }}').innerHTML);
