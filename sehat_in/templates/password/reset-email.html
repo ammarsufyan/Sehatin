@@ -14,7 +14,7 @@
                <p style="text-align:left">Halo,<br><br> Kami menerima pesan untuk mengubah kata sandi akun Anda dengan email ini. Untuk melakukan ubah kata sandi silakan klik link di bawah ini.
               </p>
               <p>
-                <a target="_blank" style="text-decoration:none; background-color: black; border: black 1px solid; color: #fff; padding:10px 10px; display:block;" href="{{ protocol }}://{{ domain }}{% url 'reset-confirm' uidb64=uid token=token %}">
+                <a target="_blank" style="text-decoration:none; background-color: black; border: black 1px solid; color: #fff; padding:10px 10px; display:block;" href="{{ protocol }}://{{ domain }}{% url 'password_reset_confirm' uidb64=uid token=token %}">
                   <strong>Ubah Kata Sandi</strong></a>
               </p>
               <p style="text-align:left">Link ini hanya bisa dipakai sekali. Jika Anda ingin mengubah kata sandi lagi, silakan kunjungi <a href="{{ protocol }}://{{domain}}/reset">ammarsufyan.me/reset</a><br><br>Jika Anda tidak meminta untuk mengubah kata sandi, silakan abaikan email ini.</p>
