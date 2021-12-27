@@ -45,7 +45,7 @@
                         <input type="text" name="username" placeholder="Nama pengguna"><br>
                         <input type="password" name="password" placeholder="Kata sandi"><br>
                         {% comment %} <a class="lupa__password" onclick="showAlert()" style="cursor:pointer;">Lupa kata sandi?</a> {% endcomment %}
-                        <a class="lupa__password" onclick="JSalert()" style="cursor:pointer;">Lupa kata sandi?</a>
+                        <a class="lupa__password" onclick="showAlert()" style="cursor:pointer;">Lupa kata sandi?</a>
                         <button class="button button--flex" id="submit" type="submit">
                             Masuk
                         </button>
@@ -59,13 +59,8 @@
             </div>
 
             <script>
-                function JSalert(){
-                    Swal.fire({
-                        title: 'Info',
-                        text: 'Silakan hubungi admin di contact.sehatin@gmail.com untuk mengubah kata sandi',
-                        icon: 'info',
-                        confirmButtonText: 'Ok'
-                      })
+                function showAlert() {
+                    alert("Silakan hubungi admin di contact.sehatin@gmail.com untuk mengubah password");
                 }
             </script>
 
