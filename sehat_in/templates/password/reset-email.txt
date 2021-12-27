@@ -1,7 +1,7 @@
 {% autoescape off %}
 Halo,
 
-Kami menerima pesan untuk mengubah kata sandi akun Anda dengan email ini. Untuk melakukan ubah kata sandi silakan klik link di bawah ini.
+Kami menerima pesan untuk mengubah kata sandi akun Anda dengan email ini. Untuk mengubah kata sandi, silakan klik link di bawah ini.
 
 {{ protocol }}://{{ domain }}{% url 'password_reset_confirm' uidb64=uid token=token %}
 
