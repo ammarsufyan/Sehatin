@@ -207,7 +207,7 @@ def password_reset_request(request):
                     except BadHeaderError:
                         return HttpResponse('Invalid header found.')
                     messages.success(request, 'Pesan dengan instruksi untuk mengubah kata sandi telah dikirim ke kotak masuk Anda.')
-                    return redirect ('/')
+                    return redirect ('/reset/done/')
             messages.error(request, 'Email tidak valid.')
     password_reset_form = PasswordResetForm()
     return render(request, "password/reset.html", {"password_reset_form":password_reset_form})
