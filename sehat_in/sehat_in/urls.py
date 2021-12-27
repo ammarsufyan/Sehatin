@@ -16,10 +16,14 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic.base import RedirectView
+from django.contrib.auth import views as auth_views
 
 urlpatterns = [
     path('s3cr3t4dm1n/', admin.site.urls),
     path('', include('sehat_in_webproject.urls')),
+    path('reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='password/reset-done.html'), name='reset-done'),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name="password/reset-confirm.html"), name='reset-confirm'),
+    path('reset/complete/', auth_views.PasswordResetCompleteView.as_view(template_name='password/reset-complete.html'), name='reset-complete'),
     path('favicon.ico', RedirectView.as_view(url='/static/img/favicon/favicon.ico'))
 ]
 

@@ -10,6 +10,7 @@ urlpatterns = [
     path('auth/register', views.register, name='auth/register'),
     path('auth/login', views.login, name='auth/login'),
     path('logout', views.logout, name='logout'), # Not going anywhere, just logging out
+    path("reset", views.password_reset_request, name="reset"),
 
     # Forum
     path('forum', views.forum, name='forum'),

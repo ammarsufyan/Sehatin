@@ -11,6 +11,13 @@ import pytz
 from django.core import serializers
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from itertools import chain
+from django.core.mail import send_mail, BadHeaderError
+from django.contrib.auth.forms import PasswordResetForm
+from django.template.loader import render_to_string
+from django.db.models.query_utils import Q
+from django.utils.http import urlsafe_base64_encode
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.encoding import force_bytes
 import datetime
 # Views of each URL
 # Assigning the function to each url
@@ -167,6 +174,38 @@ def logout(request):
         auth.logout(request)
 
     return redirect('/')
+
+# ----------------------------------------------------------------
+# Reset Password
+def password_reset_request(request):
+	if request.method == "POST":
+		password_reset_form = PasswordResetForm(request.POST)
+		if password_reset_form.is_valid():
+			data = password_reset_form.cleaned_data['email']
+			associated_users = User.objects.filter(Q(email=data))
+			if associated_users.exists():
+				for user in associated_users:
+					subject = "[Sehatin] Ubah Kata Sandi"
+					email_template_name = "password/reset-email.txt"
+					c = {
+					"email":user.email,
+					'domain':'ammarsufyan.me',
+					'site_name': 'Sehatin',
+					"uid": urlsafe_base64_encode(force_bytes(user.pk)),
+					'token': default_token_generator.make_token(user),
+					'protocol': 'https',
+					}
+					email = render_to_string(email_template_name, c)
+					try:
+						send_mail(subject, email, 'contact.sehatin@gmail.com' , [user.email], fail_silently=False)
+					except BadHeaderError:
+						return HttpResponse('Invalid header found.')
+						
+					messages.success(request, 'Pesan dengan instruksi untuk mengubah kata sandi telah dikirim ke kotak masuk Anda.')
+					return redirect ('/')
+			messages.error(request, 'Email tidak valid.')
+	password_reset_form = PasswordResetForm()
+	return render(request, "password/reset.html", {"password_reset_form":password_reset_form})
 
 # ----------------------------------------------------------------
 # Forum

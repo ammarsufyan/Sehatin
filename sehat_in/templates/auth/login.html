@@ -39,8 +39,7 @@
 							</div>
 							<input type="text" name="username" placeholder="Nama pengguna" /><br />
 							<input type="password" name="password" placeholder="Kata sandi" /><br />
-							{% comment %} <a class="lupa__password" onclick="showAlert()" style="cursor: pointer">Lupa kata sandi?</a> {% endcomment %}
-							<a class="lupa__password" onclick="showAlert()" style="cursor: pointer">Lupa kata sandi?</a>
+							<a class="lupa__password" href="/reset" style="cursor: pointer">Lupa kata sandi?</a>
 							<button class="button button--flex" id="submit" type="submit">Masuk</button>
 						</form>
 					</div>
@@ -49,12 +48,6 @@
 				<div>
 					<img class="login__image" src="{% static 'img/login-image.svg' %}" alt="image" />
 				</div>
-
-				<script>
-					function showAlert() {
-						alert("Silakan hubungi admin di contact.sehatin@gmail.com untuk mengubah kata sandi");
-					}
-				</script>
 			</div>
 		</main>
 	</body>
