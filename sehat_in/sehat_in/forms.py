@@ -175,7 +175,7 @@ class NumericPasswordValidator:
 
 class AllPasswordValidator:
     """
-    Validate wheter the password is must upper and lower case
+    Validate wheter the password is not macth all password validator
     """
     def validate(self, password, user=None):
         lowercase = re.compile('[a-z]')
