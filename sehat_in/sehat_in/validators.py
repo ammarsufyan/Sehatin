@@ -186,23 +186,25 @@ class NumericPasswordValidator:
     def get_help_text(self):
         return __('Kata sandi Anda tidak boleh berisi hanya angka')
 
-class AllPasswordValidator:
+class CustomPasswordValidator:
     """
     Validate wheter the password is not macth all password validator
     """
+    def __init__(self, min_length=3):
+        self.min_length = min_length
+
     def validate(self, password, user=None):
-        lowercase = re.compile('[a-z]')
-        uppercase = re.compile('[A-Z]')
-        if not lowercase.search(password):
-            if not uppercase.search(password):
-                if len(password) < 8 or len(password) > 50:
-                    raise ValidationError(
-                        __("Kata sandi harus memiliki huruf kapital, huruf kecil, minimal 8, dan maksimal 50"),
-                        code='password_all_case',
-                    )
+        special_characters = "[~\!@#\$%\^&\*\(\)_\+{}\":;'\[\]]"
+        if not any(char.isdigit() for char in password):
+            raise ValidationError(_('Kata sandi harus minimal %(min_length)d angka.') % {'min_length': self.min_length})
+        if not any(char.isalpha() for char in password):
+            raise ValidationError(_('Kata sandi harus minimal %(min_length)d karakter.') % {'min_length': self.min_length})
+        if not any(char in special_characters for char in password):
+            raise ValidationError(_('Kata sandi harus memiliki %(min_length)d karakter spesial.') % {'min_length': self.min_length})
 
     def get_help_text(self):
-        return __('Kata sandi harus memiliki huruf kapital, huruf kecil, minimal 8, dan maksimal 50')
+        return "Kata sandi harus memiliki angka, huruf, dan spesial karakter"
+
 
 class MyPasswordForm(forms.Form):
     """
