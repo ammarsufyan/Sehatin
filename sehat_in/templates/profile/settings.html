@@ -1,162 +1,159 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=1024">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=1024" />
 
-    <link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}">
-    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <link rel="stylesheet" href="{% static 'css/header.css' %}">
-    <link rel="stylesheet" href="{% static 'css/profile.css' %}">
+		<link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}" />
+		<link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
+		<link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+		<link rel="stylesheet" href="{% static 'css/header.css' %}" />
+		<link rel="stylesheet" href="{% static 'css/profile.css' %}" />
 
-    <link rel="icon" 
-        type="image/png" 
-        href="{% static 'img/favicon/favicon.ico' %}" 
-    />
-    <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
-    <title>Ubah Profil {{ user.username }}</title>
-</head>
-<body>
-    {% include 'templates/header.html' %}
-    <main>
-        <div class="container">
-            <div class="container__profile">
-                <div class="navigation">
-                    <div class="info">
-                        <div><i class="uil uil-user-circle profile__image"></i></div>
-                        <p><b>{{ user.first_name }} {{ user.last_name }}</b></p>
-                        <p class="email">{{ user.email }}</p>
-                    </div>
-                    <div class="button__container">
-                        <div>
-                            <a class="button__profile" href="/profile/{{ user.username }}">
-                                <div><i class="uil uil-user-square"></i></div>
-                                <p>Profil Saya</p>
-                            </a>
-                        </div>
-                        <div>
-                            <a class="button__profile" href="/profile/{{ user.username }}/posts">
-                                <div><i class="uil uil-users-alt"></i></div>
-                                <p>Post Forum Saya</p>
-                            </a>
-                        </div>
-                        <div>
-                            <a class="button__profile" href="/profile/{{ user.username }}/konsultasi">
-                                <div><i class="uil uil-comment-alt-message"></i></div>
-                                <p>Pertanyaan Saya</p>
-                            </a>
-                        </div>
-                        <div>
-                            <a class="button__profile" href="/profile/{{ user.username }}/history">
-                                <div><i class="uil uil-history"></i></div>
-                                <p>Riwayat Tes Saya</p>
-                            </a>
-                        </div>
-                        <div>
-                            <a class="button__profile" href="/profile/{{ user.username }}/notification">
-                                <div><i class="uil uil-bell"></i></div>
-                                <p>Notifikasi Saya</p>
-                            </a>
-                        </div>
-                        <div>
-                            <a class="button__profile" href="/profile/{{ user.username }}/settings">
-                                <div><i class="uil uil-edit-alt"></i></div>
-                                <p>Ubah Profil</p>
-                            </a>
-                        </div>
-                        <div>
-                            <a class="button__profile logout" href="/logout">
-                                <div><i class="uil uil-sign-out-alt"></i></div>
-                                <p>Keluar</p>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-                <div class="profile">
-                    <h1>Ubah Profil</h1>
-                    <div class="profile__header">
-                        <div class="container_name_role">
-                            <p class="name">{{ user.first_name }} {{ user.last_name }}</p>
-                            <p class="role">Role: {% if user_profile.role %}{{ user_profile.role }}{% else %}User{% endif %}</p>
-                            {% if messages %}
-                            <div class="message-alert">
-                                {% for message in messages %}
-                                <div class="message-alert-content">
-                                    <p style="color:red">{{ message.message }}</p>
-                                </div>
-                                {% endfor %}
-                            </div>
-                        {% endif %}
-                        </div>
-                    </div>
-                    <form name="settings" method="post" action="settings" onsubmit="return">
-                        {% csrf_token %}
-                        <textarea class="bio" type="text" id="bio" name="bio" placeholder="Deskripsi">{% if UserProfile.bio is not None %}{{ UserProfile.bio }}{% endif %}</textarea>
-                        <input class="first__name" type="text" id="fname" name="firstName" value= "{{ user.first_name }}" placeholder="Nama Depan">                    
-                        <input class="last__name" type="text" id="lname" name="lastName" value= "{{ user.last_name }}" placeholder="Nama Belakang">
-                        <select class="provinsi" id="location" name="location">
-                            {% if UserProfile.location %}
-                            <option selected hidden value="{{ UserProfile.location }}">{{ UserProfile.location }}</option>
-                            {% else %}
-                            <option selected hidden value="">Belum memilih lokasi</option>
-                            {% endif %}
-                            <option value="Aceh">Aceh</option>
-                            <option value="Bali">Bali</option>
-                            <option value="Banten">Banten</option>
-                            <option value="Bengkulu">Bengkulu</option>
-                            <option value="DI Yogyakarta">DI Yogyakarta</option>
-                            <option value="DKI Jakarta">DKI Jakarta</option>
-                            <option value="Gorontalo">Gorontalo</option>
-                            <option value="Jambi">Jambi</option>
-                            <option value="Jawa Barat">Jawa Barat</option>
-                            <option value="Jawa Tengah">Jawa Tengah</option>
-                            <option value="Jawa Timur">Jawa Timur</option>
-                            <option value="Kalimantan Barat">Kalimantan Barat</option>
-                            <option value="Kalimantan Selatan">Kalimantan Selatan</option>
-                            <option value="Kalimantan Tengah">Kalimantan Tengah</option>
-                            <option value="Kalimantan Timur">Kalimantan Timur</option>
-                            <option value="Kalimantan Utara">Kalimantan Utara</option>
-                            <option value="Kepulauan Bangka Belitung">Kepulauan Bangka Belitung</option>
-                            <option value="Kepulauan Riau">Kepulauan Riau</option>
-                            <option value="Lampung">Lampung</option>
-                            <option value="Maluku">Maluku</option>
-                            <option value="Maluku Utara">Maluku Utara</option>
-                            <option value="Nusa Tenggara Barat">Nusa Tenggara Barat</option>
-                            <option value="Nusa Tenggara Timur">Nusa Tenggara Timur</option>
-                            <option value="Papua">Papua</option>
-                            <option value="Papua Barat">Papua Barat</option>
-                            <option value="Riau">Riau</option>
-                            <option value="Sulawesi Barat">Sulawesi Barat</option>
-                            <option value="Sulawesi Selatan">Sulawesi Selatan</option>
-                            <option value="Sulawesi Tengah">Sulawesi Tengah</option>
-                            <option value="Sulawesi Utara">Sulawesi Utara</option>
-                            <option value="Sumatera Barat">Sumatra Barat</option>
-                            <option value="Sumatera Selatan">Sumatera Selatan</option>
-                            <option value="Sulawesi Tenggara">Sulawesi Tenggara</option>
-                            <option value="Sumatera Utara">Sumatera Utara</option>
-                        </select>
-                        <div class="cancel__apply">
-                            <button class="button button--flex cancel" type="button" id="cancel">Batal</button>
-                            <button class="button button--flex" type="submit">Simpan</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </main>
-    <script>
-        // get element cancel by id
-        var cancel = document.getElementById('cancel');
-        // on click refresh page
-        cancel.onclick = function() {
-            location.reload();
-        }
-    </script>
+		<link rel="icon" type="image/png" href="{% static 'img/favicon/favicon.ico' %}" />
+		<script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+		<title>Ubah Profil {{ user.username }}</title>
+	</head>
+	<body>
+		{% include 'templates/header.html' %}
+		<main>
+			<div class="container">
+				<div class="container__profile">
+					<div class="navigation">
+						<div class="info">
+							<div><i class="uil uil-user-circle profile__image"></i></div>
+							<p><b>{{ user.first_name }} {{ user.last_name }}</b></p>
+							<p class="email">{{ user.email }}</p>
+						</div>
+						<div class="button__container">
+							<div>
+								<a class="button__profile" href="/profile/{{ user.username }}">
+									<div><i class="uil uil-user-square"></i></div>
+									<p>Profil Saya</p>
+								</a>
+							</div>
+							<div>
+								<a class="button__profile" href="/profile/{{ user.username }}/posts">
+									<div><i class="uil uil-users-alt"></i></div>
+									<p>Post Forum Saya</p>
+								</a>
+							</div>
+							<div>
+								<a class="button__profile" href="/profile/{{ user.username }}/konsultasi">
+									<div><i class="uil uil-comment-alt-message"></i></div>
+									<p>Pertanyaan Saya</p>
+								</a>
+							</div>
+							<div>
+								<a class="button__profile" href="/profile/{{ user.username }}/history">
+									<div><i class="uil uil-history"></i></div>
+									<p>Riwayat Tes Saya</p>
+								</a>
+							</div>
+							<div>
+								<a class="button__profile" href="/profile/{{ user.username }}/notification">
+									<div><i class="uil uil-bell"></i></div>
+									<p>Notifikasi Saya</p>
+								</a>
+							</div>
+							<div>
+								<a class="button__profile" href="/profile/{{ user.username }}/settings">
+									<div><i class="uil uil-edit-alt"></i></div>
+									<p>Ubah Profil</p>
+								</a>
+							</div>
+							<div>
+								<a class="button__profile logout" href="/logout">
+									<div><i class="uil uil-sign-out-alt"></i></div>
+									<p>Keluar</p>
+								</a>
+							</div>
+						</div>
+					</div>
+					<div class="profile">
+						<h1>Ubah Profil</h1>
+						<div class="profile__header">
+							<div class="container_name_role">
+								<p class="name">{{ user.first_name }} {{ user.last_name }}</p>
+								<p class="role">Role: {% if UserProfile.role %}{{ UserProfile.role }}{% else %}User{% endif %}</p>
+								{% if messages %}
+								<div class="message-alert">
+									{% for message in messages %}
+									<div class="message-alert-content">
+										<p style="color: red">{{ message.message }}</p>
+									</div>
+									{% endfor %}
+								</div>
+								{% endif %}
+							</div>
+						</div>
+						<form name="settings" method="post" action="settings" onsubmit="return">
+							{% csrf_token %}
+							<textarea class="bio" type="text" id="bio" name="bio" placeholder="Deskripsi">{% if UserProfile.bio is not None %}{{ UserProfile.bio }}{% endif %}</textarea>
+							<input class="first__name" type="text" id="fname" name="firstName" value="{{ user.first_name }}" placeholder="Nama Depan" />
+							<input class="last__name" type="text" id="lname" name="lastName" value="{{ user.last_name }}" placeholder="Nama Belakang" />
+							<select class="provinsi" id="location" name="location">
+								{% if UserProfile.location %}
+								<option selected hidden value="{{ UserProfile.location }}">{{ UserProfile.location }}</option>
+								{% else %}
+								<option selected hidden value="">Belum memilih lokasi</option>
+								{% endif %}
+								<option value="Aceh">Aceh</option>
+								<option value="Bali">Bali</option>
+								<option value="Banten">Banten</option>
+								<option value="Bengkulu">Bengkulu</option>
+								<option value="DI Yogyakarta">DI Yogyakarta</option>
+								<option value="DKI Jakarta">DKI Jakarta</option>
+								<option value="Gorontalo">Gorontalo</option>
+								<option value="Jambi">Jambi</option>
+								<option value="Jawa Barat">Jawa Barat</option>
+								<option value="Jawa Tengah">Jawa Tengah</option>
+								<option value="Jawa Timur">Jawa Timur</option>
+								<option value="Kalimantan Barat">Kalimantan Barat</option>
+								<option value="Kalimantan Selatan">Kalimantan Selatan</option>
+								<option value="Kalimantan Tengah">Kalimantan Tengah</option>
+								<option value="Kalimantan Timur">Kalimantan Timur</option>
+								<option value="Kalimantan Utara">Kalimantan Utara</option>
+								<option value="Kepulauan Bangka Belitung">Kepulauan Bangka Belitung</option>
+								<option value="Kepulauan Riau">Kepulauan Riau</option>
+								<option value="Lampung">Lampung</option>
+								<option value="Maluku">Maluku</option>
+								<option value="Maluku Utara">Maluku Utara</option>
+								<option value="Nusa Tenggara Barat">Nusa Tenggara Barat</option>
+								<option value="Nusa Tenggara Timur">Nusa Tenggara Timur</option>
+								<option value="Papua">Papua</option>
+								<option value="Papua Barat">Papua Barat</option>
+								<option value="Riau">Riau</option>
+								<option value="Sulawesi Barat">Sulawesi Barat</option>
+								<option value="Sulawesi Selatan">Sulawesi Selatan</option>
+								<option value="Sulawesi Tengah">Sulawesi Tengah</option>
+								<option value="Sulawesi Utara">Sulawesi Utara</option>
+								<option value="Sumatera Barat">Sumatra Barat</option>
+								<option value="Sumatera Selatan">Sumatera Selatan</option>
+								<option value="Sulawesi Tenggara">Sulawesi Tenggara</option>
+								<option value="Sumatera Utara">Sumatera Utara</option>
+							</select>
+							<div class="cancel__apply">
+								<button class="button button--flex cancel" type="button" id="cancel">Batal</button>
+								<button class="button button--flex" type="submit">Simpan</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</main>
+		<script>
+			// get element cancel by id
+			var cancel = document.getElementById("cancel");
+			// on click refresh page
+			cancel.onclick = function () {
+				location.reload();
+			};
+		</script>
 
-    <script src="{% static 'js/swiper-bundle.min.js' %}"></script>
-    <script src="{% static 'js/main.js' %}"></script>
-</body>
+		<script src="{% static 'js/swiper-bundle.min.js' %}"></script>
+		<script src="{% static 'js/main.js' %}"></script>
+	</body>
 </html>
