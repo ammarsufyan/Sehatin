@@ -96,14 +96,16 @@ class CustomPasswordValidator:
 
     def validate(self, password, user=None):
         special_characters = "[~\!@#\$%\^&\*\(\)_\+{}\":;'\[\]]"
+        lowercase = re.compile('[a-z]')
+        uppercase = re.compile('[A-Z]')
         if not any(char.isdigit() for char in password):
-            raise ValidationError(_('Kata sandi harus memiliki minimal %(min_length)d angka.') % {'min_length': 1})
-        if not any(char.isalpha() for char in password):
-            raise ValidationError(_('Kata sandi harus memiliki minimal %(min_length)d karakter.') % {'min_length': 1})
+            raise ValidationError(_('Kata sandi harus memiliki minimal 1 angka.'))
         if not any(char in special_characters for char in password):
-            raise ValidationError(_('Kata sandi harus memiliki minimal %(min_length)d karakter spesial.') % {'min_length': 1})
+            raise ValidationError(_('Kata sandi harus memiliki minimal 1 karakter spesial.'))
+        if not lowercase.search(password) or not uppercase.search(password):
+            raise ValidationError(_('Kata sandi harus mengandung satu huruf kecil dan satu huruf kapital!'))
         if len(password) < 8 or len(password) > 50:
-            raise ValidationError(_('Kata sandi harus memiliki minimal %(min_length)d karakter.') % {'min_length': 8})
+            raise ValidationError(_('Kata sandi harus memiliki minimal %(min_length)d dan maksimal 50 karakter.') % {'min_length': self.min_length})
 
     def get_help_text(self):
         return "Kata sandi harus memiliki angka, huruf (Minimal 8 dan Maksimal 50), dan spesial karakter"
