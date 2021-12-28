@@ -180,11 +180,12 @@ class AllPasswordValidator:
     def validate(self, password, user=None):
         lowercase = re.compile('[a-z]')
         uppercase = re.compile('[A-Z]')
-        if not lowercase.search(password) or not uppercase.search(password) or len(password) < 8 or len(password) > 50:
-            raise ValidationError(
-                __("Kata sandi harus memiliki huruf kapital, huruf kecil, minimal 8, dan maksimal 50"),
-                code='password_all_case',
-            )
+        if not lowercase.search(password) or not uppercase.search(password):
+            if len(password) < 8 or len(password) > 50:
+                raise ValidationError(
+                    __("Kata sandi harus memiliki huruf kapital, huruf kecil, minimal 8, dan maksimal 50"),
+                    code='password_all_case',
+                )
 
     def get_help_text(self):
         return __('Kata sandi harus memiliki huruf kapital, huruf kecil, minimal 8, dan maksimal 50')
