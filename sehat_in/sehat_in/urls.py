@@ -17,12 +17,13 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic.base import RedirectView
 from django.contrib.auth import views as auth_views
+from forms import MyPasswordForm
 
 urlpatterns = [
     path('s3cr3t4dm1n/', admin.site.urls),
     path('', include('sehat_in_webproject.urls')),
     path('reset/done/', auth_views.PasswordResetDoneView.as_view(template_name='password/reset-done.html'), name='password_reset_done'),
-    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='password/reset-confirm.html'), name='password_reset_confirm'),
+    path('reset/<uidb64>/<token>/', auth_views.PasswordResetConfirmView.as_view(template_name='password/reset-confirm.html', form_class=MyPasswordForm), name='password_reset_confirm'),
     path('reset/complete/', auth_views.PasswordResetCompleteView.as_view(template_name='password/reset-complete.html'), name='password_reset_complete'),
     path('favicon.ico', RedirectView.as_view(url='/static/img/favicon/favicon.ico'))
 ]
