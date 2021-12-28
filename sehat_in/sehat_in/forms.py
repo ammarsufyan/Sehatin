@@ -173,21 +173,21 @@ class NumericPasswordValidator:
     def get_help_text(self):
         return __('Kata sandi Anda tidak boleh berisi hanya angka')
 
-class UpperLowerCasePasswordValidator:
+class AllPasswordValidator:
     """
     Validate wheter the password is must upper and lower case
     """
     def validate(self, password, user=None):
         lowercase = re.compile('[a-z]')
         uppercase = re.compile('[A-Z]')
-        if not lowercase.search(password) or not uppercase.search(password):
+        if not lowercase.search(password) or not uppercase.search(password) or len(password) < 8 or len(password) > 50:
             raise ValidationError(
-                __("Kata sandi harus memiliki huruf kapital dan huruf kecil"),
-                code='password_no_upper_lower_case',
+                __("Kata sandi harus memiliki huruf kapital, huruf kecil, minimal 8, dan maksimal 50"),
+                code='password_all_case',
             )
 
     def get_help_text(self):
-        return __('Kata sandi Anda harus memiliki huruf kapital dan huruf kecil')
+        return __('Kata sandi harus memiliki huruf kapital, huruf kecil, minimal 8, dan maksimal 50')
 
 class MyPasswordForm(forms.Form):
     """
