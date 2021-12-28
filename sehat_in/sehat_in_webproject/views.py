@@ -101,6 +101,11 @@ def register(request):
             messages.info(request, 'Nama pengguna tidak boleh mengandung karakter khusus!')
             return redirect('/auth/register')
 
+        regex_karakter_spesial = "[~\!@#\$%\^&\*\(\)_\+{}\":;'\[\]]"
+        if not re.search(regex_karakter_spesial, password):
+            messages.info(request, 'Password harus mengandung minimal 1 karakter spesial')
+            return redirect('/auth/register')
+
         if password == password_confirmation:
             # Invalid username
             if username.lower() == "deleted":

@@ -32,6 +32,15 @@
 						<hr />
 					</div>
 					<p style="margin-bottom: 9px">Silakan masukkan email di bawah ini dan kami akan mengirimkan instruksi.</p>
+					{% if messages %}
+						<div class="message-alert">
+							{% for message in messages %}
+							<div class="message-alert-content">
+								<p style="color: red">{{ message.message }}</p>
+							</div>
+							{% endfor %}
+						</div>
+					{% endif %}
 					<form method="POST">
 						{% csrf_token %} {{ password_reset_form|crispy }}
 						<button class="button button--flex reset__form-button" id="submit" type="submit" href="reset/done/">Kirim</button>

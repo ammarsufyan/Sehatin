@@ -31,6 +31,15 @@
 						<h2 class="font-weight-bold mt-3">Link untuk mengubah kata sandi telah dikirim</h2>
 						<hr />
 					</div>
+					{% if messages %}
+					<div class="message-alert">
+						{% for message in messages %}
+						<div class="message-alert-content">
+							<p style="color: red">{{ message.message }}</p>
+						</div>
+						{% endfor %}
+					</div>
+					{% endif %}
 					<p>Kami telah mengirim email untuk mengubah kata sandi, jika email yang Anda kirimkan memiliki akun, silakan cek email anda.</p>
 				</div>
 				{% endblock %}
