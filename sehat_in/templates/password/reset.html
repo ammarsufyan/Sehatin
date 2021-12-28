@@ -1,54 +1,56 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}">
-    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <link rel="stylesheet" href="{% static 'css/header.css' %}">
-    <link rel="stylesheet" href="{% static 'css/footer.css' %}">
+		<link rel="stylesheet" href="{% static 'css/swiper-bundle.min.css' %}" />
+		<link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css" />
+		<link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+		<link rel="stylesheet" href="{% static 'css/header.css' %}" />
+		<link rel="stylesheet" href="{% static 'css/footer.css' %}" />
+		<link rel="stylesheet" href="{% static 'css/reset.css' %}" />
 
-    <link rel="icon" 
-        type="image/png" 
-        href="{% static 'img/favicon/favicon.ico' %}" 
-    />
-    <script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'js/html2canvas.js' %}"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js" integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <title>Sehat.in</title>
-</head>
+		<link rel="icon" type="image/png" href="{% static 'img/favicon/favicon.ico' %}" />
+		<script type="text/javascript" src="{% static 'js/jquery-3.6.0.min.js' %}"></script>
+		<script type="text/javascript" src="{% static 'js/html2canvas.js' %}"></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.0/FileSaver.min.js"
+			integrity="sha512-csNcFYJniKjJxRWRV1R7fvnXrycHP6qDR21mgz1ZP55xY5d+aHLfo9/FcGDQLfn2IfngbAHd8LdfsagcCqgTcQ=="
+			crossorigin="anonymous"
+			referrerpolicy="no-referrer"
+		></script>
+		<title>Sehat.in</title>
+	</head>
 
-<body>
-    {% include 'templates/header.html' %}
-    <main  class="container">
-        <div style="margin-top: 100px;">
-            {% block content %}
+	<body>
+		{% include 'templates/header.html' %}
+		<main class="container">
+			<div style="margin-top: 100px">
+				{% block content %} {% load crispy_forms_tags %}
 
-                {% load crispy_forms_tags %}          
+				<!--Reset Password-->
+				<div class="reset__form">
+					<div class="reset__title">
+						<h2 class="font-weight-bold mt-3">Ubah Kata Sandi</h2>
+						<hr />
+					</div>
+					<p style="margin-bottom: 9px">Silakan masukkan email di bawah ini dan kami akan mengirimkan instruksi.</p>
+					<form method="POST">
+						{% csrf_token %} {{ password_reset_form|crispy }}
+						<button class="button button--flex reset__form-button" id="submit" type="submit" href="reset/done/">Kirim</button>
+					</form>
+				</div>
 
-                <!--Reset Password-->
-                <div class="login__title">
-                    <h2 class="font-weight-bold mt-3">Ubah Kata Sandi</h2>
-                    <hr>
-                    <p>Silakan masukkan email di bawah ini dan kami akan mengirimkan instruksi.</p>
-                    <form method="POST">
-                        {% csrf_token %}
-                        {{ password_reset_form|crispy }}                    
-                        <button class="button button--flex" id="submit" type="submit" href="reset/done/">Kirim</button>
-                    </form>
-                </div> 
+				{% endblock %}
+			</div>
+		</main>
 
-            {% endblock %}
-            </div>
-    </main>
+		{% include 'templates/footer.html' %}
 
-    {% include 'templates/footer.html' %}
-
-    <script src="{% static 'js/swiper-bundle.min.js' %}"></script>
-    <script src="{% static 'js/main.js' %}"></script>
-</body>
+		<script src="{% static 'js/swiper-bundle.min.js' %}"></script>
+		<script src="{% static 'js/main.js' %}"></script>
+	</body>
 </html>
