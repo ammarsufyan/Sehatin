@@ -81,54 +81,32 @@ def _custom_password_validators_help_text_html(password_validators=None):
     in an <ul>.
     """
     help_texts = password_validators_help_texts(password_validators)
-    help_texts.append('Kata sandi Anda tidak boleh mirip dengan informasi personal Anda.')
-    help_texts.append('Kata sandi Anda harus minimal 8 karakter.')
-    help_texts.append('Kata sandi Anda harus mengandung kapital, angka, dan huruf.')
     help_items = [format_html('<li>{}</li>', help_text) for help_text in help_texts]
     #<------------- append your hint here in help_items  ------------->
     return '<ul>%s</ul>' % ''.join(help_items) if help_items else ''
 
-
 custom_password_validators_help_text_html = custom_validators_help_text_html=lazy(_custom_password_validators_help_text_html, str)
 
-
-def _password_validators_help_text_html(password_validators=None):
+class CustomPasswordValidator:
     """
-    Return an HTML string with all help texts of all configured validators
-    in an <ul>.
-    """
-    help_texts = password_validators_help_texts(password_validators)
-    help_items = format_html_join('', '<li>{}</li>', ((help_text,) for help_text in help_texts))
-    return format_html('<ul>{}</ul>', help_items) if help_items else ''
-
-password_validators_help_text_html = lazy(_password_validators_help_text_html, str)
-
-class MinimumLengthValidator:
-    """
-    Validate whether the password is of a minimum length.
+    Validate wheter the password is not macth all password validator
     """
     def __init__(self, min_length=8):
         self.min_length = min_length
 
     def validate(self, password, user=None):
-        if len(password) < self.min_length:
-            raise ValidationError(
-                ngettext(
-                    "Kata sandi terlalu pendek. Kata sandi harus minimal %(min_length)d karakter.",
-                    "Kata sandi terlalu pendek. Kata sandi harus minimal %(min_length)d karakter.",
-                    self.min_length
-                ),
-                code='password_too_short',
-                params={'min_length': self.min_length},
-            )
+        special_characters = "[~\!@#\$%\^&\*\(\)_\+{}\":;'\[\]]"
+        if not any(char.isdigit() for char in password):
+            raise ValidationError(_('Kata sandi harus minimal %(min_length)d angka.') % {'min_length': 1})
+        if not any(char.isalpha() for char in password):
+            raise ValidationError(_('Kata sandi harus minimal %(min_length)d karakter.') % {'min_length': 1})
+        if not any(char in special_characters for char in password):
+            raise ValidationError(_('Kata sandi harus memiliki %(min_length)d karakter spesial.') % {'min_length': 1})
+        if len(password) < 8 or len(password) > 50:
+            raise ValidationError(_('Kata sandi harus minimal %(min_length)d karakter.') % {'min_length': 8})
 
     def get_help_text(self):
-        return ngettext(
-            "Kata sandi harus minimal %(min_length)d karakter.",
-            "Kata sandi harus minimal %(min_length)d karakter.",
-            self.min_length
-        ) % {'min_length': self.min_length}
-
+        return "Kata sandi harus memiliki angka, huruf (Minimal 8 dan Maksimal 50), dan spesial karakter"
 
 class UserAttributeSimilarityValidator:
     """
@@ -163,48 +141,13 @@ class UserAttributeSimilarityValidator:
                     except FieldDoesNotExist:
                         verbose_name = attribute_name
                     raise ValidationError(
-                        __("Kata sandi Anda mirip dengan %(verbose_name)s."),
+                        _("Kata sandi Anda mirip dengan %(verbose_name)s."),
                         code='password_too_similar',
                         params={'verbose_name': verbose_name},
                     )
 
     def get_help_text(self):
-        return __('Kata sandi Anda tidak boleh mirip dengan informasi personal Anda.')
-
-
-class NumericPasswordValidator:
-    """
-    Validate whether the password is alphanumeric.
-    """
-    def validate(self, password, user=None):
-        if password.isdigit():
-            raise ValidationError(
-                __("Kata sandi ini hanya berisi angka"),
-                code='password_entirely_numeric',
-            )
-
-    def get_help_text(self):
-        return __('Kata sandi Anda tidak boleh berisi hanya angka')
-
-class CustomPasswordValidator:
-    """
-    Validate wheter the password is not macth all password validator
-    """
-    def __init__(self, min_length=3):
-        self.min_length = min_length
-
-    def validate(self, password, user=None):
-        special_characters = "[~\!@#\$%\^&\*\(\)_\+{}\":;'\[\]]"
-        if not any(char.isdigit() for char in password):
-            raise ValidationError(_('Kata sandi harus minimal %(min_length)d angka.') % {'min_length': self.min_length})
-        if not any(char.isalpha() for char in password):
-            raise ValidationError(_('Kata sandi harus minimal %(min_length)d karakter.') % {'min_length': self.min_length})
-        if not any(char in special_characters for char in password):
-            raise ValidationError(_('Kata sandi harus memiliki %(min_length)d karakter spesial.') % {'min_length': self.min_length})
-
-    def get_help_text(self):
-        return "Kata sandi harus memiliki angka, huruf, dan spesial karakter"
-
+        return _('Kata sandi Anda tidak boleh mirip dengan informasi personal Anda.')
 
 class MyPasswordForm(forms.Form):
     """

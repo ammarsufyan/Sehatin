@@ -107,16 +107,7 @@ elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
-    },
-    {
-        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+        'NAME': 'sehat_in.validators.UserAttributeSimilarityValidator',
     },
     {   
         'NAME': 'sehat_in.validators.CustomPasswordValidator',
