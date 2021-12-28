@@ -1,6 +1,5 @@
 from django import forms
 from django.contrib.auth import get_user_model
-from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
 import functools
 import re
@@ -84,10 +83,15 @@ def _password_validators_help_text_html(password_validators=None):
     """
     help_texts = password_validators_help_texts(password_validators)
     help_items = format_html_join('', '<li>{}</li>', ((help_text,) for help_text in help_texts))
+    help_items.append('Kata sandi Anda tidak boleh mirip dengan informasi personal Anda.')
+    help_items.append('Kata sandi Anda harus minimal 8 karakter.')
+    help_items.append('Kata sandi Anda harus mengandung kapital, angka, dan huruf.')
     return format_html('<ul>{}</ul>', help_items) if help_items else ''
 
-
 password_validators_help_text_html = lazy(_password_validators_help_text_html, str)
+
+
+custom_password_validators_help_text_html = custom_validators_help_text_html=lazy(_custom_password_validators_help_text_html, str)
 
 
 class MinimumLengthValidator:
