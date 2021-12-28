@@ -70,13 +70,26 @@ def password_validators_help_texts(password_validators=None):
     """
     help_texts = []
     if password_validators is None:
-        help_texts.append('Kata sandi Anda tidak boleh mirip dengan informasi personal Anda.')
-        help_texts.append('Kata sandi Anda harus minimal 8 karakter.')
-        help_texts.append('Kata sandi Anda harus mengandung kapital, angka, dan huruf.')
-    if password_validators is not None:
-        for validator in password_validators:
-            help_texts.append(validator.get_help_text())
+        password_validators = get_default_password_validators()
+    for validator in password_validators:
+        help_texts.append(validator.get_help_text())
     return help_texts
+
+def _custom_password_validators_help_text_html(password_validators=None):
+    """
+    Return an HTML string with all help texts of all configured validators
+    in an <ul>.
+    """
+    help_texts = password_validators_help_texts(password_validators)
+    help_texts.append('Kata sandi Anda tidak boleh mirip dengan informasi personal Anda.')
+    help_texts.append('Kata sandi Anda harus minimal 8 karakter.')
+    help_texts.append('Kata sandi Anda harus mengandung kapital, angka, dan huruf.')
+    help_items = [format_html('<li>{}</li>', help_text) for help_text in help_texts]
+    #<------------- append your hint here in help_items  ------------->
+    return '<ul>%s</ul>' % ''.join(help_items) if help_items else ''
+
+
+custom_password_validators_help_text_html = custom_validators_help_text_html=lazy(_custom_password_validators_help_text_html, str)
 
 
 def _password_validators_help_text_html(password_validators=None):
@@ -180,12 +193,13 @@ class AllPasswordValidator:
     def validate(self, password, user=None):
         lowercase = re.compile('[a-z]')
         uppercase = re.compile('[A-Z]')
-        if not lowercase.search(password) or not uppercase.search(password):
-            if len(password) < 8 or len(password) > 50:
-                raise ValidationError(
-                    __("Kata sandi harus memiliki huruf kapital, huruf kecil, minimal 8, dan maksimal 50"),
-                    code='password_all_case',
-                )
+        if not lowercase.search(password):
+            if not uppercase.search(password):
+                if len(password) < 8 or len(password) > 50:
+                    raise ValidationError(
+                        __("Kata sandi harus memiliki huruf kapital, huruf kecil, minimal 8, dan maksimal 50"),
+                        code='password_all_case',
+                    )
 
     def get_help_text(self):
         return __('Kata sandi harus memiliki huruf kapital, huruf kecil, minimal 8, dan maksimal 50')
@@ -202,7 +216,7 @@ class MyPasswordForm(forms.Form):
         label=_("Kata Sandi Baru"),
         widget=forms.PasswordInput(attrs={'autocomplete': 'new-password'}),
         strip=False,
-        help_text=_password_validators_help_text_html(),
+        help_text=custom_validators_help_text_html(),
     )
     new_password2 = forms.CharField(
         label=_("Konfirmasi Kata Sandi Baru"),
