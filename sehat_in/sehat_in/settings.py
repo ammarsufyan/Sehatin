@@ -107,16 +107,16 @@ elif len(sys.argv) > 0 and sys.argv[1] != 'collectstatic':
 
 AUTH_PASSWORD_VALIDATORS = [
     {
-        'NAME': 'forms.UserAttributeSimilarityValidator',
+        'NAME': 'validator.UserAttributeSimilarityValidator',
     },
     {
-        'NAME': 'forms.MinimumLengthValidator',
+        'NAME': 'validator.MinimumLengthValidator',
     },
     {
-        'NAME': 'forms.NumericPasswordValidator',
+        'NAME': 'validator.NumericPasswordValidator',
     },
     {
-        'NAME': 'forms.AllPasswordValidator',
+        'NAME': 'validator.AllPasswordValidator',
     },
 ]
 

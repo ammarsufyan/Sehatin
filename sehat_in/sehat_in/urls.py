@@ -17,7 +17,7 @@ from django.contrib import admin
 from django.urls import path, include
 from django.views.generic.base import RedirectView
 from django.contrib.auth import views as auth_views
-from .forms import MyPasswordForm
+from .validator import MyPasswordForm
 
 urlpatterns = [
     path('s3cr3t4dm1n/', admin.site.urls),
