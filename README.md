@@ -1,4 +1,4 @@
-# SEHAT.IN #
+# Sehatin #
 _Peduli kesehatan mental anak muda Indonesia_  
   
 ---  
